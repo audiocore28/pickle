@@ -4,12 +4,15 @@ import { ref, computed, onMounted } from 'vue';
 const games = ref([]);
 const selected = ref([]);
 const search = ref('');
+const total = ref(0);
 
-function toggleSelect(id) {
-  if (selected.value.includes(id)) {
-    selected.value = selected.value.filter(s => s !== id);
+function toggleSelect(g) {
+  if (selected.value.includes(g.id)) {
+    selected.value = selected.value.filter(s => s !== g.id);
+    total.value -= g.size;
   } else {
-    selected.value.push(id);
+    selected.value.push(g.id);
+    total.value += g.size;
   }
 }
 
@@ -81,7 +84,7 @@ onMounted(async () => {
       <div v-if="games.length" class="grid grid-cols-2 xs:grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-6">
 
         <div 
-          v-for="game in filteredGames" :key="game.id" @click.prevent="toggleSelect(game.id)" 
+          v-for="game in filteredGames" :key="game.id" @click.prevent="toggleSelect(game)" 
           :class="{
             'bg-green-600 text-green-100' : selected.includes(game.id),
             'hover:text-green-600 transition duration-500 ease-in-out' : !selected.includes(game.id)
@@ -130,6 +133,34 @@ onMounted(async () => {
       </div>
     </div>
     <!-- / Gamelists -->
+
+    <div class="fixed bottom-0 p-6 w-full flex justify-center z-[2000]">
+      <div class="bg-white bg-opacity-95 text-xs rounded-md fade w-[450px] show">
+        <div class="px-4 rounded border border-green-600">
+
+          <!-- Progress Bar / Total Game Size -->
+          <div class="relative p-4 m-2 max-w-lg mx-auto">
+            <div class="flex rounded-full h-2 bg-gray-200">
+              <div style="width:70%" class="rounded-full bg-green-500"></div>
+            </div>
+            <div class="flex mt-4 items-center justify-between">
+              <div>
+                <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">
+                  {{ selected.length }} Selected
+                </span>
+              </div>
+              <div class="text-right">
+                <span class="text-xs font-semibold inline-block uppercase text-green-600">
+                  Total: {{ total }} GB / 450 GB
+                </span>
+              </div>
+            </div>
+          </div>
+          <!-- / Progress Bar (Total Game Size) -->
+
+        </div>
+      </div>
+    </div>
 
   </div>
 </template>
