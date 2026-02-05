@@ -1,16 +1,21 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 const games = ref([]);
 const selected = ref([]);
+const search = ref('');
 
-function toggleSelect(i) {
-  if (selected.value.includes(i)) {
-    selected.value = selected.value.filter(s => s !== i);
+function toggleSelect(id) {
+  if (selected.value.includes(id)) {
+    selected.value = selected.value.filter(s => s !== id);
   } else {
-    selected.value.push(i);
+    selected.value.push(id);
   }
 }
+
+const filteredGames = computed(() => {
+  return games.value.filter(g => g.name.toLowerCase().includes(search.value));
+});
 
 onMounted(async () => {
   try {
@@ -25,31 +30,94 @@ onMounted(async () => {
 
 <template>
   <div>
-    <!-- Gamelists -->
-    <div class="max-w-screen-xl mx-auto p-5 sm:p-10 md:p-16">
-      <div v-if="games.length" class="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-2 gap-10">
+    <!-- Search -->
+    <div class="mx-auto flex w-full items-center justify-center py-4">
+      <div class="relative">
+        <input
+          v-model="search"
+          class="appearance-none border-2 pl-10 border-gray-300 hover:border-gray-400 transition-colors rounded-md w-full py-2 px-3 text-gray-800 leading-tight focus:outline-none focus:ring-purple-600 focus:border-purple-600 focus:shadow-outline"
+          type="text"
+          placeholder="Search..."
+        />
+        <div class="absolute right-0 inset-y-0 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="-ml-1 mr-3 h-5 w-5 text-gray-400 hover:text-gray-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </div>
 
-        <div v-for="(game, i) in games" :key="game.id" @click.prevent="toggleSelect(i)" class="rounded overflow-hidden shadow-lg">
+        <div class="absolute left-0 inset-y-0 flex items-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 ml-3 text-gray-400 hover:text-gray-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <!-- / Search -->
+
+    <!-- Gamelists -->
+    <div class="max-w-screen-2xl mx-auto p-5 sm:p-10 md:p-16">
+      <div v-if="games.length" class="grid grid-cols-2 xs:grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-6">
+
+        <div 
+          v-for="game in filteredGames" :key="game.id" @click.prevent="toggleSelect(game.id)" 
+          :class="{
+            'bg-green-600 text-green-100' : selected.includes(game.id),
+            'hover:text-green-600 transition duration-500 ease-in-out' : !selected.includes(game.id)
+          }"
+          class="rounded overflow-hidden shadow-lg"
+        >
           <a href="#"></a>
           <div class="relative">
             <a href="#">
                 <img class="w-full" :src="game.image" alt="game image">
-                <div class="hover:bg-transparent transition duration-300 absolute bottom-0 top-0 right-0 left-0 bg-gray-900 opacity-25"></div>
+                <div 
+                  :class="{
+                    'hover:bg-transparent transition duration-300 bg-gray-900 opacity-40' : !selected.includes(game.id)
+                  }"
+                  class="absolute bottom-0 top-0 right-0 left-0"></div>
             </a>
             <a href="#!">
-              <div class="absolute bottom-0 left-0 bg-neutral-300 px-4 py-2 text-white text-sm hover:bg-white hover:text-indigo-600 transition duration-500 ease-in-out">{{ game.platform }}</div>
+              <div class="absolute bottom-0 left-0 bg-neutral-600 px-4 py-2 text-white text-sm">{{ game.platform }}</div>
             </a>
             <a href="!#">
-              <div class="text-md absolute top-0 right-0 bg-neutral-300 px-4 text-white rounded-full h-16 w-16 flex flex-col items-center justify-center mt-3 mr-3" :class="{ selected : selected.includes(i) }">
+              <div 
+                :class="{
+                  'bg-green-600 text-green-100 text-sm h-16 w-16 px-2 transition duration-500 ease-in-out' : selected.includes(game.id),
+                  'bg-neutral-700 text-white text-xs h-14 w-14 px-4 transition duration-500 ease-in-out' : !selected.includes(game.id)
+                  }"
+                class="absolute top-0 right-0 rounded-full flex flex-col items-center justify-center mt-3 mr-3" 
+                >
                 <span class="font-bold">{{ game.size }}</span>
                 <small>GB</small>
               </div>
             </a>
           </div>
 
-          <div class="px-6 py-4">
-            <a href="#"class="font-semibold text-lg inline-block hover:text-indigo-600 transition duration-500 ease-in-out">{{ game.name }}</a>
-            <p class="text-gray-500 text-sm">suggestion specs info</p>
+          <div class="px-3 py-3">
+            <a href="#" class="font-semibold text-sm inline-block">{{ game.name }}</a>
+            <p class="text-gray-500 text-xs">{{ game.note1 }}</p>
           </div>
 
         </div>
@@ -65,11 +133,3 @@ onMounted(async () => {
 
   </div>
 </template>
-
-<style scoped>
-
-.selected {
-  background-color: green;
-}
-
-</style>
