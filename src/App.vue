@@ -5,6 +5,7 @@ const games = ref([]);
 const selected = ref([]);
 const search = ref('');
 const total = ref(0);
+const driveCapacity = ref(440);
 
 function toggleSelect(g) {
   if (selected.value.includes(g.id)) {
@@ -18,6 +19,15 @@ function toggleSelect(g) {
 
 const filteredGames = computed(() => {
   return games.value.filter(g => g.name.toLowerCase().includes(search.value));
+});
+
+const progress = computed(() => (total.value / driveCapacity.value) * 100 );
+const freeSpace = computed(() => driveCapacity.value - total.value );
+
+const progressStyle = computed(() => {
+    return { 
+      width: progress.value + "%" 
+    };
 });
 
 onMounted(async () => {
@@ -134,24 +144,31 @@ onMounted(async () => {
     </div>
     <!-- / Gamelists -->
 
-    <div class="fixed bottom-0 p-6 w-full flex justify-center z-[2000]">
-      <div class="bg-white bg-opacity-95 text-xs rounded-md fade w-[450px] show">
-        <div class="px-4 rounded border border-green-600">
+    <div class="fixed bottom-0 sm:p-6 w-full flex justify-center z-[2000]">
+      <div class="bg-white bg-opacity-95 text-xs rounded-md fade w-full sm:w-[450px] show">
+        <div class="sm:px-4 rounded border border-green-600">
 
-          <!-- Progress Bar / Total Game Size -->
+          <!-- Progress Bar (Total Game Size) -->
           <div class="relative p-4 m-2 max-w-lg mx-auto">
             <div class="flex rounded-full h-2 bg-gray-200">
-              <div style="width:70%" class="rounded-full bg-green-500"></div>
+              <div 
+                :style="progressStyle" class="rounded-full" 
+                :class="{ 
+                  'bg-green-500' : progress < 80,
+                  'bg-yellow-500' : progress >= 80,
+                }"
+              >
+              </div>
             </div>
             <div class="flex mt-4 items-center justify-between">
               <div>
                 <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">
-                  {{ selected.length }} Selected
+                  Total: {{ total }} GB
                 </span>
               </div>
               <div class="text-right">
-                <span class="text-xs font-semibold inline-block uppercase text-green-600">
-                  Total: {{ total }} GB / 450 GB
+                <span class="text-xs inline-block text-neutral-300">
+                  {{ `${freeSpace} GB free of ${driveCapacity} GB` }}
                 </span>
               </div>
             </div>
