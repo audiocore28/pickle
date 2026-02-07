@@ -1,9 +1,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBDQML7oIs5nSLLaLeE33PjkLT8AQGJJ69x1zKzxyaEA5oyabWZ2rThbMuqHAsUGQAxg/exec';
 const games = ref([]);
 const selected = ref([]);
 const search = ref('');
+const platform = ref('switch');
+const sort = ref('latest');
 const total = ref(0);
 const driveCapacity = ref(440);
 
@@ -18,7 +21,35 @@ function toggleSelect(g) {
 }
 
 const filteredGames = computed(() => {
-  return games.value.filter(g => g.name.toLowerCase().includes(search.value));
+  let filtered = [];
+
+  if (platform.value !== 'all') {
+    filtered = games.value
+      .filter(g => g.platform === platform.value)
+      .filter(g => g.name.toLowerCase().includes(search.value));
+  } else {
+    filtered = games.value
+      .filter(g => g.name.toLowerCase().includes(search.value));
+  }
+
+  switch (sort.value) {
+    case 'latest':
+      return filtered.sort((a, b) => b.id - a.id);
+      break;
+    case 'name':
+      return filtered.sort((a, b) => a.name.localeCompare(b.name));
+      break;
+    case 'sizeAsc':
+      return filtered.sort((a, b) => a.size - b.size);
+      break;
+    case 'sizeDesc':
+      return filtered.sort((a, b) => b.size - a.size);
+      break;
+  
+    default:
+      return filtered.sort((a, b) => b.id - a.id);
+      break;
+  }
 });
 
 const progress = computed(() => (total.value / driveCapacity.value) * 100 );
@@ -32,7 +63,7 @@ const progressStyle = computed(() => {
 
 onMounted(async () => {
   try {
-    const response = await fetch('https://script.google.com/macros/s/AKfycbxF12XlQz20IAuoy2NYYlwn4LGIGe61iKOcnrGZ6T3bY10aMpUxYSB0b_GvnYwPIsGZ/exec'); 
+    const response = await fetch(GOOGLE_SCRIPT_URL); 
     const data = await response.json();
     games.value = data.games;
   } catch (error) {
