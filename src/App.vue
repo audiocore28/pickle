@@ -9,6 +9,25 @@ const platform = ref('switch');
 const sort = ref('latest');
 const total = ref(0);
 const driveCapacity = ref(440);
+
+const sorts = [
+  {
+    name: 'Latest',
+    value: 'latest'
+  },
+  {
+    name: 'Name (A-Z)',
+    value: 'name'
+  },
+  {
+    name: 'Size (smallest first)',
+    value: 'sizeAsc'
+  },
+  {
+    name: 'Size (largest first)',
+    value: 'sizeDesc'
+  },
+];
 const platforms = [
   {
     name: 'all',
@@ -39,6 +58,8 @@ const platforms = [
     desc: '2 Players',
   },
 ];
+const toggleSearch = ref(true);
+const toggleSort = ref(false);
 
 function toggleSelect(g) {
   if (selected.value.includes(g.id)) {
@@ -123,7 +144,62 @@ onMounted(async () => {
 <template>
   <div>
 
-    <div class="bg-neutral-100 fixed top-0 w-full z-[2000] pb-2" >
+    <div class="bg-white fixed top-0 w-full z-[2000] pb-2" >
+      <div class="flex justify-center items-center rounded-lg relative pb-2 pt-4">
+
+        <!-- Search v2 -->
+        <div @click="toggleSearch = !toggleSearch" class="search-icon bg-neutral-300 hover:bg-green-600 text-white px-2 py-2 rounded-full relative z-10 shadow-md">
+          <svg width="15" height="15" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 19L13 13M15 8C15 8.91925 14.8189 9.82951 14.4672 10.6788C14.1154 11.5281 13.5998 12.2997 12.9497 12.9497C12.2997 13.5998 11.5281 14.1154 10.6788 14.4672C9.82951 14.8189 8.91925 15 8 15C7.08075 15 6.1705 14.8189 5.32122 14.4672C4.47194 14.1154 3.70026 13.5998 3.05025 12.9497C2.40024 12.2997 1.88463 11.5281 1.53284 10.6788C1.18106 9.82951 1 8.91925 1 8C1 6.14348 1.7375 4.36301 3.05025 3.05025C4.36301 1.7375 6.14348 1 8 1C9.85652 1 11.637 1.7375 12.9497 3.05025C14.2625 4.36301 15 6.14348 15 8Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="w-[200px] h-[32px]">
+          <!-- Logo -->
+          <!-- <h1 
+            v-if="!toggleSearch"
+            class="ml-8 mt-1 font-semibold uppercase flex items-center justify-center"
+          >
+            Held Fun
+          </h1> -->
+          <input
+            v-model="search" 
+            v-if="toggleSearch"
+            class="search-input w-full px-4 py-2 appearance-none rounded-r-lg text-sm text-gray-800 border-gray-300 hover:border-gray-400 transition-colors leading-tight bg-neutral-100 outline-none focus:outline-none:focus focus:ring-green-600 focus:border-green-600 focus:shadow-outline" type="search" autocomplete="off" spellcheck="false" aria-live="polite" :placeholder=" `Search ${platform} games...`"
+          >
+        </div>
+        <!-- / Search v2 -->
+
+        <!-- Sort -->
+        <div class="relative cursor-pointer uppercase text-green-600 py-2">
+          <div @click="toggleSort = !toggleSort" class="flex items-center justify-between space-x-2 px-2 ">
+            <a class="menu-hover py-2 text-xs lg:mx-2">
+              {{ sort }}
+            </a>
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="h-4 w-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </span>
+          </div>
+
+          <div v-if="toggleSort" class="absolute z-50 flex w-full flex-col bg-gray-100 py-1 px-4 shadow-xl">
+            <a 
+              v-for="s in sorts" 
+              @click="sort = s.value; toggleSort = !toggleSort" 
+              class="my-2 block border-b border-gray-100 py-1 text-xs hover:text-green-600 md:mx-2"
+              :class="{
+                'text-green-600' : s.value === sort,
+                'text-white' : s.value !== sort,
+              }"
+            >
+              {{ s.name }}
+            </a>
+          </div>
+        </div>
+        <!-- / Sort -->
+
+      </div>
 
       <!-- Search -->
       <div class="mx-auto flex w-full items-center justify-center py-2">
@@ -279,8 +355,8 @@ onMounted(async () => {
             </div>
             <div class="flex mt-4 items-center justify-between">
               <div>
-                <span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-green-600 bg-green-200">
-                  Total: {{ total }} GB
+                <span class="text-xs inline-block py-1 px-2 rounded-full text-green-600 bg-green-200">
+                  {{ `${selected.length} picks total of ${total}` }} GB
                 </span>
               </div>
               <div class="text-right">
