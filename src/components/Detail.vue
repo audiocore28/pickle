@@ -20,7 +20,7 @@ const props = defineProps({
         <img class="w-full" :src="game.image" alt="game image">
         <div 
           :class="{
-            'hover:bg-transparent transition duration-300 bg-gray-900 opacity-40' : !selected.includes(game.id)
+            'hover:bg-transparent transition duration-300 bg-gray-900 opacity-30' : !selected.includes(game.id)
           }"
           class="absolute bottom-0 top-0 right-0 left-0"
         ></div>

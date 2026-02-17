@@ -15,7 +15,7 @@ const { games, selected, filteredGames } = storeToRefs(store);
 <template>
   <div>
     <!-- Filters -->
-    <div class="bg-white fixed top-0 w-full z-[2000] pb-2" >
+    <div class="bg-white fixed top-0 w-full z-[200] pb-2">
       <div class="flex justify-center items-center rounded-lg relative pb-2 pt-4">
 
         <Search />
@@ -31,7 +31,7 @@ const { games, selected, filteredGames } = storeToRefs(store);
     <!-- Gamelists -->
     <section class="bg-gray-200 mt-28 sm:mt-22">
       <div class="max-w-screen-2xl mx-auto p-5 sm:p-10 md:p-16">
-        <div v-if="games.length" class="grid grid-cols-2 xs:grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-6">
+        <div v-if="games.length" class="grid grid-cols-2 xs:grid-cols-1 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-4">
 
           <div 
             v-for="game in filteredGames" :key="game.id" 
