@@ -22,6 +22,15 @@ export const useGameStore = defineStore('game', () => {
     }
   }
 
+  function clearAll() {
+    const isConfirmed = confirm("Are you sure you want to clear ALL selected games from the list?");
+    
+    if (isConfirmed) {
+      selected.value = [];
+      total.value = 0;
+    }
+  }
+
   const filteredGames = computed(() => {
     let filtered = [];
 
@@ -106,7 +115,8 @@ export const useGameStore = defineStore('game', () => {
     freeSpace,
     progressStyle,
     groupedSelection,
-    toggleList
+    toggleList,
+    clearAll
   }
 
 });

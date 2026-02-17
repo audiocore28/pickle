@@ -11,7 +11,7 @@ const activeTab = ref('all');
 </script>
 
 <template>
-  <div v-if="toggleList" class="fixed inset-0 z-40 min-h-full overflow-y-auto overflow-x-hidden transition flex items-center">
+  <div v-if="toggleList" class="fixed inset-0 z-400 min-h-full overflow-y-auto overflow-x-hidden transition flex items-center">
     <!-- overlay -->
     <div aria-hidden="true" class="fixed inset-0 w-full h-full bg-black/50 cursor-pointer"></div>
     
@@ -29,7 +29,7 @@ const activeTab = ref('all');
         <!-- / Header -->
 
         <!-- Tab navigation links -->
-        <div class="text-xs uppercase text-center border-b border-gray-200 ">
+        <div class="text-xs uppercase text-center border-b border-gray-200 hidden xs:block">
           <ul class="flex flex-wrap -mb-px">
             <li class="mr-2">
               <a 
@@ -71,7 +71,7 @@ const activeTab = ref('all');
                 <div class="flex items-center">
                   <span class="text-xs text-green-500 mr-3">{{ game.size }} GB</span>
 
-                  <button tabindex="-1" type="button">
+                  <button @click="store.toggleSelect(game)" tabindex="-1" type="button">
                     <svg title="Close" tabindex="-1" class="bg-red-600 text-white h-4 w-4 cursor-pointer text-gray-400"
                       xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                       <path fill-rule="evenodd"
@@ -101,7 +101,7 @@ const activeTab = ref('all');
                 </span>
               </button>
               
-              <button type="button" class="inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-[12px] sm:text-sm text-white shadow focus:ring-white border-transparent bg-red-600 hover:bg-red-500 focus:bg-red-700 focus:ring-offset-red-700">
+              <button @click="store.clearAll()" type="button" class="inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-[12px] sm:text-sm text-white shadow focus:ring-white border-transparent bg-red-600 hover:bg-red-500 focus:bg-red-700 focus:ring-offset-red-700">
                 <span class="flex items-center gap-1">
                   <span class="">
                     Clear All
