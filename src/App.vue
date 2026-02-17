@@ -6,6 +6,7 @@ import Counter from '@/components/Counter.vue';
 import Platform from '@/components/Platform.vue';
 import Search from '@/components/Search.vue';
 import Sort from '@/components/Sort.vue';
+import List from '@/components/List.vue';
 
 const store = useGameStore();
 const { games, selected, filteredGames } = storeToRefs(store);
@@ -54,7 +55,7 @@ const { games, selected, filteredGames } = storeToRefs(store);
     <!-- / Gamelists -->
 
     <!-- Progress Bar -->
-    <div class="fixed bottom-0 sm:p-6 w-full flex justify-center z-[2000]">
+    <div class="fixed bottom-0 sm:p-2 w-full flex justify-center z-[2000]">
       <div class="bg-white bg-opacity-95 text-xs rounded-md fade w-full sm:w-[450px] show">
         <div class="sm:px-4 rounded border border-green-600">
 
@@ -64,6 +65,8 @@ const { games, selected, filteredGames } = storeToRefs(store);
       </div>
     </div>
     <!-- / Progress Bar -->
+
+    <List />
 
   </div>
 </template>

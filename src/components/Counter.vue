@@ -10,11 +10,12 @@ const {
   progress,
   freeSpace,
   progressStyle,
+  toggleList
 } = storeToRefs(store);
 </script>
 
 <template>
-  <div class="relative p-4 m-2 max-w-lg mx-auto">
+  <div @click="toggleList = !toggleList" class="relative p-4 m-2 max-w-lg mx-auto">
     <div class="flex rounded-full h-2 bg-gray-200">
       <div 
       :style="progressStyle" class="rounded-full" 

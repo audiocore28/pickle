@@ -54,6 +54,25 @@ export const useGameStore = defineStore('game', () => {
     }
   });
 
+  const toggleList = ref(false);
+
+  const groupedSelection = computed(() => {
+    const g = selected.value.map(sid => {
+      return games.value.find(g => g.id === sid)
+    });
+  
+    return g.reduce((accumulator, currentGame) => {
+      const platform = currentGame.platform;
+      if (!accumulator[platform]) {
+        accumulator[platform] = [];
+      }
+      accumulator[platform].push(currentGame);
+      accumulator[platform].sort((a, b) => b.size - a.size);
+
+      return accumulator;
+    }, {});
+  });
+
   const progress = computed(() => (total.value / driveCapacity.value) * 100 );
   const freeSpace = computed(() => driveCapacity.value - total.value );
 
@@ -86,6 +105,8 @@ export const useGameStore = defineStore('game', () => {
     progress,
     freeSpace,
     progressStyle,
+    groupedSelection,
+    toggleList
   }
 
 });
