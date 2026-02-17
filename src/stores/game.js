@@ -9,42 +9,8 @@ export const useGameStore = defineStore('game', () => {
   const search = ref('');
   const platform = ref('all');
   const sortBy = ref('A-Z');
-  const sorts = ref(['New Add', 'A-Z', 'Size Asc', 'Size Desc']);
-  const platforms = ref([
-    {
-      name: 'all',
-      desc: 'All Platforms',
-    },
-    {
-      name: 'pc',
-      desc: 'PC Games',
-    },
-    {
-      name: 'switch',
-      desc: 'NSW Console',
-    },
-    {
-      name: 'playstation3',
-      desc: 'PS3 Console',
-    },
-    {
-      name: 'playstation2',
-      desc: 'PS2 Console',
-    },
-    {
-      name: 'low-end',
-      desc: 'Basic / Low-End',
-    },
-    {
-      name: '2-players',
-      desc: '2 Players',
-    },
-  ]);
   const total = ref(0);
   const driveCapacity = ref(440);
-
-  const toggleSearch = ref(true);
-  const toggleSort = ref(false);
 
   function toggleSelect(g) {
     if (selected.value.includes(g.id)) {
@@ -97,24 +63,6 @@ export const useGameStore = defineStore('game', () => {
       };
   });
 
-  function scrollLeft() {
-    const scrollContainer = document.getElementById('scrollContainer');
-
-    scrollContainer.scrollBy({
-      left: -150,
-      behavior: 'smooth'
-    });
-  }
-
-  function scrollRight() {
-    const scrollContainer = document.getElementById('scrollContainer');
-
-    scrollContainer.scrollBy({
-      left: 150,
-      behavior: 'smooth'
-    });
-  }
-
   onMounted(async () => {
     try {
       const response = await fetch(GOOGLE_SCRIPT_URL); 
@@ -131,19 +79,13 @@ export const useGameStore = defineStore('game', () => {
     search,
     platform,
     sortBy,
-    sorts,
-    platforms,
     total,
     driveCapacity,
-    toggleSearch,
-    toggleSort,
     toggleSelect,
     filteredGames,
     progress,
     freeSpace,
     progressStyle,
-    scrollLeft,
-    scrollRight,
   }
 
 });

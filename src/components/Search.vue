@@ -1,10 +1,12 @@
 <script setup>
-
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { search, platform, toggleSearch } = storeToRefs(store);
+const { search, platform } = storeToRefs(store);
+
+const toggleSearch = ref(true);
 </script>
 
 <template>

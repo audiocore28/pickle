@@ -1,9 +1,13 @@
 <script setup>
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { sortBy, sorts, toggleSort } = storeToRefs(store);
+const { sortBy } = storeToRefs(store);
+
+const sorts = ref(['New Add', 'A-Z', 'Size Asc', 'Size Desc']);
+const toggleSort = ref(false);
 </script>
 
 <template>

@@ -1,14 +1,64 @@
 <script setup>
+import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { platform, platforms } = storeToRefs(store);
+const { platform } = storeToRefs(store);
+
+const platforms = ref([
+  {
+    name: 'all',
+    desc: 'All Platforms',
+  },
+  {
+    name: 'pc',
+    desc: 'PC Games',
+  },
+  {
+    name: 'switch',
+    desc: 'NSW Console',
+  },
+  {
+    name: 'playstation3',
+    desc: 'PS3 Console',
+  },
+  {
+    name: 'playstation2',
+    desc: 'PS2 Console',
+  },
+  {
+    name: 'low-end',
+    desc: 'Basic / Low-End',
+  },
+  {
+    name: '2-players',
+    desc: '2 Players',
+  },
+]);
+
+function scrollLeft() {
+  const scrollContainer = document.getElementById('scrollContainer');
+
+  scrollContainer.scrollBy({
+    left: -150,
+    behavior: 'smooth'
+  });
+}
+
+function scrollRight() {
+  const scrollContainer = document.getElementById('scrollContainer');
+
+  scrollContainer.scrollBy({
+    left: 150,
+    behavior: 'smooth'
+  });
+}
 </script>
 
 <template>
   <div class="mx-auto flex items-center md:justify-center space-x-2 p-4 text-xs uppercase whitespace-nowrap scroll-smooth">
-    <button @click="store.scrollLeft()" id="scrollLeft" class="p-2 mr-2 bg-neutral-300 text-white rounded-full shadow-lg hover:bg-green-600 focus:outline-none md:hidden">
+    <button @click="scrollLeft()" id="scrollLeft" class="p-2 mr-2 bg-neutral-300 text-white rounded-full shadow-lg hover:bg-green-600 focus:outline-none md:hidden">
       <!-- Heroicon: Chevron Left -->
       <svg xmlns="https://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
@@ -27,7 +77,7 @@ const { platform, platforms } = storeToRefs(store);
       </button>
     </div>
 
-    <button @click="store.scrollRight()" id="scrollRight" class="p-2 ml-1 bg-neutral-300 text-white rounded-full shadow-lg hover:bg-green-600 focus:outline-none md:hidden">
+    <button @click="scrollRight()" id="scrollRight" class="p-2 ml-1 bg-neutral-300 text-white rounded-full shadow-lg hover:bg-green-600 focus:outline-none md:hidden">
       <!-- Heroicon: Chevron Right -->
       <svg xmlns="https://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
