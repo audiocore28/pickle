@@ -1,5 +1,6 @@
 import { ref, computed, onMounted } from 'vue';
 import { defineStore } from 'pinia';
+import html2canvas from 'html2canvas';
 
 export const useGameStore = defineStore('game', () => {
 
@@ -11,6 +12,8 @@ export const useGameStore = defineStore('game', () => {
   const sortBy = ref('A-Z');
   const total = ref(0);
   const driveCapacity = ref(440);
+  const now = ref(new Date());
+  const captureContainer = ref(null);
 
   function toggleSelect(g) {
     if (selected.value.includes(g.id)) {
@@ -30,6 +33,29 @@ export const useGameStore = defineStore('game', () => {
       total.value = 0;
     }
   }
+
+  const captureElement = async () => {
+    // Capture using html2canvas
+    html2canvas(captureContainer.value, {
+      scale: 2, // Use a higher scale for better resolution
+      useCORS: true,
+      // Capture the element in its entirety
+      width: captureContainer.value.offsetWidth,
+      height: captureContainer.value.offsetHeight,
+    }).then(canvas => {
+      // Trigger Download (.jpeg format requested)
+      const image = canvas.toDataURL('image/jpeg', 0.9); // JPEG format, 0.9 quality
+
+      const link = document.createElement('a');
+      link.download = `Gamelist_${now.value.getTime()}.jpeg`; 
+      link.href = image;
+      // Trigger download immediately
+      link.click();
+      
+      // Show alert message
+      alert("Download Complete!\n\nPlease send downloaded screenshot!");
+    });
+  };
 
   const filteredGames = computed(() => {
     let filtered = [];
@@ -116,7 +142,10 @@ export const useGameStore = defineStore('game', () => {
     progressStyle,
     groupedSelection,
     toggleList,
-    clearAll
+    clearAll,
+    captureContainer,
+    captureElement,
+    now
   }
 
 });
