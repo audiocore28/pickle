@@ -54,19 +54,8 @@ const { games, selected, filteredGames } = storeToRefs(store);
     </section>
     <!-- / Gamelists -->
 
-    <!-- Progress Bar -->
-    <div class="fixed bottom-0 sm:p-2 w-full flex justify-center z-[2000]">
-      <div class="bg-white bg-opacity-95 text-xs rounded-md fade w-full sm:w-[450px] show">
-        <div class="sm:px-4 rounded border border-green-600">
+    <Counter />
 
-          <Counter />
-
-        </div>
-      </div>
-    </div>
-    <!-- / Progress Bar -->
-
-    <List />
 
   </div>
 </template>

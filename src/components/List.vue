@@ -12,15 +12,15 @@ const activeTab = ref('all');
 </script>
 
 <template>
-  <div v-if="toggleList" class="fixed inset-0 z-400 min-h-full overflow-y-auto overflow-x-hidden transition flex items-center">
+  <div v-if="toggleList" class="z-400 w-full overflow-y-auto overflow-x-hidden transition flex items-center shadow-lg">
 
-    <Screenshot />
+    <!-- <Screenshot /> -->
     <!-- overlay -->
-    <div aria-hidden="true" class="fixed inset-0 w-full h-full bg-black/50 cursor-pointer"></div>
+    <!-- <div aria-hidden="true" class="fixed inset-0 w-full h-full bg-black/50 cursor-pointer"></div> -->
     
     <!-- Modal -->
-    <div class="relative w-full cursor-pointer pointer-events-none transition my-auto p-4 mt-35">
-      <div class="w-full py-2 bg-white cursor-default pointer-events-auto dark:bg-gray-800 relative rounded-xl mx-auto max-w-md">
+    <div class="relative w-full cursor-pointer pointer-events-none transition my-auto mb-1">
+      <div class="w-full py-2 bg-white cursor-default pointer-events-auto dark:bg-gray-800 relative rounded-xl mx-auto max-w-md border border-green-600">
       
         
         <!-- Header -->
@@ -72,7 +72,7 @@ const activeTab = ref('all');
                 </div>
 
                 <div class="flex items-center">
-                  <span class="text-xs text-green-500 mr-3">{{ game.size }} GB</span>
+                  <span class="text-xs text-green-500 mr-3">{{ game.size.toFixed(1) }} GB</span>
 
                   <button @click="store.toggleSelect(game)" tabindex="-1" type="button">
                     <svg title="Close" tabindex="-1" class="bg-red-600 text-white h-4 w-4 cursor-pointer text-gray-400"
