@@ -14,7 +14,7 @@ const activeTab = ref('all');
 <template>
   <div v-if="toggleList" class="z-400 w-full overflow-y-auto overflow-x-hidden transition flex items-center shadow-lg">
 
-    <!-- <Screenshot /> -->
+    <Screenshot />
     <!-- overlay -->
     <!-- <div aria-hidden="true" class="fixed inset-0 w-full h-full bg-black/50 cursor-pointer"></div> -->
     

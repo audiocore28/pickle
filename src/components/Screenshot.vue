@@ -14,7 +14,7 @@ const timestamp = now.toLocaleString('en-US', {
 </script>
 
 <template>
-  <div ref="captureContainer" class="relative w-[800px] cursor-pointer pointer-events-none transition my-auto px-6 py-4 fixed right-full">
+  <div ref="captureContainer" class="absolute -top-[9999px] -left-[9999px] -z-1 w-[500px] cursor-pointer pointer-events-none my-auto p-2">
     <!-- <div class="watermark w-full">
       <img src="" alt="watermark">
        watermark
@@ -33,16 +33,16 @@ const timestamp = now.toLocaleString('en-US', {
       <!-- Tab content -->
       <div class="rounded-md mb-4 mx-auto max-w-md">
         <div v-for="(group, groupName) in groupedSelection">
-          <!-- <h2 class="text-xs font-semibold uppercase my-3">{{ groupName }}</h2> -->
+          <h2 class="text-xs font-semibold uppercase my-3">{{ groupName }}</h2>
 
           <ul>
             <li v-for="game in group" class="flex items-center justify-between border-b pb-3" style="border-bottom-color: #ddd; ">
               <div class="flex items-center">
-                <span class="text-xs max-w-[200px] xs:max-w-[260px] truncate py-2">{{ game.name }}</span>
+                <span class="text-xs max-w-[360px] truncate py-2">{{ game.name }}</span>
               </div>
 
               <div class="flex items-center">
-                <span class="text-xs text-left">{{ game.size }} GB</span>
+                <span class="text-xs text-left">{{ game.size.toFixed(1) }} GB</span>
               </div>
             </li>
           </ul>
@@ -55,7 +55,7 @@ const timestamp = now.toLocaleString('en-US', {
       <div aria-hidden="true" class="border-t p-2"></div>
       <div class="text-sm uppercase font-semibold flex items-center justify-between mb-2">
           <span>Total Size:</span> 
-          <span>{{ total }} GB</span>
+          <span>{{ total.toFixed(1) }} GB</span>
       </div>
       <!-- Footer -->
 
