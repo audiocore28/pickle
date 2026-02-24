@@ -1,6 +1,7 @@
-import { ref, computed, onMounted } from 'vue';
+import { ref, shallowRef, computed, onMounted } from 'vue';
 import { defineStore } from 'pinia';
 import html2canvas from 'html2canvas';
+import Alert from '@/components/Alert.vue';
 
 export const useGameStore = defineStore('game', () => {
 
@@ -15,11 +16,34 @@ export const useGameStore = defineStore('game', () => {
   const now = ref(new Date());
   const captureContainer = ref(null);
 
+  const isModalOpen = ref(false);
+  const component = shallowRef(null);
+  const modalProps = ref({ title: '', message: '' });
+
+  function openModal(comp, compProps = {}) {
+    component.value = comp;
+    modalProps.value = compProps;
+    isModalOpen.value = true;
+
+  }
+
+  function closeModal() {
+    component.value = null;
+    modalProps.value = {};
+    isModalOpen.value = false;
+
+  }
+
   function toggleSelect(g) {
     if (selected.value.includes(g.id)) {
       selected.value = selected.value.filter(s => s !== g.id);
       total.value -= g.size;
     } else {
+      if (total.value + g.size > driveCapacity.value) {
+        openModal(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${driveCapacity.value.toFixed(0)} GB limit.`})
+        return;
+      }
+
       selected.value.push(g.id);
       total.value += g.size;
     }
@@ -53,7 +77,7 @@ export const useGameStore = defineStore('game', () => {
       link.click();
       
       // Show alert message
-      alert("Download Complete!\n\nPlease send downloaded screenshot!");
+      openModal(Alert, { title: 'Download Complete!', message: 'Please send downloaded screenshot'})
     });
   };
 
@@ -154,7 +178,12 @@ export const useGameStore = defineStore('game', () => {
     clearAll,
     captureContainer,
     captureElement,
-    now
+    now,
+    isModalOpen,
+    component,
+    modalProps,
+    openModal,
+    closeModal
   }
 
 });
