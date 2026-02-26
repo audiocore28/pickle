@@ -17,7 +17,9 @@ const {
 <template>
   <div class="mx-auto inset-x-0 fixed bottom-0 z-[800] w-full sm:w-[450px]">
 
-    <List />
+    <Transition name="slide-y">
+      <List />
+    </Transition>
     <div class="sm:px-2 sm:mb-2 bg-white bg-opacity-95 text-xs rounded-xl border border-green-600 shadow-lg">
       <div @click="toggleList = !toggleList" class="relative p-4 m-2 max-w-lg mx-auto">
         <div class="flex rounded-full h-2 bg-gray-200">
@@ -40,3 +42,19 @@ const {
 
   </div>
 </template>
+
+<style>
+  .slide-y-enter-active, .slide-y-leave-active {
+    transition: all 0.5s ease;
+  }
+
+  .slide-y-enter-from, .slide-y-leave-to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  .slide-y-enter-to, .slide-y-leave-from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+</style>

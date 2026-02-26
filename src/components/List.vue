@@ -63,8 +63,8 @@ const activeTab = ref('all');
           <div v-for="(group, groupName) in groupedSelection" class="mt-5">
             <h2 v-show="activeTab === 'all'" class="text-xs font-semibold uppercase mb-3">{{ groupName }}</h2>
 
-            <ul>
-              <li v-show="activeTab === game.platform || activeTab === 'all'" v-for="game in group" class="flex items-center justify-between py-2 border-b border-gray-300">
+            <TransitionGroup tag="ul" name="slide-x">
+              <li v-show="activeTab === game.platform || activeTab === 'all'" v-for="game in group" :key="game.id" class="flex items-center justify-between py-2 border-b border-gray-300">
                 <div class="flex items-center">
                   <!-- <span class="text-lg font-semibold mr-4">1</span> -->
                   <img :src="game.image" alt="game cover" class="w-8 h-8 rounded-full mr-4 hidden xs:block">
@@ -84,7 +84,7 @@ const activeTab = ref('all');
                   </button>
                 </div>
               </li>
-            </ul>
+            </TransitionGroup>
 
           </div>
         </div>
@@ -122,3 +122,33 @@ const activeTab = ref('all');
     <!-- / Modal -->
   </div>
 </template>
+
+<style>
+  .slide-x-enter-active {
+    transition: all 0.5s ease-in;
+  }
+
+  .slide-x-enter-from {
+    /* transform: translateX(-100%); */
+    opacity: 0;
+  }
+
+  .slide-x-enter-to {
+    /* transform: translateX(0); */
+    opacity: 1;
+  }
+
+  .slide-x-leave-active {
+    transition: all 0.5s ease-out;
+  }
+
+  .slide-x-leave-from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .slide-x-leave-to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+</style>

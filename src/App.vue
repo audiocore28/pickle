@@ -6,7 +6,7 @@ import Counter from '@/components/Counter.vue';
 import Platform from '@/components/Platform.vue';
 import Search from '@/components/Search.vue';
 import Sort from '@/components/Sort.vue';
-import List from '@/components/List.vue';
+import Overlay from './components/Overlay.vue';
 
 const store = useGameStore();
 const { games, selected, filteredGames, modalProps, isModalOpen, component } = storeToRefs(store);
@@ -57,23 +57,9 @@ const { games, selected, filteredGames, modalProps, isModalOpen, component } = s
     <Counter />
 
     <Teleport to="#modal">
-      <div v-if="isModalOpen" class="fixed z-[1500] inset-0 overflow-y-auto" @click="store.closeModal">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
-          <!-- Overlay -->
-          <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-          </div>
-          <!-- / Overlay -->
-          
-          <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-          
-          <!-- Modal -->
-          <component :is="component" v-bind="modalProps"/>
-          <!-- / Modal -->
-  
-        </div>
-      </div>
+      <Overlay />
+
     </Teleport>
 
   </div>
