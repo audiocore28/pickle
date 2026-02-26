@@ -9,7 +9,8 @@ const {
   total,
   driveCapacity,
   freeSpace,
-  progressStyle,
+  percentageWidth,
+  percentageColor,
   toggleList
 } = storeToRefs(store);
 </script>
@@ -20,19 +21,21 @@ const {
     <Transition name="slide-y">
       <List />
     </Transition>
-    <div class="sm:px-2 sm:mb-2 bg-white bg-opacity-95 text-xs rounded-xl border border-green-600 shadow-lg">
+
+    <div class="sm:px-2 sm:mb-2 bg-white bg-opacity-95 text-xs rounded-xl border shadow-lg" :style="{ borderColor: percentageColor }">
       <div @click="toggleList = !toggleList" class="relative p-4 m-2 max-w-lg mx-auto">
         <div class="flex rounded-full h-2 bg-gray-200">
-          <div :style="progressStyle" class="rounded-full"></div>
+          <div :style="{ backgroundColor: percentageColor, width: percentageWidth, transition: `width 0.5s ease` }" class="rounded-full"></div>
         </div>
+
         <div class="flex mt-4 items-center justify-between">
           <div>
-            <span class="text-xs inline-block text-neutral-400">
-              {{ `${freeSpace.toFixed(1)} GB free of ${driveCapacity.toFixed(0)} GB` }}
+            <span class="text-xs inline-block" :style="{ color: percentageColor }">
+              {{ `${freeSpace.toFixed(1)} GB free space` }}
             </span>
           </div>
           <div class="text-right">
-            <span class="text-xs inline-block py-1 px-2 rounded-full text-green-600 bg-green-200">
+            <span class="text-xs inline-block py-1 px-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
               {{ `${selected.length} picks total of ${total.toFixed(1)}` }} GB
             </span>
           </div>

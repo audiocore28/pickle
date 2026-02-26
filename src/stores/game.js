@@ -135,20 +135,17 @@ export const useGameStore = defineStore('game', () => {
   const progress = computed(() => (total.value / driveCapacity.value) * 100 );
   const freeSpace = computed(() => Math.max(0, driveCapacity.value - total.value ));
 
-  const progressStyle = computed(() => {
-      let color = getProgressBarColor(progress.value);
-
-      return { 
-        width: progress.value + "%",
-        backgroundColor: color
-      };
+  // Styles
+  const percentageWidth = computed(() => {
+      return `${progress.value}%`;
   });
 
-  const getProgressBarColor = (percentageUsed) => {
-    const clampedPercentage = Math.min(100, Math.max(0, percentageUsed));
+  const percentageColor = computed(() => {
+    const clampedPercentage = Math.min(100, Math.max(0, progress.value));
     const hue = 120 - (clampedPercentage * 1.2); 
     return `hsl(${hue}, 100%, 45%)`;
-  };
+
+  });
 
   onMounted(async () => {
     try {
@@ -172,7 +169,8 @@ export const useGameStore = defineStore('game', () => {
     filteredGames,
     progress,
     freeSpace,
-    progressStyle,
+    percentageWidth,
+    percentageColor,
     groupedSelection,
     toggleList,
     clearAll,
