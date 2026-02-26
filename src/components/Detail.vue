@@ -17,7 +17,7 @@ const props = defineProps({
   <div>
     <div class="relative">
       <a href="#">
-        <img class="w-full" :src="game.image" alt="game image">
+        <img :id="game.id" class="w-full" :src="game.image" alt="game image">
         <div 
           :class="{
             'hover:bg-transparent transition duration-300 bg-gray-900 opacity-30' : !selected.includes(game.id)
@@ -36,7 +36,7 @@ const props = defineProps({
           }"
           class="absolute top-0 right-0 rounded-full flex flex-col items-center justify-center mt-3 mr-3" 
         >
-          <span class="font-bold">{{ game.size }}</span>
+          <span class="font-bold">{{ game.size.toFixed(1) }}</span>
           <small>GB</small>
         </div>
       </a>

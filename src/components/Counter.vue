@@ -34,7 +34,7 @@ const {
               {{ `${freeSpace.toFixed(1)} GB free space` }}
             </span>
           </div>
-          <div class="text-right">
+          <div id="gameCount" class="text-right">
             <span class="text-xs inline-block py-1 px-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
               {{ `${selected.length} picks total of ${total.toFixed(1)}` }} GB
             </span>

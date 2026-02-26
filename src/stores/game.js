@@ -44,10 +44,45 @@ export const useGameStore = defineStore('game', () => {
         return;
       }
 
+      flyToCart(document.getElementById(g.id));
+
       selected.value.push(g.id);
       total.value += g.size;
     }
   }
+
+  const flyToCart = (startElement) => {
+    const targetElement = document.getElementById('game-count'); 
+    const startRect = startElement.getBoundingClientRect();
+    const targetRect = targetElement.getBoundingClientRect();
+
+    // Create clone
+    const clone = startElement.cloneNode(true);
+    Object.assign(clone.style, {
+      position: 'fixed',
+      top: `${startRect.top}px`,
+      left: `${startRect.left}px`,
+      width: `${startRect.width}px`,
+      height: `${startRect.height}px`,
+      transition: 'all 0.5s ease-in-out',
+      zIndex: 9999
+    });
+    document.body.appendChild(clone);
+
+    // Animate to cart
+    requestAnimationFrame(() => {
+      Object.assign(clone.style, {
+        top: `${targetRect.top}px`,
+        left: `${targetRect.left}px`,
+        width: '20px',
+        height: '20px',
+        opacity: '0.5'
+      });
+    });
+
+    // Cleanup
+    setTimeout(() => clone.remove(), 500);
+  };
 
   function clearAll() {
     const isConfirmed = confirm("Are you sure you want to clear ALL selected games from the list?");
