@@ -1,9 +1,11 @@
 import { ref, shallowRef, computed, onMounted } from 'vue';
 import { defineStore } from 'pinia';
 import html2canvas from 'html2canvas';
+import { useModalStore } from './modal';
 import Alert from '@/components/Alert.vue';
 
 export const useGameStore = defineStore('game', () => {
+  const modalStore = useModalStore();
 
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBDQML7oIs5nSLLaLeE33PjkLT8AQGJJ69x1zKzxyaEA5oyabWZ2rThbMuqHAsUGQAxg/exec';
   const games = ref([]);
@@ -16,31 +18,13 @@ export const useGameStore = defineStore('game', () => {
   const now = ref(new Date());
   const captureContainer = ref(null);
 
-  const isModalOpen = ref(false);
-  const component = shallowRef(null);
-  const modalProps = ref({ title: '', message: '' });
-
-  function openModal(comp, compProps = {}) {
-    component.value = comp;
-    modalProps.value = compProps;
-    isModalOpen.value = true;
-
-  }
-
-  function closeModal() {
-    component.value = null;
-    modalProps.value = {};
-    isModalOpen.value = false;
-
-  }
-
   function toggleSelect(g) {
     if (selected.value.includes(g.id)) {
       selected.value = selected.value.filter(s => s !== g.id);
       total.value -= g.size;
     } else {
       if (total.value + g.size > driveCapacity.value) {
-        openModal(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${driveCapacity.value.toFixed(0)} GB limit.`})
+        modalStore.open(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${driveCapacity.value.toFixed(0)} GB limit.`})
         return;
       }
 
@@ -52,7 +36,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
   const flyToCart = (startElement) => {
-    const targetElement = document.getElementById('game-count'); 
+    const targetElement = document.getElementById('gameCount'); 
     const startRect = startElement.getBoundingClientRect();
     const targetRect = targetElement.getBoundingClientRect();
 
@@ -112,7 +96,7 @@ export const useGameStore = defineStore('game', () => {
       link.click();
       
       // Show alert message
-      openModal(Alert, { title: 'Download Complete!', message: 'Please send downloaded screenshot'})
+      modalStore.open(Alert, { title: 'Download Complete!', message: 'Please send downloaded screenshot'})
     });
   };
 
@@ -212,11 +196,6 @@ export const useGameStore = defineStore('game', () => {
     captureContainer,
     captureElement,
     now,
-    isModalOpen,
-    component,
-    modalProps,
-    openModal,
-    closeModal
   }
 
 });

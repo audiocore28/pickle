@@ -1,18 +1,18 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import { useGameStore } from '@/stores/game';
+import { useModalStore } from '@/stores/modal';
 
-const store = useGameStore();
-const { modalProps, isModalOpen, component } = storeToRefs(store);
+const modalStore = useModalStore();
+const { props, isOpen, component } = storeToRefs(modalStore);
 </script>
 
 <template>
   <Transition name="fade">
-    <div v-if="isModalOpen" class="fixed z-[1500] inset-0 overflow-y-auto" @click="store.closeModal">
+    <div v-if="isOpen" class="fixed z-[1500] inset-0 overflow-y-auto">
       <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
         <!-- Overlay -->
-        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
+        <div class="fixed inset-0 transition-opacity" aria-hidden="true" @click="modalStore.close">
           <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
         <!-- / Overlay -->
@@ -20,7 +20,7 @@ const { modalProps, isModalOpen, component } = storeToRefs(store);
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
           
         <!-- Modal -->
-          <component :is="component" v-bind="modalProps" class="inner"/>
+          <component :is="component" v-bind="props" class="inner"/>
         <!-- / Modal -->
 
       </div>
