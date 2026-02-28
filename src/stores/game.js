@@ -132,8 +132,6 @@ export const useGameStore = defineStore('game', () => {
     }
   });
 
-  const toggleList = ref(false);
-
   const groupedSelection = computed(() => {
     const g = selected.value.map(sid => {
       return games.value.find(g => g.id === sid)
@@ -191,7 +189,6 @@ export const useGameStore = defineStore('game', () => {
     percentageWidth,
     percentageColor,
     groupedSelection,
-    toggleList,
     clearAll,
     captureContainer,
     captureElement,

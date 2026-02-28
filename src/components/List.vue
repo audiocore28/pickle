@@ -6,13 +6,13 @@ import Sort from '@/components/Sort.vue';
 import Screenshot from './Screenshot.vue';
 
 const store = useGameStore();
-const { toggleList, groupedSelection } = storeToRefs(store);
+const { groupedSelection } = storeToRefs(store);
 
 const activeTab = ref('all'); 
 </script>
 
 <template>
-  <div v-if="toggleList" class="z-400 w-full overflow-y-auto overflow-x-hidden transition flex items-center shadow-lg">
+  <div class="z-400 w-full overflow-y-auto overflow-x-hidden transition flex items-center shadow-lg">
 
     <Screenshot />
     <!-- overlay -->
