@@ -22,6 +22,8 @@ export const useGameStore = defineStore('game', () => {
     if (selected.value.includes(g.id)) {
       selected.value = selected.value.filter(s => s !== g.id);
       total.value -= g.size;
+      total.value = Math.max(0, total.value);
+
     } else {
       if (total.value + g.size > driveCapacity.value) {
         modalStore.open(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${driveCapacity.value.toFixed(0)} GB limit.`})

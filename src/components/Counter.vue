@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
-import List from '@/components/List.vue';
+import SelectedList from '@/components/SelectedList.vue';
 
 const store = useGameStore();
 const {
@@ -21,7 +21,7 @@ const toggleList = ref(false);
   <div class="mx-auto inset-x-0 fixed bottom-0 z-[800] w-full sm:w-[450px]">
 
     <Transition name="slide-y">
-      <List v-show="toggleList" />
+      <SelectedList v-show="toggleList" />
     </Transition>
 
     <div class="sm:px-2 sm:mb-2 bg-white bg-opacity-95 text-xs rounded-xl border shadow-lg" :style="{ borderColor: percentageColor }">
