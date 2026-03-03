@@ -8,18 +8,19 @@ import Overlay from './components/Overlay.vue';
 </script>
 
 <template>
-  <div>
+  <div class="font-oswald">
     <!-- Filters -->
-    <div class="bg-white fixed top-0 w-full z-[200] pb-2">
-      <div class="flex justify-center items-center rounded-lg relative pb-2 pt-4">
+    <div class="bg-stone-100 fixed top-0 w-full z-[200]">
+      <div class="xl:flex justify-between items-center max-w-screen-2xl xl:px-16 mx-auto">
+        <div class="flex justify-center items-center rounded-lg relative pb-2 pt-4">
 
-        <Search />
-        <Sort />
+          <Search />
+          <Sort />
 
+        </div>
+
+        <Platform />
       </div>
-
-      <Platform />
-
     </div>
     <!-- / Filters -->
 

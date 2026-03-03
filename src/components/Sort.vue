@@ -11,9 +11,9 @@ const toggleSort = ref(false);
 </script>
 
 <template>
-  <div class="relative cursor-pointer uppercase text-green-600 py-2">
+  <div class="relative cursor-pointer uppercase text-stone-800 py-2">
     <div @click="toggleSort = !toggleSort" class="flex items-center justify-between space-x-2 px-2 ">
-      <a class="menu-hover py-2 text-xs lg:mx-2">
+      <a class="menu-hover py-2 text-xs font-semibold lg:mx-2">
         {{ sortBy }}
       </a>
       <span>
@@ -24,14 +24,14 @@ const toggleSort = ref(false);
       </span>
     </div>
 
-    <div v-if="toggleSort" class="absolute z-50 flex w-full flex-col bg-gray-100 py-1 px-4 shadow-xl">
+    <div v-if="toggleSort" class="absolute z-50 flex w-full flex-col bg-gray-100 py-2 shadow-xl">
       <a 
         v-for="sort in sorts" 
         @click="sortBy = sort; toggleSort = !toggleSort" 
-        class="my-2 block border-b border-gray-100 py-1 text-xs hover:text-green-600 md:mx-2"
+        class="block border-b border-gray-100 py-1 text-xs hover:bg-stone-400 hover:text-stone-200 px-3"
         :class="{
-          'text-green-600' : sort === sortBy,
-          'text-white' : sort !== sortBy,
+          'bg-stone-500 text-stone-200' : sort === sortBy,
+          'text-stone-500' : sort !== sortBy,
         }"
       >
         {{ sort }}

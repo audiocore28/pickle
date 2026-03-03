@@ -9,15 +9,15 @@ const { games, selected, filteredGames } = storeToRefs(store);
 </script>
 
 <template>
-  <section class="bg-gray-200 mt-28 sm:mt-22">
+  <section class="bg-stone-600 mt-35 sm:mt-30 md:mt-24 xl:mt-10">
     <div class="max-w-screen-2xl mx-auto p-5 sm:p-10 md:p-16">
-      <div class="grid grid-cols-2 xs:grid-cols-1 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+      <div class="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-4">
   
         <div v-if="games.length" v-for="game in filteredGames" :key="game.id" class="rounded overflow-hidden shadow-lg"
           @click.prevent="store.toggleSelect(game)" 
           :class="{
-            'bg-green-600 text-green-100' : selected.includes(game.id),
-            'hover:text-green-600 transition duration-500 ease-in-out' : !selected.includes(game.id)
+            'bg-stone-500 text-stone-200' : selected.includes(game.id),
+            'hover:text-stone-500 transition duration-500 ease-in-out' : !selected.includes(game.id)
           }"
         >
           <GameDetail :game="game" />
