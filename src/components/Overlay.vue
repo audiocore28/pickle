@@ -13,7 +13,7 @@ const { props, isOpen, component } = storeToRefs(modalStore);
 
         <!-- Overlay -->
         <div class="fixed inset-0 transition-opacity" aria-hidden="true" @click="modalStore.close">
-          <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+          <div class="absolute inset-0 bg-stone-900/80"></div>
         </div>
         <!-- / Overlay -->
         

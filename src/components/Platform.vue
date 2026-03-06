@@ -69,7 +69,7 @@ function scrollRight() {
       <button v-for="pf in platforms" @click.prevent="platform = pf.name" 
       :class="{
         'bg-stone-300 text-stone-600' : platform !== pf.name,
-        'bg-stone-500 text-stone-200 font-semibold' : platform == pf.name,
+        'bg-yellow-500 text-stone-600 font-semibold' : platform == pf.name,
       }"
       class="uppercase flex-shrink-0 px-2 py-2 rounded-full cursor-pointer hover:bg-stone-400 hover:text-stone-100"
       >
