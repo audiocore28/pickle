@@ -18,7 +18,7 @@ const toggleList = ref(false);
 </script>
 
 <template>
-  <div class="mx-auto inset-x-0 fixed bottom-0 z-[800] w-full sm:w-[450px]">
+  <div class="mx-auto inset-x-0 fixed bottom-0 z-[800] w-full sm:w-[450px] cursor-pointer">
 
     <Transition name="slide-y">
       <SelectedList v-show="toggleList" />

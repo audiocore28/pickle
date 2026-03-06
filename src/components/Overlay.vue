@@ -12,7 +12,7 @@ const { props, isOpen, component } = storeToRefs(modalStore);
       <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
         <!-- Overlay -->
-        <div class="fixed inset-0 transition-opacity" aria-hidden="true" @click="modalStore.close">
+        <div class="fixed inset-0 transition-opacity cursor-pointer" aria-hidden="true" @click="modalStore.close">
           <div class="absolute inset-0 bg-stone-900/80"></div>
         </div>
         <!-- / Overlay -->

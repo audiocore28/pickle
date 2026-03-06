@@ -51,7 +51,8 @@ export const useGameStore = defineStore('game', () => {
       width: `${startRect.width}px`,
       height: `${startRect.height}px`,
       transition: 'all 0.5s ease-in-out',
-      zIndex: 9999
+      zIndex: 9999,
+      cursor: 'pointer'
     });
     document.body.appendChild(clone);
 
@@ -62,7 +63,8 @@ export const useGameStore = defineStore('game', () => {
         left: `${targetRect.left}px`,
         width: '20px',
         height: '20px',
-        opacity: '0.5'
+        opacity: '0.5',
+        cursor: 'pointer'
       });
     });
 
