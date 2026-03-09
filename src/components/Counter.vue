@@ -6,8 +6,7 @@ import SelectedList from '@/components/SelectedList.vue';
 
 const store = useGameStore();
 const {
-  selected,
-  total,
+  groupedSelection,
   driveCapacity,
   freeSpace,
   percentageWidth,
@@ -38,7 +37,7 @@ const toggleList = ref(false);
           </div>
           <div id="gameCount" class="text-right">
             <span class="font-semibold text-xs inline-block py-1 px-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
-              {{ `${selected.length} picks total of ${total.toFixed(1)}` }} GB
+              {{ `${groupedSelection.count} picks total of ${groupedSelection.size.toFixed(1)}` }} GB
             </span>
           </div>
         </div>

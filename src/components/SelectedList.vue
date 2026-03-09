@@ -6,7 +6,7 @@ import Sort from '@/components/Sort.vue';
 import Screenshot from './Screenshot.vue';
 
 const store = useGameStore();
-const { groupedSelection } = storeToRefs(store);
+const { groupedSelection, device } = storeToRefs(store);
 
 const activeTab = ref('all'); 
 </script>
@@ -25,7 +25,7 @@ const activeTab = ref('all');
         
         <!-- Header -->
         <div class="bg-stone-500 px-4 flex items-center justify-between">
-          <h2 class="text-stone-200 text-sm uppercase font-semibold">Drive capacity:</h2>
+          <h2 class="text-stone-200 text-sm uppercase font-semibold">{{ device }} drive</h2>
           <Sort />
         </div>
         <div aria-hidden="true" class="border-b dark:border-gray-700 px-2"></div>
@@ -44,7 +44,7 @@ const activeTab = ref('all');
                 all
               </a>
             </li>
-            <li v-for="(group, groupName) in groupedSelection" class="mr-2">
+            <li v-for="(group, groupName) in groupedSelection.list" class="mr-2">
               <a 
                 href="#" 
                 @click.prevent="activeTab = groupName"
@@ -60,7 +60,7 @@ const activeTab = ref('all');
         
         <!-- Tab content -->
         <div class="bg-stone-100 rounded-md px-4 mx-auto max-w-md max-h-[470px] overflow-x-scroll">
-          <div v-for="(group, groupName) in groupedSelection" class="mt-5">
+          <div v-for="(group, groupName) in groupedSelection.list" class="mt-5">
             <h2 v-show="activeTab === 'all'" class="text-stone-600 text-xs font-semibold uppercase mb-3">{{ groupName }}</h2>
 
             <TransitionGroup tag="ul" name="slide-x">

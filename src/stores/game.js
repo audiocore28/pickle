@@ -10,30 +10,28 @@ export const useGameStore = defineStore('game', () => {
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBDQML7oIs5nSLLaLeE33PjkLT8AQGJJ69x1zKzxyaEA5oyabWZ2rThbMuqHAsUGQAxg/exec';
   const games = ref([]);
   const selected = ref([]);
+  const device = ref('pc');
   const search = ref('');
-  const platform = ref('all');
+  const platform = ref('win');
   const sortBy = ref('A-Z');
-  const total = ref(0);
   const driveCapacity = ref(440);
   const now = ref(new Date());
+  const togglePlatform = ref(true);
   const captureContainer = ref(null);
 
   function toggleSelect(g) {
-    if (selected.value.includes(g.id)) {
-      selected.value = selected.value.filter(s => s !== g.id);
-      total.value -= g.size;
-      total.value = Math.max(0, total.value);
+    if (selected.value.some(s => s.id === g.id)) {
+      selected.value = selected.value.filter(s => s.id !== g.id);
 
     } else {
-      if (total.value + g.size > driveCapacity.value) {
+      if (groupedSelection.value.size + g.size > driveCapacity.value) {
         modalStore.open(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${driveCapacity.value.toFixed(0)} GB limit.`})
         return;
       }
 
       flyToCart(document.getElementById(g.id));
 
-      selected.value.push(g.id);
-      total.value += g.size;
+      selected.value.push(g);
     }
   }
 
@@ -77,7 +75,6 @@ export const useGameStore = defineStore('game', () => {
     
     if (isConfirmed) {
       selected.value = [];
-      total.value = 0;
     }
   }
 
@@ -104,17 +101,22 @@ export const useGameStore = defineStore('game', () => {
     });
   };
 
+  function setPlatforms(dv) {
+    device.value = dv;
+
+    if (dv === 'pc') {
+      platform.value = 'win';
+    } else {
+     platform.value = dv; 
+    }
+  }
+
   const filteredGames = computed(() => {
     let filtered = [];
 
-    if (platform.value !== 'all') {
-      filtered = games.value
+    filtered = games.value
         .filter(g => g.platform === platform.value)
         .filter(g => g.name.toLowerCase().includes(search.value));
-    } else {
-      filtered = games.value
-        .filter(g => g.name.toLowerCase().includes(search.value));
-    }
 
     switch (sortBy.value) {
       case 'New Add':
@@ -137,24 +139,80 @@ export const useGameStore = defineStore('game', () => {
   });
 
   const groupedSelection = computed(() => {
-    const g = selected.value.map(sid => {
-      return games.value.find(g => g.id === sid)
-    });
-  
-    return g.reduce((accumulator, currentGame) => {
-      const platform = currentGame.platform;
-      if (!accumulator[platform]) {
-        accumulator[platform] = [];
-      }
-      accumulator[platform].push(currentGame);
-      accumulator[platform].sort((a, b) => b.size - a.size);
+    let pcList = {
+      list: {},
+      size: 0,
+      count: 0
+    };
 
-      return accumulator;
-    }, {});
+    let ps4List = {
+      list: {},
+      size: 0,
+      count: 0
+    };
+
+    let nswList = {
+      list: {},
+      size: 0,
+      count: 0
+    };
+
+    return selected.value.reduce((accumulator, currentGame) => {
+      const platform = currentGame.platform;
+
+      if (platform === 'win' || platform === 'ps3' || platform === 'ps2') {
+        if (!pcList.list[platform]) {
+          pcList.list[platform] = [];
+        }
+
+        pcList.list[platform].push(currentGame);
+        pcList.size += currentGame.size;
+        pcList.count++ ;
+
+      } else if (platform === 'ps4') {
+        if (!ps4List.list[platform]) {
+          ps4List.list[platform] = [];
+        }
+
+        ps4List.list[platform].push(currentGame);
+        ps4List.size += currentGame.size;
+        ps4List.count++ ;
+
+      } else if (platform === 'nsw') {
+        if (!nswList.list[platform]) {
+          nswList.list[platform] = [];
+        }
+
+        nswList.list[platform].push(currentGame);
+        nswList.size += currentGame.size;
+        nswList.count++ ;
+
+      } 
+
+      switch (device.value) {
+        case 'pc':
+          return pcList;
+          break;
+        case 'ps4':
+          return ps4List;
+          break;
+        case 'nsw':
+          return nswList;
+          break;
+      
+        default:
+          break;
+      }
+
+    }, {
+      list: {},
+      size: 0,
+      count: 0
+    });
   });
 
-  const progress = computed(() => (total.value / driveCapacity.value) * 100 );
-  const freeSpace = computed(() => Math.max(0, driveCapacity.value - total.value ));
+  const progress = computed(() => (groupedSelection.value.size / driveCapacity.value) * 100 );
+  const freeSpace = computed(() => Math.max(0, driveCapacity.value - groupedSelection.value.size ));
 
   // Styles
   const percentageWidth = computed(() => {
@@ -179,21 +237,23 @@ export const useGameStore = defineStore('game', () => {
   });
 
   return {
+    device,
     games,
     selected,
     search,
     platform,
     sortBy,
-    total,
     driveCapacity,
     toggleSelect,
     filteredGames,
+    setPlatforms,
     progress,
     freeSpace,
     percentageWidth,
     percentageColor,
     groupedSelection,
     clearAll,
+    togglePlatform,
     captureContainer,
     captureElement,
     now,

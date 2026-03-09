@@ -5,6 +5,7 @@ import Platform from '@/components/Platform.vue';
 import Search from '@/components/Search.vue';
 import Sort from '@/components/Sort.vue';
 import Overlay from './components/Overlay.vue';
+import Device from './components/Device.vue';
 </script>
 
 <template>
@@ -19,7 +20,13 @@ import Overlay from './components/Overlay.vue';
 
         </div>
 
-        <Platform />
+        <div class="flex justify-center items-center rounded-lg relative pb-2 pt-4">
+          <Device />
+          <Transition name="slide-l">
+            <Platform />
+          </Transition>
+        </div>
+
       </div>
     </div>
     <!-- / Filters -->
@@ -36,3 +43,33 @@ import Overlay from './components/Overlay.vue';
 
   </div>
 </template>
+
+<style>
+  .slide-l-enter-active {
+    transition: all 0.5s ease-in;
+  }
+
+  .slide-l-enter-from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  .slide-l-enter-to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .slide-l-leave-active {
+    transition: all 0.5s ease-out;
+  }
+
+  .slide-l-leave-from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .slide-l-leave-to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+</style>
