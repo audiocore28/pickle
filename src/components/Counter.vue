@@ -11,6 +11,8 @@ const {
   freeSpace,
   percentageWidth,
   percentageColor,
+  deviceColor,
+  targetElementRef
 } = storeToRefs(store);
 
 const toggleList = ref(false);
@@ -23,21 +25,29 @@ const toggleList = ref(false);
       <SelectedList v-show="toggleList" />
     </Transition>
 
-    <div class="sm:px-2 sm:mb-2 bg-stone-200 bg-opacity-95 text-xs rounded-xl border shadow-lg" :style="{ borderColor: percentageColor }">
-      <div @click="toggleList = !toggleList" class="relative p-4 m-2 max-w-lg mx-auto">
-        <div class="flex rounded-full h-2 bg-stone-500 shadow-inner">
+    <div :class="deviceColor" class="sm:px-2 sm:mb-2 bg-opacity-95 text-xs rounded-t-xl sm:rounded-xl border shadow-lg" :style="{ borderColor: percentageColor }">
+      <div @click="toggleList = !toggleList" class="relative py-3 px-4 m-2 max-w-lg mx-auto">
+        <div class="flex rounded-full h-2 bg-stone-500 shadow-inner border border-stone-300">
           <div :style="{ backgroundColor: percentageColor, width: percentageWidth, transition: `width 0.5s ease, background-color 0.5s ease` }" class="rounded-full"></div>
         </div>
 
         <div class="flex mt-4 items-center justify-between">
           <div>
-            <span class="font-semibold text-xs inline-block" :style="{ color: percentageColor }">
-              {{ `${freeSpace.toFixed(1)} GB free space` }}
+            <h5 class="inline inline-block font-bold uppercase text-xs">Space:</h5>
+            <span class="text-stone-600 font-semibold text-xs inline-block py-1 px-2 mx-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
+              {{ freeSpace.toFixed(1) }} GB
             </span>
           </div>
-          <div id="gameCount" class="text-right">
-            <span class="font-semibold text-xs inline-block py-1 px-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
-              {{ `${groupedSelection.count} picks total of ${groupedSelection.size.toFixed(1)}` }} GB
+          <div>
+            <h5 class="inline inline-block font-bold uppercase text-xs">Count:</h5>
+            <span ref="targetElementRef" class="text-stone-600 font-semibold text-xs inline-block py-1 px-2 mx-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
+              {{ groupedSelection.count }}
+            </span>
+          </div>
+          <div>
+            <h5 class="inline inline-block font-bold uppercase text-xs">Used:</h5>
+            <span class="text-stone-600 font-semibold text-xs inline-block py-1 px-2 mx-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
+              {{ groupedSelection.size.toFixed(1) }} GB
             </span>
           </div>
         </div>

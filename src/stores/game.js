@@ -18,6 +18,7 @@ export const useGameStore = defineStore('game', () => {
   const now = ref(new Date());
   const togglePlatform = ref(true);
   const captureContainer = ref(null);
+  const targetElementRef = ref(null);
 
   function toggleSelect(g) {
     if (selected.value.some(s => s.id === g.id)) {
@@ -36,9 +37,8 @@ export const useGameStore = defineStore('game', () => {
   }
 
   const flyToCart = (startElement) => {
-    const targetElement = document.getElementById('gameCount'); 
     const startRect = startElement.getBoundingClientRect();
-    const targetRect = targetElement.getBoundingClientRect();
+    const targetRect = targetElementRef.value.getBoundingClientRect();
 
     // Create clone
     const clone = startElement.cloneNode(true);
@@ -266,6 +266,7 @@ export const useGameStore = defineStore('game', () => {
     captureContainer,
     captureElement,
     now,
+    targetElementRef, 
   }
 
 });
