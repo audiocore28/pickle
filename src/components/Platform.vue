@@ -49,7 +49,7 @@ function scrollRight() {
 </script>
 
 <template>
-  <div v-if="device === 'pc'" class="flex items-center justify-center xl:justify-end space-x-2 p-4 xl:p-0 text-xs uppercase whitespace-nowrap scroll-smooth">
+  <div v-if="device === 'pc'" class="flex items-center justify-center xl:justify-end space-x-2 p-4 lg:p-0 text-xs uppercase md:whitespace-nowrap scroll-smooth">
     <button @click="scrollLeft()" id="scrollLeft" class="p-2 mr-2 bg-neutral-300 text-white rounded-full shadow-lg hover:bg-stone-500 focus:outline-none md:hidden">
       <!-- Heroicon: Chevron Left -->
       <svg xmlns="https://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,7 +57,7 @@ function scrollRight() {
       </svg>
     </button>  
     
-    <div id="scrollContainer" class="flex overflow-x-scroll items-center lg:justify-center lg:overflow-x-hidden space-x-4 w-full max-w-4xl bg-gray-100 rounded-lg shadow-inner">
+    <div id="scrollContainer" class="flex overflow-x-scroll items-center lg:justify-center md:overflow-x-hidden space-x-4 w-[250px] xs:w-full bg-gray-100 rounded-lg shadow-inner">
       <button v-for="pf in platforms" @click.prevent="platform = pf.name" 
       :class="{
         'bg-stone-300 text-stone-600' : platform !== pf.name,

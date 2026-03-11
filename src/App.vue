@@ -12,16 +12,15 @@ import Device from './components/Device.vue';
   <div class="font-oswald">
     <!-- Filters -->
     <div class="bg-stone-100 fixed top-0 w-full z-[200]">
-      <div class="xl:flex justify-between items-center max-w-screen-2xl xl:px-16 mx-auto">
-        <div class="flex justify-center items-center rounded-lg relative pb-2 pt-4">
+      <div class="lg:flex justify-between items-center max-w-screen-2xl lg:px-16 mx-auto">
+        <div class="flex justify-center lg:justify-between w-full items-center rounded-lg relative mt-3 lg:mt-5 px-4 lg:pb-3">
 
           <Search />
-          <Sort />
+          <Device />
 
         </div>
 
-        <div class="flex justify-center items-center rounded-lg relative pb-2 pt-4">
-          <Device />
+        <div class="flex justify-center items-center rounded-lg relative pb-2 lg:pt-4">
           <Transition name="slide-l">
             <Platform />
           </Transition>
