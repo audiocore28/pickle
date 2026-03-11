@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { captureContainer, groupedSelection, total, selected } = storeToRefs(store);
+const { captureContainer, groupedSelection } = storeToRefs(store);
 
 const now = new Date();
 const timestamp = now.toLocaleString('en-US', {
@@ -14,25 +14,25 @@ const timestamp = now.toLocaleString('en-US', {
 </script>
 
 <template>
-  <div ref="captureContainer" class="absolute -top-[9999px] -left-[9999px] -z-1 w-[500px] cursor-pointer pointer-events-none my-auto p-2">
+  <div ref="captureContainer" class="absolute -top-[9999px] -left-[9999px] -z-1 w-[430px] cursor-pointer pointer-events-none my-auto p-2">
     <!-- <div class="watermark w-full">
       <img src="" alt="watermark">
        watermark
     </div> -->
 
-    <div class="w-full py-2 cursor-default pointer-events-auto relative rounded-xl mx-auto max-w-md">
+    <div class="w-full py-2 cursor-default pointer-events-auto relative rounded-xl mx-auto max-w-sm">
       
       <!-- Header -->
       <span class="text-[8px] mx-auto flex items-center justify-center" style="color: #6c757d; ">{{ timestamp }}</span>
       <div class="text-sm uppercase font-semibold flex items-center justify-center justify-between mb-2">
-          <span>{{ selected.length }} Games</span>
+          <span>{{ groupedSelection.count }} Games</span>
       </div>
       <div aria-hidden="true" class="border-b-2 p-2"></div>
       <!-- / Header -->
       
       <!-- Tab content -->
       <div class="rounded-md mb-4 mx-auto max-w-md">
-        <div v-for="(group, groupName) in groupedSelection">
+        <div v-for="(group, groupName) in groupedSelection.list">
           <h2 class="text-xs font-semibold uppercase my-3">{{ groupName }}</h2>
 
           <ul>
@@ -55,7 +55,7 @@ const timestamp = now.toLocaleString('en-US', {
       <div aria-hidden="true" class="border-t p-2"></div>
       <div class="text-sm uppercase font-semibold flex items-center justify-between mb-2">
           <span>Total Size:</span> 
-          <span>{{ total.toFixed(1) }} GB</span>
+          <span>{{ groupedSelection.size.toFixed(1) }} GB</span>
       </div>
       <!-- Footer -->
 
