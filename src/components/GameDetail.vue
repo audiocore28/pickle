@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { selected } = storeToRefs(store);
+const { selected, device } = storeToRefs(store);
 
 const props = defineProps({
   game: {
@@ -34,7 +34,10 @@ const props = defineProps({
 
     <div 
       :class="{
-        'bg-yellow-500 text-stone-600 text-xs h-14 w-14 px-2 transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
+        'bg-yellow-500 text-stone-600' : selected.some(s => s.id === game.id) && device === 'pc',
+        'bg-violet-900 text-stone-200' : selected.some(s => s.id === game.id) && device === 'ps4',
+        'bg-rose-700 text-stone-200' : selected.some(s => s.id === game.id) && device === 'nsw',
+        'text-xs h-14 w-14 px-2 transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
         'bg-stone-600/90 text-stone-200 text-[10px] h-12 w-12 px-4 transition duration-500 ease-in-out' : !selected.some(s => s.id === game.id)
       }"
       class="absolute top-0 right-0 rounded-full flex flex-col items-center justify-center mt-3 mr-3" 
@@ -46,7 +49,10 @@ const props = defineProps({
     <div class="absolute bottom-0 w-full">
       <span 
         :class="{
-          'bg-yellow-500 text-stone-600 transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
+          'bg-yellow-500 text-stone-600' : selected.some(s => s.id === game.id) && device === 'pc',
+          'bg-violet-900 text-stone-200' : selected.some(s => s.id === game.id) && device === 'ps4',
+          'bg-rose-700 text-stone-200' : selected.some(s => s.id === game.id) && device === 'nsw',
+          'transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
           'bg-stone-600/90 text-stone-200 transition duration-500 ease-in-out' : !selected.some(s => s.id === game.id),
         }"
         class="text-[10px] uppercase mx-1 py-1 px-2 rounded-lg">
@@ -55,7 +61,10 @@ const props = defineProps({
 
       <div
         :class="{
-          'bg-yellow-500 text-stone-600 transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
+          'bg-yellow-500 text-stone-600' : selected.some(s => s.id === game.id) && device === 'pc',
+          'bg-violet-900 text-stone-200' : selected.some(s => s.id === game.id) && device === 'ps4',
+          'bg-rose-700 text-stone-200' : selected.some(s => s.id === game.id) && device === 'nsw',
+          'transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
           'bg-stone-600/90 text-stone-200 transition duration-500 ease-in-out' : !selected.some(s => s.id === game.id),
         }"
         class="p-2 mt-2"

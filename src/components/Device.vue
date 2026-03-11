@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { device } = storeToRefs(store);
+const { device, deviceColor } = storeToRefs(store);
 
 const devices = ref(['pc', 'ps4', 'nsw']);
 const toggleDevice = ref(false);
@@ -14,7 +14,7 @@ const toggleDevice = ref(false);
   <div class="relative cursor-pointer uppercase text-stone-600 py-2 mx-4">
     <div class="flex justify-center items-center">
       <span class="px-2 font-semibold text-sm">DEVICE:</span>
-      <button @click="toggleDevice = !toggleDevice" class="cursor-pointer flex items-center justify-between space-x-2 px-2 bg-yellow-500 rounded-lg">
+      <button @click="toggleDevice = !toggleDevice" class="cursor-pointer flex items-center justify-between space-x-2 px-2 rounded-lg" :class="deviceColor">
         <a class="menu-hover py-2 text-xs uppercase font-semibold lg:mx-2">
           {{ device }}
         </a>

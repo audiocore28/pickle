@@ -222,8 +222,16 @@ export const useGameStore = defineStore('game', () => {
   const percentageColor = computed(() => {
     const clampedPercentage = Math.min(100, Math.max(0, progress.value));
     const hue = 120 - (clampedPercentage * 1.2); 
-    return `hsl(${hue}, 100%, 45%)`;
+    return `hsl(${hue}, 100%, 40%)`;
 
+  });
+
+  const deviceColor = computed(() => {
+    return {
+      'bg-yellow-500 text-stone-600 hover:bg-yellow-400': device.value === 'pc',
+      'bg-violet-900 text-stone-200 hover:bg-violet-800': device.value === 'ps4',
+      'bg-rose-700 text-stone-200 hover:bg-rose-600': device.value === 'nsw',
+    };
   });
 
   onMounted(async () => {
@@ -238,6 +246,7 @@ export const useGameStore = defineStore('game', () => {
 
   return {
     device,
+    deviceColor,
     games,
     selected,
     search,
