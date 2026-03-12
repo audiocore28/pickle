@@ -18,54 +18,45 @@ const props = defineProps({
     <div>
       <img 
         :id="game.id" 
-        :class="{ 'scale-110' : selected.some(s => s.id === game.id) }"
-        class="w-full rounded-md transform transition-transform duration-500 group-hover:scale-110" 
+        :class="{ 'group-hover:scale-110' : !selected.some(s => s.id === game.id) }"
+        class="w-full rounded-md transform transition-transform duration-500" 
         :src="game.image" alt="game image">
 
       <!-- overlay -->
       <div 
         :class="{
-          'group-hover:bg-transparent transition duration-300 bg-stone-900 opacity-30' : !selected.some(s => s.id === game.id)
+          'transition duration-300 bg-stone-900 opacity-80' : selected.some(s => s.id === game.id)
         }"
         class="absolute bottom-0 top-0 right-0 left-0"
       >
       </div>
     </div>
 
-    <div 
-      :class="{
-        'bg-yellow-500 text-stone-600' : selected.some(s => s.id === game.id) && device === 'pc',
-        'bg-violet-900 text-stone-200' : selected.some(s => s.id === game.id) && device === 'ps4',
-        'bg-rose-700 text-stone-200' : selected.some(s => s.id === game.id) && device === 'nsw',
-        'text-xs h-14 w-14 px-2 transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
-        'bg-stone-600/90 text-stone-200 text-[10px] h-12 w-12 px-4 transition duration-500 ease-in-out' : !selected.some(s => s.id === game.id)
-      }"
-      class="absolute top-0 right-0 rounded-full flex flex-col items-center justify-center mt-3 mr-3" 
-    >
-      <span class="font-bold">{{ game.size.toFixed(1) }}</span>
-      <small>GB</small>
+    <div class="absolute top-2 right-2 w-full">
+      <span v-show="selected.some(s => s.id === game.id)"
+        :class="{
+          'text-xs font-semibold uppercase mx-1 py-1 px-2 pl-3 rounded-r-lg bg-stone-600/90 text-stone-200 transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
+        }">
+        selected
+      </span>
     </div>
 
     <div class="absolute bottom-0 w-full">
-      <span 
-        :class="{
-          'bg-yellow-500 text-stone-600' : selected.some(s => s.id === game.id) && device === 'pc',
-          'bg-violet-900 text-stone-200' : selected.some(s => s.id === game.id) && device === 'ps4',
-          'bg-rose-700 text-stone-200' : selected.some(s => s.id === game.id) && device === 'nsw',
-          'transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
-          'bg-stone-600/90 text-stone-200 transition duration-500 ease-in-out' : !selected.some(s => s.id === game.id),
-        }"
-        class="text-[10px] uppercase mx-1 py-1 px-2 rounded-lg">
-        {{ game.platform }}
-      </span>
+      <div class="flex item-center">
+        <span class="text-[10px] uppercase ml-1 py-1 px-2 rounded-lg bg-stone-600/90 text-stone-200 transition duration-500 ease-in-out">
+          {{ game.platform }}
+        </span>
+        <span class="absolute right-0 text-[10px] uppercase mx-1 py-1 px-2 rounded-lg bg-stone-600/90 text-stone-200 transition duration-500 ease-in-out">
+          {{ game.size.toFixed(1) }} GB
+        </span>
+      </div>
 
       <div
         :class="{
-          'bg-yellow-500 text-stone-600' : selected.some(s => s.id === game.id) && device === 'pc',
-          'bg-violet-900 text-stone-200' : selected.some(s => s.id === game.id) && device === 'ps4',
-          'bg-rose-700 text-stone-200' : selected.some(s => s.id === game.id) && device === 'nsw',
-          'transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
-          'bg-stone-600/90 text-stone-200 transition duration-500 ease-in-out' : !selected.some(s => s.id === game.id),
+          'bg-yellow-500/90 text-stone-600' : !selected.some(s => s.id === game.id) && device === 'pc',
+          'bg-violet-900/90 text-stone-200' : !selected.some(s => s.id === game.id) && device === 'ps4',
+          'bg-rose-700/90 text-stone-200' : !selected.some(s => s.id === game.id) && device === 'nsw',
+          'bg-stone-600/90 text-stone-200 transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
         }"
         class="p-2 mt-2"
       >

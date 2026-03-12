@@ -57,20 +57,20 @@ const activeTab = ref('all');
         <!-- / Tab navigation links -->
         
         <!-- Tab content -->
-        <div class="bg-stone-100 px-4 mx-auto max-w-md max-h-[470px] overflow-x-scroll">
+        <div class="bg-stone-700 px-4 mx-auto max-w-md max-h-[470px] overflow-x-scroll">
           <div v-for="(group, groupName) in groupedSelection.list" class="mt-5">
-            <h2 v-show="activeTab === 'all'" class="text-stone-600 text-xs font-semibold uppercase mb-3">{{ groupName }}</h2>
+            <h2 v-show="activeTab === 'all'" class="text-stone-300 text-xs font-semibold uppercase mb-3">{{ groupName }}</h2>
 
             <TransitionGroup tag="ul" name="slide-x">
-              <li v-show="activeTab === game.platform || activeTab === 'all'" v-for="game in group" :key="game.id" class="flex items-center justify-between py-2 border-b border-gray-300">
+              <li v-show="activeTab === game.platform || activeTab === 'all'" v-for="game in group" :key="game.id" class="flex items-center justify-between py-2 border-b border-gray-600">
                 <div class="flex items-center">
                   <!-- <span class="text-lg font-semibold mr-4">1</span> -->
                   <img :src="game.image" alt="game cover" class="w-8 h-8 rounded-full mr-4">
-                  <span class="text-xs text-gray-800 max-w-[200px] xs:max-w-[260px] truncate">{{ game.name }}</span>
+                  <span class="text-sm text-gray-200 max-w-[200px] xs:max-w-[260px] truncate">{{ game.name }}</span>
                 </div>
 
                 <div class="flex items-center">
-                  <span class="text-xs text-stone-500 mr-3">{{ game.size.toFixed(1) }} GB</span>
+                  <span class="text-xs text-stone-300 mr-3">{{ game.size.toFixed(1) }} GB</span>
 
                   <button @click="store.toggleSelect(game)" tabindex="-1" type="button">
                     <svg title="Close" tabindex="-1" class="bg-red-600 text-white h-4 w-4 cursor-pointer text-gray-400"
@@ -89,7 +89,7 @@ const activeTab = ref('all');
         <!-- / Tab content -->
       
         <!-- Footer -->
-        <div class="bg-stone-200 space-y-2">
+        <div class="bg-stone-700 space-y-2">
           <div aria-hidden="true" class="border-t dark:border-gray-700 px-2"></div>
           <div class="px-6 py-2">
 
