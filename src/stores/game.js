@@ -15,7 +15,6 @@ export const useGameStore = defineStore('game', () => {
   const platform = ref('win');
   const sortBy = ref('A-Z');
   const driveCapacity = ref(440);
-  const controllerQty = ref(0);
   const now = ref(new Date());
   const togglePlatform = ref(true);
   const captureContainer = ref(null);
@@ -70,29 +69,6 @@ export const useGameStore = defineStore('game', () => {
     // Cleanup
     setTimeout(() => clone.remove(), 500);
   };
-
-  // Products
-  function getNextHigherCapacity(sizes) {
-    const maxCapacity = Math.max(...sizes);
-    const higherCapacities = sizes.filter(size => size > driveCapacity.value);
-
-    (higherCapacities.length > 0) ? driveCapacity.value = Math.min(...higherCapacities) : driveCapacity.value = maxCapacity;
-  }
-
-  function getNextLowerCapacity(sizes) {
-    const minCapacity = Math.min(...sizes);
-    const lowerCapacities = sizes.filter(size => size < driveCapacity.value);
-
-    (lowerCapacities.length > 0) ? driveCapacity.value = Math.max(...lowerCapacities) : driveCapacity.value = minCapacity;
-  }
-
-  function incrementQty() {
-    controllerQty.value = Math.min(5, controllerQty.value + 1);
-  }
-
-  function decrementQty() {
-    controllerQty.value = Math.max(0, controllerQty.value - 1);
-  }
 
   function clearAll() {
     const isConfirmed = confirm("Are you sure you want to clear ALL selected games from the list?");
@@ -277,11 +253,6 @@ export const useGameStore = defineStore('game', () => {
     platform,
     sortBy,
     driveCapacity,
-    getNextHigherCapacity,
-    getNextLowerCapacity,
-    controllerQty,
-    incrementQty,
-    decrementQty,
     toggleSelect,
     filteredGames,
     setPlatforms,
