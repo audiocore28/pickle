@@ -6,6 +6,7 @@ import Screenshot from './Screenshot.vue';
 import StorageSelect from './StorageSelect.vue';
 import AccessorySelect from './AccessorySelect.vue';
 import SelectedGames from './SelectedGames.vue';
+import Accordion from './Accordion.vue';
 
 const store = useGameStore();
 const { groupedSelection, device, deviceColor } = storeToRefs(store);
@@ -31,31 +32,53 @@ const { groupedSelection, device, deviceColor } = storeToRefs(store);
         <!-- / Header -->
         
         <!-- Tab content -->
-        <div class="bg-stone-700 px-4 mx-auto max-w-md max-h-[470px] overflow-x-scroll">
+        <div class="bg-stone-700 mx-auto max-w-md h-[470px] lg:h-[620px] overflow-x-scroll">
 
           <!-- Items -->
-          <h2 class="text-stone-300 text-xs font-semibold uppercase mt-5 mb-3">Storage</h2>
-          <ul class="mb-5">
-            <StorageSelect />
-          </ul>
+          <accordion>
+            <template #header>
+              <h2 class="mx-2 text-stone-300 text-xs font-semibold uppercase">Storage (Choose One)</h2>
+            </template>
 
-          <h2 class="text-stone-300 text-xs font-semibold uppercase mt-5 mb-3">Accessories</h2>
-          <ul class="mb-5">
-            <AccessorySelect />
-          </ul>
+            <template #content>
+              <ul class="mb-5">
+                <StorageSelect />
+              </ul>
+            </template>
+          </accordion>
+
+          <accordion>
+            <template #header>
+              <h2 class="mx-2 text-stone-300 text-xs font-semibold uppercase">Accessories (Optional)</h2>
+            </template>
+
+            <template #content>
+              <ul class="mb-5">
+                <AccessorySelect />
+              </ul>
+            </template>
+          </accordion>
+
           <!-- / Items -->
 
-          <!-- Games  -->
-          <div v-for="(group, groupName) in groupedSelection.list" class="mt-5">
-            <div class="flex items-center justify-between my-3 text-xs text-stone-300 font-semibold uppercase">
-              <h2>{{ groupName }}</h2>
-              <span class="text-stone-400" v-show="device !== 'pc'">{{ groupedSelection.count }} Games Selected</span>
-            </div>
+          <!-- Games -->
+          <div v-for="(group, groupName) in groupedSelection.list">
+            <accordion>
+              <template #header>
 
-            <SelectedGames :group="group" />
+                <div class="w-full flex items-center justify-between mx-2 text-xs text-stone-300 font-semibold uppercase">
+                  <h2>{{ groupName }}</h2>
+                  <span class="text-stone-400" v-show="device !== 'pc'">{{ groupedSelection.count }} Games Selected</span>
+                </div>
 
+              </template>
+
+              <template #content>
+                <SelectedGames :group="group" />
+              </template>
+            </accordion>
           </div>
-          <!-- / Games  -->
+          <!-- / Games -->
 
           <div class="h-3"></div>
         </div>
