@@ -49,7 +49,7 @@ const { groupedSelection, device, deviceColor } = storeToRefs(store);
 
           <accordion>
             <template #header>
-              <h2 class="mx-2 text-stone-300 text-xs font-semibold uppercase">Accessories (Optional)</h2>
+              <h2 class="mx-2 text-stone-300 text-xs font-semibold uppercase">Controllers (Optional)</h2>
             </template>
 
             <template #content>

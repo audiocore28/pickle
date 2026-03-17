@@ -1,27 +1,29 @@
 <script setup>
 import { ref, computed } from 'vue';
-import ControllerIcon from './ControllerIcon.vue';
+import DS4ControllerIcon from './DS4ControllerIcon.vue';
+import XboxControllerIcon from './XboxControllerIcon.vue';
 
 const icons = {
-  controller: ControllerIcon,
+  ds4Controller: DS4ControllerIcon,
+  xboxController: XboxControllerIcon,
 };
 
 const accessories = ref([
   {
     id: 1,
-    icon: icons.controller,
-    description: 'Wireless Controller',
-    price: 899,
+    icon: icons.ds4Controller,
+    description: 'DS4 Wireless',
+    price: 799,
     quantity: 0,
     limit: 2
   },
   {
     id: 2,
-    icon: icons.controller,
-    description: 'USB C OTG',
-    price: 299,
+    icon: icons.xboxController,
+    description: 'XBox Wired',
+    price: 550,
     quantity: 0,
-    limit: 1
+    limit: 2
   },
 ]); 
 
@@ -51,17 +53,17 @@ const count = computed(() => accessories.value.reduce((sum, currentItem) =>  sum
     <table class="w-full rounded-xl">
       <tbody>
         <tr v-for="accessory in accessories" class="text-center border-b border-gray-600">
-          <td class="flex items-center py-2 pl-1 text-left align-top max-w-[140px] sm:max-w-[110px]">
+          <td class="flex items-center py-2 pl-1 text-left align-top w-[50px]">
             <div>
               <component :is="accessory.icon" />
             </div>
             <div class="ml-3">
-              <h5 class="text-sm text-gray-200 leading-4 max-w-[200px] xs:max-w-[260px] truncate">{{ accessory.description }}</h5>
+              <h5 class="text-sm text-gray-200 leading-4 w-[150px] truncate">{{ accessory.description }}</h5>
               <small class="text-[10.5px] text-gray-300 py-2">₱{{ accessory.price.toFixed(2) }}</small>
             </div>
           </td>
-          <td class="max-w-[80px] sm:max-w-[60px]">
-            <div class="py-1 px-2 bg-stone-600 rounded-[170px] border border-stone-500 justify-around items-center flex">
+          <td class="w-[100px]">
+            <div class="py-1 px-2 bg-stone-600 rounded-[10px] border border-stone-500 justify-around items-center flex">
               <svg @click="decrementQty(accessory)" width="14" height="15" class="cursor-pointer" viewBox="0 0 14 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M2.33398 7.5H11.6673" stroke="#292524" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
@@ -71,19 +73,19 @@ const count = computed(() => accessories.value.reduce((sum, currentItem) =>  sum
               </svg>
             </div>
           </td>
-          <td class="text-xs text-gray-300 py-2">
+          <td class=" w-[100px] text-xs text-gray-300 py-2">
             <div class="flex justify-end px-4">
               <span>{{ formattedAmount(accessory.price * accessory.quantity) }}</span>
             </div>
           </td>
         </tr>
         <tr class="text-center border-b border-gray-600 h-14">
-          <td class="flex items-center py-2 pl-1 text-left align-top max-w-[140px] sm:max-w-[110px]">
+          <td class="flex items-center py-2 pl-1 text-left align-top w-[50px] sm:max-w-[110px]">
           </td>
-          <td class="max-w-[80px] sm:max-w-[60px]">
+          <td class="w-[100px]">
             <span class="text-sm text-gray-300 uppercase">Total:</span>
           </td>
-          <td class="text-xs text-gray-300 py-2">
+          <td class="w-[100px] text-xs text-gray-300 py-2">
             <div class="flex justify-end px-4">
               <span>{{ formattedAmount(total) }}</span>
               <!-- <span>{{ count }}</span> -->
