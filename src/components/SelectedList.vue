@@ -2,14 +2,18 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
+import { useProductStore } from '../stores/product';
 import Screenshot from './Screenshot.vue';
 import StorageSelect from './StorageSelect.vue';
 import AccessorySelect from './AccessorySelect.vue';
 import SelectedGames from './SelectedGames.vue';
 import Accordion from './Accordion.vue';
 
-const store = useGameStore();
-const { groupedSelection, device, deviceColor } = storeToRefs(store);
+const gameStore = useGameStore();
+const productStore = useProductStore();
+
+const { groupedSelection, device, deviceColor } = storeToRefs(gameStore);
+const { selectedStorage } = storeToRefs(productStore);
 </script>
 
 <template>
@@ -37,28 +41,24 @@ const { groupedSelection, device, deviceColor } = storeToRefs(store);
           <!-- Items -->
           <accordion>
             <template #header>
-              <h2 class="mx-2 text-stone-300 text-xs font-semibold uppercase">Storage (Choose One)</h2>
+              
+              <div class="w-full flex items-center justify-between mx-2 text-xs text-stone-300 font-semibold uppercase">
+                <h2 class="mx-2 my-2 text-stone-300 text-xs font-semibold uppercase">Need More Space?</h2>
+                <span class="text-stone-400">{{ `${productStore.formatSize(selectedStorage.selectedSize)} Selected (Max of ${productStore.formatSize(selectedStorage.selectedLimit)})` }}</span>
+              </div>
             </template>
-
+            
             <template #content>
+              <h2 class="mb-3 mt-2 text-stone-300 text-xs font-semibold uppercase">{{ `Select One Storage for your ${device} Device` }}</h2>
               <ul class="mb-5">
                 <StorageSelect />
               </ul>
-            </template>
-          </accordion>
-
-          <accordion>
-            <template #header>
-              <h2 class="mx-2 text-stone-300 text-xs font-semibold uppercase">Controllers (Optional)</h2>
-            </template>
-
-            <template #content>
+              <h2 class="mb-2 mt-7 text-stone-300 text-xs font-semibold uppercase">Out of Control?</h2>
               <ul class="mb-5">
                 <AccessorySelect />
               </ul>
             </template>
           </accordion>
-
           <!-- / Items -->
 
           <!-- Games -->

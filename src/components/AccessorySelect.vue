@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useProductStore } from '../stores/product';
 
 const productStore = useProductStore();
-const { accessories, total } = storeToRefs(productStore);
+const { accessories, totalPrice } = storeToRefs(productStore);
 
 </script>
 
@@ -46,7 +46,7 @@ const { accessories, total } = storeToRefs(productStore);
           </td>
           <td class="w-[100px] text-xs text-gray-300 py-2">
             <div class="flex justify-end px-4">
-              <span>{{ productStore.formattedAmount(total) }}</span>
+              <span>{{ productStore.formattedAmount(totalPrice) }}</span>
               <!-- <span>{{ count }}</span> -->
             </div>
           </td>

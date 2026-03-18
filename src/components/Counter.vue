@@ -2,18 +2,22 @@
 import { ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
+import { useProductStore } from '../stores/product';
 import SelectedList from '@/components/SelectedList.vue';
 
-const store = useGameStore();
+const gameStore = useGameStore();
+const productStore = useProductStore();
+
 const {
   groupedSelection,
-  driveCapacity,
   freeSpace,
   percentageWidth,
   percentageColor,
   deviceColor,
   targetElementRef
-} = storeToRefs(store);
+} = storeToRefs(gameStore);
+
+const { selectedStorage } = storeToRefs(productStore);
 
 const toggleList = ref(false);
 </script>
@@ -33,21 +37,21 @@ const toggleList = ref(false);
 
         <div class="flex mt-4 items-center justify-between">
           <div>
-            <h5 class="inline inline-block font-bold uppercase text-xs">Space:</h5>
+            <h5 class="inline inline-block font-bold uppercase text-xs">Free:</h5>
             <span class="text-stone-600 font-semibold text-xs inline-block py-1 px-2 mx-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
-              {{ freeSpace.toFixed(1) }} GB
-            </span>
-          </div>
-          <div>
-            <h5 class="inline inline-block font-bold uppercase text-xs">Count:</h5>
-            <span ref="targetElementRef" class="text-stone-600 font-semibold text-xs inline-block py-1 px-2 mx-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
-              {{ groupedSelection.count }}
+              {{ productStore.formatSize(freeSpace.toFixed(1)) }}
             </span>
           </div>
           <div>
             <h5 class="inline inline-block font-bold uppercase text-xs">Used:</h5>
+            <span ref="targetElementRef" class="text-stone-600 font-semibold text-xs inline-block py-1 px-2 mx-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
+              {{ productStore.formatSize(groupedSelection.size.toFixed(1)) }}
+            </span>
+          </div>
+          <div>
+            <h5 class="inline inline-block font-bold uppercase text-xs">Limit:</h5>
             <span class="text-stone-600 font-semibold text-xs inline-block py-1 px-2 mx-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
-              {{ groupedSelection.size.toFixed(1) }} GB
+              {{ productStore.formatSize( selectedStorage.selectedLimit) }}
             </span>
           </div>
         </div>

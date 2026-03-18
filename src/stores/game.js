@@ -1,11 +1,15 @@
 import { ref, shallowRef, computed, onMounted } from 'vue';
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import html2canvas from 'html2canvas';
 import { useModalStore } from './modal';
+import { useProductStore } from './product';
 import Alert from '@/components/Alert.vue';
 
 export const useGameStore = defineStore('game', () => {
   const modalStore = useModalStore();
+  const productStore = useProductStore();
+  
+  const { selectedStorage } = storeToRefs(productStore);
 
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBDQML7oIs5nSLLaLeE33PjkLT8AQGJJ69x1zKzxyaEA5oyabWZ2rThbMuqHAsUGQAxg/exec';
   const games = ref([]);
@@ -14,7 +18,6 @@ export const useGameStore = defineStore('game', () => {
   const search = ref('');
   const platform = ref('win');
   const sortBy = ref('A-Z');
-  const driveCapacity = ref(440);
   const now = ref(new Date());
   const togglePlatform = ref(true);
   const captureContainer = ref(null);
@@ -25,8 +28,8 @@ export const useGameStore = defineStore('game', () => {
       selected.value = selected.value.filter(s => s.id !== g.id);
 
     } else {
-      if (groupedSelection.value.size + g.size > driveCapacity.value) {
-        modalStore.open(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${driveCapacity.value.toFixed(0)} GB limit.`})
+      if (groupedSelection.value.size + g.size > selectedStorage.value.selectedLimit) {
+        modalStore.open(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${selectedStorage.value.selectedLimit.toFixed(0)} GB limit.`})
         return;
       }
 
@@ -211,8 +214,8 @@ export const useGameStore = defineStore('game', () => {
     });
   });
 
-  const progress = computed(() => (groupedSelection.value.size / driveCapacity.value) * 100 );
-  const freeSpace = computed(() => Math.max(0, driveCapacity.value - groupedSelection.value.size ));
+  const progress = computed(() => (groupedSelection.value.size / selectedStorage.value.selectedLimit) * 100 );
+  const freeSpace = computed(() => Math.max(0, selectedStorage.value.selectedLimit - groupedSelection.value.size ));
 
   // Styles
   const percentageWidth = computed(() => {
@@ -252,7 +255,6 @@ export const useGameStore = defineStore('game', () => {
     search,
     platform,
     sortBy,
-    driveCapacity,
     toggleSelect,
     filteredGames,
     setPlatforms,
