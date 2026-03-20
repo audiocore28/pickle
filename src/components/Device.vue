@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
-const store = useGameStore();
-const { device, deviceColor } = storeToRefs(store);
+const gameStore = useGameStore();
+const { deviceColor } = storeToRefs(gameStore);
+const { device } = toRefs(gameStore);
 
 const devices = ref(['pc', 'ps4', 'nsw']);
 const toggleDevice = ref(false);
@@ -16,7 +17,7 @@ const toggleDevice = ref(false);
       <span class="px-2 font-semibold text-sm hidden lg:block">DEVICE:</span>
       <button @click="toggleDevice = !toggleDevice" class="cursor-pointer flex items-center justify-between space-x-2 px-2 rounded-lg" :class="deviceColor">
         <a class="menu-hover py-2 text-xs uppercase font-semibold lg:mx-2">
-          {{ device }}
+          {{ device.unit }}
         </a>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -30,11 +31,11 @@ const toggleDevice = ref(false);
     <div v-if="toggleDevice" class="absolute z-50 flex w-full flex-col bg-stone-100 py-2 shadow-xl">
       <a 
         v-for="dv in devices" 
-        @click="store.setPlatforms(dv); toggleDevice = !toggleDevice" 
+        @click="gameStore.setupDevice(dv); toggleDevice = !toggleDevice" 
         class="block border-b border-gray-100 py-1 text-xs hover:bg-stone-400 hover:text-stone-200 px-3"
         :class="{
-          'bg-stone-500 text-stone-200' : device === dv,
-          'text-stone-500' : device !== dv,
+          'bg-stone-500 text-stone-200' : device.unit === dv,
+          'text-stone-500' : device.unit !== dv,
         }"
       >
         {{ dv }}

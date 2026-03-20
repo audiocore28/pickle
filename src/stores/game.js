@@ -1,5 +1,5 @@
-import { ref, shallowRef, computed, onMounted } from 'vue';
-import { defineStore, storeToRefs } from 'pinia';
+import { ref, reactive, shallowRef, computed, onMounted } from 'vue';
+import { defineStore } from 'pinia';
 import html2canvas from 'html2canvas';
 import { useModalStore } from './modal';
 import { useProductStore } from './product';
@@ -8,13 +8,21 @@ import Alert from '@/components/Alert.vue';
 export const useGameStore = defineStore('game', () => {
   const modalStore = useModalStore();
   const productStore = useProductStore();
-  
-  const { selectedStorage } = storeToRefs(productStore);
 
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBDQML7oIs5nSLLaLeE33PjkLT8AQGJJ69x1zKzxyaEA5oyabWZ2rThbMuqHAsUGQAxg/exec';
   const games = ref([]);
   const selected = ref([]);
-  const device = ref('pc');
+  const device = reactive({
+    unit: 'pc',
+    assignedStorage: {
+      id: 1,
+      description: '2.5\" External Drive',
+      size: 500,
+      limit: 440,
+      price: 1300,
+      isAvailable: true
+    }
+  });
   const search = ref('');
   const platform = ref('win');
   const sortBy = ref('A-Z');
@@ -28,8 +36,8 @@ export const useGameStore = defineStore('game', () => {
       selected.value = selected.value.filter(s => s.id !== g.id);
 
     } else {
-      if (groupedSelection.value.size + g.size > selectedStorage.value.selectedLimit) {
-        modalStore.open(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${selectedStorage.value.selectedLimit.toFixed(0)} GB limit.`})
+      if (groupedSelection.value.size + g.size > device.assignedStorage.limit) {
+        modalStore.open(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${device.assignedStorage.limit.toFixed(0)} GB limit.`})
         return;
       }
 
@@ -104,13 +112,18 @@ export const useGameStore = defineStore('game', () => {
     });
   };
 
-  function setPlatforms(dv) {
-    device.value = dv;
+  function setupDevice(dv) {
+    device.unit = dv;
 
     if (dv === 'pc') {
       platform.value = 'win';
-    } else {
-     platform.value = dv; 
+      device.assignedStorage = { ...productStore.pcStorage };  // get storage state
+    } else if (dv === 'ps4') {
+      platform.value = 'ps4';
+      device.assignedStorage = { ...productStore.ps4Storage };
+    } else if (dv === 'nsw') {
+      platform.value = 'nsw';
+      device.assignedStorage = { ...productStore.nswStorage };
     }
   }
 
@@ -192,7 +205,7 @@ export const useGameStore = defineStore('game', () => {
 
       } 
 
-      switch (device.value) {
+      switch (device.unit) {
         case 'pc':
           return pcList;
           break;
@@ -214,8 +227,8 @@ export const useGameStore = defineStore('game', () => {
     });
   });
 
-  const progress = computed(() => (groupedSelection.value.size / selectedStorage.value.selectedLimit) * 100 );
-  const freeSpace = computed(() => Math.max(0, selectedStorage.value.selectedLimit - groupedSelection.value.size ));
+  const progress = computed(() => (groupedSelection.value.size / device.assignedStorage.limit) * 100 );
+  const freeSpace = computed(() => Math.max(0, device.assignedStorage.limit - groupedSelection.value.size ));
 
   // Styles
   const percentageWidth = computed(() => {
@@ -231,9 +244,9 @@ export const useGameStore = defineStore('game', () => {
 
   const deviceColor = computed(() => {
     return {
-      'bg-yellow-500 text-stone-600 hover:bg-yellow-400': device.value === 'pc',
-      'bg-violet-900 text-stone-200 hover:bg-violet-800': device.value === 'ps4',
-      'bg-rose-700 text-stone-200 hover:bg-rose-600': device.value === 'nsw',
+      'bg-yellow-500 text-stone-600 hover:bg-yellow-400': device.unit === 'pc',
+      'bg-violet-900 text-stone-200 hover:bg-violet-800': device.unit === 'ps4',
+      'bg-rose-700 text-stone-200 hover:bg-rose-600': device.unit === 'nsw',
     };
   });
 
@@ -257,7 +270,7 @@ export const useGameStore = defineStore('game', () => {
     sortBy,
     toggleSelect,
     filteredGames,
-    setPlatforms,
+    setupDevice,
     progress,
     freeSpace,
     percentageWidth,

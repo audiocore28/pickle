@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
-const store = useGameStore();
-const { platform, device } = storeToRefs(store);
+const gameStore = useGameStore();
+const { platform } = storeToRefs(gameStore);
+const { device } = toRefs(gameStore);
 
 const platforms = ref([
   {
@@ -49,7 +50,7 @@ function scrollRight() {
 </script>
 
 <template>
-  <div v-if="device === 'pc'" class="flex items-center justify-center xl:justify-end space-x-2 p-4 lg:p-0 text-xs uppercase md:whitespace-nowrap scroll-smooth">
+  <div v-if="device.unit === 'pc'" class="flex items-center justify-center xl:justify-end space-x-2 p-4 lg:p-0 text-xs uppercase md:whitespace-nowrap scroll-smooth">
     <button @click="scrollLeft()" id="scrollLeft" class="p-2 mr-2 bg-neutral-300 text-white rounded-full shadow-lg hover:bg-stone-500 focus:outline-none md:hidden">
       <!-- Heroicon: Chevron Left -->
       <svg xmlns="https://www.w3.org" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

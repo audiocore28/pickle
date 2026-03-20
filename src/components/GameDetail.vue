@@ -1,10 +1,13 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
+import { useProductStore } from '../stores/product';
 
-const store = useGameStore();
-const { selected, device } = storeToRefs(store);
+const gameStore = useGameStore();
+const productStore = useProductStore();
+const { selected } = storeToRefs(gameStore);
+const { device } = toRefs(gameStore);
 
 const props = defineProps({
   game: {
@@ -47,15 +50,15 @@ const props = defineProps({
           {{ game.platform }}
         </span>
         <span class="absolute right-0 text-[10px] uppercase mx-1 py-1 px-2 rounded-lg bg-stone-600/90 text-stone-200 transition duration-500 ease-in-out">
-          {{ game.size.toFixed(1) }} GB
+          {{ productStore.formatSize(game.size.toFixed(1)) }}
         </span>
       </div>
 
       <div
         :class="{
-          'bg-yellow-500/90 text-stone-600' : !selected.some(s => s.id === game.id) && device === 'pc',
-          'bg-violet-900/90 text-stone-200' : !selected.some(s => s.id === game.id) && device === 'ps4',
-          'bg-rose-700/90 text-stone-200' : !selected.some(s => s.id === game.id) && device === 'nsw',
+          'bg-yellow-500/90 text-stone-600' : !selected.some(s => s.id === game.id) && device.unit === 'pc',
+          'bg-violet-900/90 text-stone-200' : !selected.some(s => s.id === game.id) && device.unit === 'ps4',
+          'bg-rose-700/90 text-stone-200' : !selected.some(s => s.id === game.id) && device.unit === 'nsw',
           'bg-stone-600/90 text-stone-200 transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
         }"
         class="p-2 mt-2"

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 import { useProductStore } from '../stores/product';
@@ -17,7 +17,7 @@ const {
   targetElementRef
 } = storeToRefs(gameStore);
 
-const { selectedStorage } = storeToRefs(productStore);
+const { device } = toRefs(gameStore);
 
 const toggleList = ref(false);
 </script>
@@ -51,7 +51,7 @@ const toggleList = ref(false);
           <div>
             <h5 class="inline inline-block font-bold uppercase text-xs">Limit:</h5>
             <span class="text-stone-600 font-semibold text-xs inline-block py-1 px-2 mx-2 rounded-full text-white" :style="{ backgroundColor: percentageColor }">
-              {{ productStore.formatSize( selectedStorage.selectedLimit) }}
+              {{ productStore.formatSize(device.assignedStorage.limit) }}
             </span>
           </div>
         </div>
