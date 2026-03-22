@@ -12,7 +12,7 @@ import Accordion from './Accordion.vue';
 const gameStore = useGameStore();
 const productStore = useProductStore();
 
-const { groupedSelection, deviceColor } = storeToRefs(gameStore);
+const { groupedSelection, deviceColor, pcCount } = storeToRefs(gameStore);
 const { device } = toRefs(gameStore);
 </script>
 
@@ -69,6 +69,7 @@ const { device } = toRefs(gameStore);
                 <div class="w-full flex items-center justify-between mx-2 text-xs text-stone-300 font-semibold uppercase">
                   <h2>{{ groupName }}</h2>
                   <span class="text-stone-400" v-show="device.unit !== 'pc'">{{ groupedSelection.count }} Games Selected</span>
+                  <span v-for="(count, platform) in pcCount" v-show="device.unit === 'pc' && groupName === platform" class="text-stone-400">{{ count }} Games Selected</span>
                 </div>
 
               </template>

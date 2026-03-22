@@ -14,6 +14,7 @@ export const useGameStore = defineStore('game', () => {
   const selected = ref([]);
   const device = reactive({
     unit: 'pc',
+    platforms: ['win', 'ps3', 'ps2'],
     assignedStorage: {
       id: 1,
       description: '2.5\" External Drive',
@@ -116,15 +117,17 @@ export const useGameStore = defineStore('game', () => {
     device.unit = dv;
 
     if (dv === 'pc') {
-      platform.value = 'win';
-      device.assignedStorage = { ...productStore.pcStorage };  // get storage state
+      device.platforms = ['win', 'ps3', 'ps2'];
+      device.assignedStorage = productStore.pcStorage; // get storage state
     } else if (dv === 'ps4') {
-      platform.value = 'ps4';
-      device.assignedStorage = { ...productStore.ps4Storage };
+      device.platforms = ['ps4'];
+      device.assignedStorage = productStore.ps4Storage;
     } else if (dv === 'nsw') {
-      platform.value = 'nsw';
-      device.assignedStorage = { ...productStore.nswStorage };
+      device.platforms = ['nsw'];
+      device.assignedStorage = productStore.nswStorage;
     }
+
+    platform.value = device.platforms[0];
   }
 
   const filteredGames = computed(() => {
@@ -155,76 +158,58 @@ export const useGameStore = defineStore('game', () => {
   });
 
   const groupedSelection = computed(() => {
-    let pcList = {
-      list: {},
-      size: 0,
-      count: 0
-    };
 
-    let ps4List = {
-      list: {},
-      size: 0,
-      count: 0
-    };
+    if (device.unit === 'pc' || device.unit === 'ps4' || device.unit === 'nsw') {
+      return selected.value.reduce((accumulator, currentGame) => {
+        const platform = currentGame.platform;
 
-    let nswList = {
-      list: {},
-      size: 0,
-      count: 0
-    };
+        if (device.platforms.includes(platform)) {
+          if (!accumulator.list[platform]) {
+            accumulator.list[platform] = [];
+          }
 
-    return selected.value.reduce((accumulator, currentGame) => {
-      const platform = currentGame.platform;
-
-      if (platform === 'win' || platform === 'ps3' || platform === 'ps2') {
-        if (!pcList.list[platform]) {
-          pcList.list[platform] = [];
+          accumulator.list[platform].push(currentGame);
+          accumulator.size += currentGame.size;
+          accumulator.count++ ;
         }
 
-        pcList.list[platform].push(currentGame);
-        pcList.size += currentGame.size;
-        pcList.count++ ;
+        return accumulator;
 
-      } else if (platform === 'ps4') {
-        if (!ps4List.list[platform]) {
-          ps4List.list[platform] = [];
-        }
+      }, {
+        list: {},
+        size: 0,
+        count: 0
+      });
+    }
 
-        ps4List.list[platform].push(currentGame);
-        ps4List.size += currentGame.size;
-        ps4List.count++ ;
+  });
 
-      } else if (platform === 'nsw') {
-        if (!nswList.list[platform]) {
-          nswList.list[platform] = [];
-        }
+  const pcCount = computed(() => {
 
-        nswList.list[platform].push(currentGame);
-        nswList.size += currentGame.size;
-        nswList.count++ ;
+    const platforms = groupedSelection.value.list; // object
+    let games = Object.values(platforms); // converted to array of arrays
+    games = games.flat(); // merged arrays into 1 array
+    
+    return games.reduce((accumulator, currentGame) => {
 
-      } 
-
-      switch (device.unit) {
-        case 'pc':
-          return pcList;
+      switch (currentGame.platform) {
+        case 'win':
+          accumulator.win = (accumulator.win || 0) + 1;
           break;
-        case 'ps4':
-          return ps4List;
+        case 'ps3':
+          accumulator.ps3 = (accumulator.ps3 || 0) + 1;
           break;
-        case 'nsw':
-          return nswList;
+        case 'ps2':
+          accumulator.ps2 = (accumulator.ps2 || 0) + 1;
           break;
       
         default:
           break;
       }
 
-    }, {
-      list: {},
-      size: 0,
-      count: 0
-    });
+      return accumulator;
+    },{});
+
   });
 
   const progress = computed(() => (groupedSelection.value.size / device.assignedStorage.limit) * 100 );
@@ -261,6 +246,7 @@ export const useGameStore = defineStore('game', () => {
   });
 
   return {
+    pcCount,
     device,
     deviceColor,
     games,

@@ -189,8 +189,6 @@ export const useProductStore = defineStore('product', () => {
   const totalPrice = computed(() => accessoriesTotalPrice.value + gameStore.device.assignedStorage.price);
 
   function getStorageSize(storageId) {
-    console.log(storageId);
-
     if (gameStore.device.assignedStorage.id === storageId) {
       return formatSize(gameStore.device.assignedStorage.size);
     } else {
@@ -199,17 +197,17 @@ export const useProductStore = defineStore('product', () => {
   }
 
   function updateDeviceStorage(selectedStorage) {
-    gameStore.device.assignedStorage = { ...selectedStorage };
+    gameStore.device.assignedStorage = selectedStorage;
 
     // save state
     if (gameStore.device.unit === 'pc') {
-      pcStorage.value = { ...selectedStorage };
+      pcStorage.value = selectedStorage;
 
     } else if (gameStore.device.unit === 'ps4') {
-      ps4Storage.value = { ...selectedStorage };
+      ps4Storage.value = selectedStorage;
 
     } else if (gameStore.device.unit === 'nsw') {
-      nswStorage.value = { ...selectedStorage };
+      nswStorage.value = selectedStorage;
     }
   }
 
