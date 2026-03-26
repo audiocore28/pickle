@@ -1,19 +1,13 @@
 <script setup>
-import { ref, toRefs } from 'vue';
+import { toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
-import { useProductStore } from '../stores/product';
 import Screenshot from './Screenshot.vue';
-import StorageSelect from './StorageSelect.vue';
-import AccessorySelect from './AccessorySelect.vue';
-import SelectedGames from './SelectedGames.vue';
-import Accordion from './Accordion.vue';
 
 const gameStore = useGameStore();
-const productStore = useProductStore();
 
-const { groupedSelection, deviceColor, pcCount } = storeToRefs(gameStore);
 const { device } = toRefs(gameStore);
+const { component } = storeToRefs(gameStore);
 </script>
 
 <template>
@@ -29,69 +23,32 @@ const { device } = toRefs(gameStore);
       
         
         <!-- Header -->
-        <div :class="deviceColor" class="pb-4 pt-5 rounded-t-xl flex items-center justify-center">
-          <h2 class="text-md uppercase font-semibold">{{ device.unit }} drive</h2>
+        <div class="bg-stone-800 pl-4 pb-4 pt-5 rounded-t-xl">
+          <div class="flex items-center">
+            <svg :fill="device.style.color" width="20px" height="20px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M3.59 3.03h12.2v1.26H3.59zm0 4.29h12.2v1.26H3.59zm0 4.35h12.2v1.26H3.59zM.99 4.79h.49V2.52H.6v.45h.39v1.82zm.87 3.88H.91l.14-.11.3-.24c.35-.28.49-.5.49-.79A.74.74 0 0 0 1 6.8a.77.77 0 0 0-.81.84h.52A.34.34 0 0 1 1 7.25a.31.31 0 0 1 .31.31.6.6 0 0 1-.22.44l-.87.75v.39h1.64zm-.36 3.56a.52.52 0 0 0 .28-.48.67.67 0 0 0-.78-.62.71.71 0 0 0-.77.75h.5a.3.3 0 0 1 .27-.32.26.26 0 1 1 0 .51H.91v.38H1c.23 0 .37.11.37.29a.29.29 0 0 1-.33.29.35.35 0 0 1-.36-.35H.21a.76.76 0 0 0 .83.8.74.74 0 0 0 .83-.72.53.53 0 0 0-.37-.53z"></path></g></svg>
+            <h2 class="text-md ml-3 text-stone-300 uppercase font-semibold">{{ device.unit }} drive</h2>
+          </div>
+          <!-- <p class="text-sm text-white ml-1 pt-2">Drag to reorder game priority.</p> -->
         </div>
         <div aria-hidden="true" class="border-b dark:border-gray-700 px-2"></div>
         <!-- / Header -->
         
         <!-- Tab content -->
-        <div class="bg-stone-700 mx-auto max-w-md h-[470px] lg:h-[620px] overflow-x-scroll">
+        <div class="bg-stone-800 mx-auto max-w-md h-[470px] lg:h-[620px] overflow-y-scroll">
 
-          <!-- Items -->
-          <accordion>
-            <template #header>
-              
-              <div class="w-full flex items-center justify-between text-xs mx-2 text-stone-300 font-semibold uppercase">
-                <h2 class="text-stone-300 text-xs font-semibold uppercase">Need More Space?</h2>
-                <span class="text-stone-400">{{ `${productStore.formatSize(device.assignedStorage.size)} Selected (${productStore.formatSize(device.assignedStorage.limit)} Limit)` }}</span>
-              </div>
-            </template>
-            
-            <template #content>
-              <h2 class="mb-3 mt-2 text-stone-300 text-xs font-semibold uppercase">{{ `Select One Storage for your ${device.unit} Device` }}</h2>
-              <ul class="mb-5">
-                <StorageSelect />
-              </ul>
-              <h2 class="mb-2 mt-7 text-stone-300 text-xs font-semibold uppercase">Out of Control?</h2>
-              <ul class="mb-5">
-                <AccessorySelect />
-              </ul>
-            </template>
-          </accordion>
-          <!-- / Items -->
-
-          <!-- Games -->
-          <div v-for="(group, groupName) in groupedSelection.list">
-            <accordion>
-              <template #header>
-
-                <div class="w-full flex items-center justify-between mx-2 text-xs text-stone-300 font-semibold uppercase">
-                  <h2>{{ groupName }}</h2>
-                  <span class="text-stone-400" v-show="device.unit !== 'pc'">{{ groupedSelection.count }} Games Selected</span>
-                  <span v-for="(count, platform) in pcCount" v-show="device.unit === 'pc' && groupName === platform" class="text-stone-400">{{ count }} Games Selected</span>
-                </div>
-
-              </template>
-
-              <template #content>
-                <SelectedGames :group="group" />
-              </template>
-            </accordion>
-          </div>
-          <!-- / Games -->
+          <component :is="component"/>
 
           <div class="h-3"></div>
         </div>
         <!-- / Tab content -->
       
         <!-- Footer -->
-        <div class="bg-stone-600 space-y-2 pb-2">
+        <div class="bg-stone-800 space-y-2 pb-2">
           <div aria-hidden="true" class="border-t dark:border-gray-700 px-2"></div>
           <div class="px-6 py-2">
 
             <div class="grid gap-2 grid-cols-[repeat(auto-fit,minmax(0,1fr))]">
-              <button @click="store.captureElement" type="button" :class="deviceColor" class="cursor-pointer inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-[12px] sm:text-sm border-stone-300 focus:ring-primary-600 focus:text-primary-600 focus:bg-primary-50 focus:border-primary-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200 dark:focus:text-primary-400 dark:focus:border-primary-400 dark:focus:bg-gray-800">
+              <button @click="store.captureElement" type="button" :class="device.style.background, device.style.textColor" class="cursor-pointer inline-flex items-center justify-center py-1 gap-1 font-medium rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-[12px] sm:text-sm border-stone-300 focus:ring-primary-600 focus:text-primary-600 focus:bg-primary-50 focus:border-primary-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200 dark:focus:text-primary-400 dark:focus:border-primary-400 dark:focus:bg-gray-800">
                 <span class="flex items-center gap-1">
                   <span class="">
                     Take Screenshot

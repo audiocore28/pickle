@@ -5,18 +5,16 @@ import Platform from '@/components/Platform.vue';
 import Search from '@/components/Search.vue';
 import Sort from '@/components/Sort.vue';
 import Overlay from './components/Overlay.vue';
-import Device from './components/Device.vue';
 </script>
 
 <template>
   <div class="font-oswald">
     <!-- Filters -->
-    <div class="bg-stone-100 fixed top-0 w-full z-[200]">
+    <div class="bg-stone-900 fixed top-0 w-full z-[200] border border-b-stone-800">
       <div class="lg:flex justify-between items-center max-w-screen-2xl lg:px-16 mx-auto">
         <div class="flex justify-center lg:justify-between w-full items-center rounded-lg relative mt-3 lg:mt-5 px-4 lg:pb-3">
 
           <Search />
-          <Device />
 
         </div>
 

@@ -15,7 +15,7 @@ const { storages } = toRefs(productStore);
   <li class="flex items-start">
     <table class="w-full rounded-xl">
       <tbody>
-        <tr v-for="storage in storages" :key="storage.id" v-show="storage.devices.includes(device.unit)" class="text-center border-b border-gray-600">
+        <tr v-for="storage in storages" :key="storage.id" v-show="storage.devices.includes(device.unit)" class="text-center border-b border-stone-700">
           <td class="flex items-center py-2 pl-1 text-left align-top w-[50px]">
             <div>
               <component :is="storage.icon" />
@@ -41,7 +41,7 @@ const { storages } = toRefs(productStore);
             </div>
           </td>
         </tr>
-        <tr v-show="device.assignedStorage.id === 3" class="text-center border-b border-gray-600">
+        <tr v-show="device.assignedStorage.id === 3" class="text-center border-b border-stone-700">
           <td class="flex items-center py-2 pl-1 text-left align-top w-[50px]">
             <div>
               <DriveIcon />

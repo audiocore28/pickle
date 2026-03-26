@@ -15,6 +15,12 @@ export const useGameStore = defineStore('game', () => {
   const device = reactive({
     unit: 'pc',
     platforms: ['win', 'ps3', 'ps2'],
+    style: {
+      color: '#eab308',
+      textColor: 'text-stone-600',
+      background: 'bg-yellow-500',
+
+    },
     assignedStorage: {
       id: 1,
       description: '2.5\" External Drive',
@@ -29,6 +35,8 @@ export const useGameStore = defineStore('game', () => {
   const sortBy = ref('A-Z');
   const now = ref(new Date());
   const togglePlatform = ref(true);
+  const isSelectionOpen = ref(false);
+  const component = shallowRef(null);
   const captureContainer = ref(null);
   const targetElementRef = ref(null);
 
@@ -113,21 +121,46 @@ export const useGameStore = defineStore('game', () => {
     });
   };
 
-  function setupDevice(dv) {
+  function selectDevice(dv) {
     device.unit = dv;
 
     if (dv === 'pc') {
       device.platforms = ['win', 'ps3', 'ps2'];
+      device.style = {
+        color: '#eab308',
+        textColor: 'text-stone-600',
+        background: 'bg-yellow-500',
+      };
       device.assignedStorage = productStore.pcStorage; // get storage state
     } else if (dv === 'ps4') {
       device.platforms = ['ps4'];
+      device.style = {
+        color: '#4c1d95',
+        textColor: 'text-stone-200',
+        background: 'bg-violet-900',
+      };
       device.assignedStorage = productStore.ps4Storage;
     } else if (dv === 'nsw') {
       device.platforms = ['nsw'];
+      device.style = {
+        color: '#be123c',
+        textColor: 'text-stone-200',
+        background: 'bg-rose-700',
+      };
       device.assignedStorage = productStore.nswStorage;
     }
 
     platform.value = device.platforms[0];
+  }
+
+  function open(comp) {
+    component.value = comp;
+    isSelectionOpen.value = true;
+  }
+
+  function close() {
+    component.value = null;
+    isSelectionOpen.value = false;
   }
 
   const filteredGames = computed(() => {
@@ -168,71 +201,41 @@ export const useGameStore = defineStore('game', () => {
             accumulator.list[platform] = [];
           }
 
+          if (!accumulator.count[platform]) {
+            accumulator.count[platform] = [];
+          }
+
           accumulator.list[platform].push(currentGame);
+          accumulator.count[platform]++;
           accumulator.size += currentGame.size;
-          accumulator.count++ ;
+          accumulator.groupCount++;
         }
 
         return accumulator;
 
       }, {
         list: {},
+        count: {},
         size: 0,
-        count: 0
+        groupCount: 0
       });
     }
 
   });
 
-  const pcCount = computed(() => {
-
-    const platforms = groupedSelection.value.list; // object
-    let games = Object.values(platforms); // converted to array of arrays
-    games = games.flat(); // merged arrays into 1 array
-    
-    return games.reduce((accumulator, currentGame) => {
-
-      switch (currentGame.platform) {
-        case 'win':
-          accumulator.win = (accumulator.win || 0) + 1;
-          break;
-        case 'ps3':
-          accumulator.ps3 = (accumulator.ps3 || 0) + 1;
-          break;
-        case 'ps2':
-          accumulator.ps2 = (accumulator.ps2 || 0) + 1;
-          break;
-      
-        default:
-          break;
-      }
-
-      return accumulator;
-    },{});
-
-  });
-
-  const progress = computed(() => (groupedSelection.value.size / device.assignedStorage.limit) * 100 );
   const freeSpace = computed(() => Math.max(0, device.assignedStorage.limit - groupedSelection.value.size ));
+  const percentage = computed(() => (groupedSelection.value.size / device.assignedStorage.limit) * 100 );
 
   // Styles
   const percentageWidth = computed(() => {
-      return `${progress.value}%`;
+      return `${percentage.value}%`;
   });
 
   const percentageColor = computed(() => {
-    const clampedPercentage = Math.min(100, Math.max(0, progress.value));
+    const clampedPercentage = Math.min(100, Math.max(0, percentage.value));
     const hue = 120 - (clampedPercentage * 1.2); 
     return `hsl(${hue}, 100%, 40%)`;
 
-  });
-
-  const deviceColor = computed(() => {
-    return {
-      'bg-yellow-500 text-stone-600 hover:bg-yellow-400': device.unit === 'pc',
-      'bg-violet-900 text-stone-200 hover:bg-violet-800': device.unit === 'ps4',
-      'bg-rose-700 text-stone-200 hover:bg-rose-600': device.unit === 'nsw',
-    };
   });
 
   onMounted(async () => {
@@ -246,18 +249,20 @@ export const useGameStore = defineStore('game', () => {
   });
 
   return {
-    pcCount,
     device,
-    deviceColor,
     games,
     selected,
     search,
     platform,
     sortBy,
+    isSelectionOpen,
+    component,
     toggleSelect,
     filteredGames,
-    setupDevice,
-    progress,
+    selectDevice,
+    open,
+    close,
+    percentage,
     freeSpace,
     percentageWidth,
     percentageColor,
