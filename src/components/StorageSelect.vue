@@ -2,6 +2,7 @@
 import { toRefs } from 'vue';
 import { useProductStore } from '../stores/product';
 import { useGameStore } from '../stores/game';
+import DriveIcon from '@/components/DriveIcon.vue';
 
 const gameStore = useGameStore();
 const productStore = useProductStore();
@@ -21,7 +22,6 @@ const { storages } = toRefs(productStore);
             </div>
             <div class="">
               <h5 class="text-sm text-gray-200 leading-4 w-[150px] truncate">{{ storage.description }}</h5>
-              <small class="text-[10px] text-gray-300 py-2">{{ productStore.formattedAmount(device.assignedStorage.price) }}</small>
             </div>
           </td>
           <td class="w-[100px]">
@@ -37,7 +37,27 @@ const { storages } = toRefs(productStore);
           </td>
           <td class="w-[100px] text-xs text-gray-300 py-2">
             <div class="flex justify-end px-4">
-              <span>{{ productStore.formattedAmount(device.assignedStorage.price) }}</span>
+              <span>{{ productStore.getStoragePrice(storage.id) }}</span>
+            </div>
+          </td>
+        </tr>
+        <tr v-show="device.assignedStorage.id === 3" class="text-center border-b border-gray-600">
+          <td class="flex items-center py-2 pl-1 text-left align-top w-[50px]">
+            <div>
+              <DriveIcon />
+            </div>
+            <div class="">
+              <h5 class="text-sm text-gray-200 leading-4 w-[150px] truncate">Games (Piso per 1 GB)</h5>
+            </div>
+          </td>
+          <td class="w-[100px]">
+            <div class="p-1 justify-around items-center">
+              <span class="w-10 text-center text-gray-200 text-xs">{{ productStore.formatSize(gameStore.groupedSelection.size.toFixed(2)) }}</span>
+            </div>
+          </td>
+          <td class="w-[100px] text-xs text-gray-300 py-2">
+            <div class="flex justify-end px-4">
+              <span>{{ productStore.formattedAmount(gameStore.groupedSelection.size) }}</span>
             </div>
           </td>
         </tr>

@@ -121,43 +121,43 @@ export const useProductStore = defineStore('product', () => {
         {
           size: 320,
           limit: 280,
-          price: 1000,
+          price: 0,
           isAvailable: true
         },
         {
           size: 500,
           limit: 440,
-          price: 1300,
+          price: 0,
           isAvailable: true
         },
         {
           size: 640,
           limit: 580,
-          price: 1500,
+          price: 0,
           isAvailable: true
         },
         {
           size: 750,
           limit: 680,
-          price: 1800,
+          price: 0,
           isAvailable: true
         },
         {
           size: 1000,
           limit: 910,
-          price: 2300,
+          price: 0,
           isAvailable: true
         },
         {
           size: 2000,
           limit: 1800,
-          price: 3200,
+          price: 0,
           isAvailable: true
         },
         {
           size: 4000,
           limit: 3700,
-          price: 6500,
+          price: 0,
           isAvailable: true
         },
       ]
@@ -186,13 +186,27 @@ export const useProductStore = defineStore('product', () => {
 
   const accessoriesTotalPrice = computed(() => accessories.value.reduce((sum, currentItem) =>  sum += (currentItem.price * currentItem.quantity), 0));
   const accessoriesTotalQty = computed(() => accessories.value.reduce((sum, currentItem) =>  sum += currentItem.quantity, 0));
-  const totalPrice = computed(() => accessoriesTotalPrice.value + gameStore.device.assignedStorage.price);
+  const totalPrice = computed(() => {
+    if (gameStore.device.assignedStorage.id === 3) {
+      return accessoriesTotalPrice.value + gameStore.groupedSelection.size;
+    } else {
+      return accessoriesTotalPrice.value + gameStore.device.assignedStorage.price;
+    }
+  });
 
   function getStorageSize(storageId) {
     if (gameStore.device.assignedStorage.id === storageId) {
       return formatSize(gameStore.device.assignedStorage.size);
     } else {
       return 0; 
+    }
+  }
+
+  function getStoragePrice(storageId) {
+    if (gameStore.device.assignedStorage.id === storageId) {
+      return formattedAmount(gameStore.device.assignedStorage.price);
+    } else {
+      return formattedAmount(0); 
     }
   }
 
@@ -284,6 +298,7 @@ export const useProductStore = defineStore('product', () => {
     accessoriesTotalQty,
     totalPrice,
     getStorageSize,
+    getStoragePrice,
     updateDeviceStorage,
     getNextHigherCapacity,
     getNextLowerCapacity,
