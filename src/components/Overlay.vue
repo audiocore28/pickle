@@ -3,16 +3,16 @@ import { storeToRefs } from 'pinia';
 import { useModalStore } from '@/stores/modal';
 
 const modalStore = useModalStore();
-const { props, isOpen, component } = storeToRefs(modalStore);
+const { alertProps, toggleAlert, alertComponent } = storeToRefs(modalStore);
 </script>
 
 <template>
   <Transition name="fade">
-    <div v-if="isOpen" class="fixed z-[1500] inset-0 overflow-y-auto">
+    <div v-if="toggleAlert" class="fixed z-[1500] inset-0 overflow-y-auto">
       <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
 
         <!-- Overlay -->
-        <div class="fixed inset-0 transition-opacity cursor-pointer" aria-hidden="true" @click="modalStore.close">
+        <div class="fixed inset-0 transition-opacity cursor-pointer" aria-hidden="true" @click="modalStore.closeAlert">
           <div class="absolute inset-0 bg-stone-900/80"></div>
         </div>
         <!-- / Overlay -->
@@ -20,7 +20,7 @@ const { props, isOpen, component } = storeToRefs(modalStore);
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
           
         <!-- Modal -->
-          <component :is="component" v-bind="props" class="inner"/>
+          <component :is="alertComponent" v-bind="alertProps" class="inner"/>
         <!-- / Modal -->
 
       </div>

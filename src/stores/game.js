@@ -35,8 +35,6 @@ export const useGameStore = defineStore('game', () => {
   const sortBy = ref('A-Z');
   const now = ref(new Date());
   const togglePlatform = ref(true);
-  const isSelectionOpen = ref(false);
-  const component = shallowRef(null);
   const captureContainer = ref(null);
   const targetElementRef = ref(null);
 
@@ -46,7 +44,7 @@ export const useGameStore = defineStore('game', () => {
 
     } else {
       if (groupedSelection.value.size + g.size > device.assignedStorage.limit) {
-        modalStore.open(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${device.assignedStorage.limit.toFixed(0)} GB limit.`})
+        modalStore.openAlert(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${device.assignedStorage.limit.toFixed(0)} GB limit.`})
         return;
       }
 
@@ -117,7 +115,7 @@ export const useGameStore = defineStore('game', () => {
       link.click();
       
       // Show alert message
-      modalStore.open(Alert, { title: 'Download Complete!', message: 'Please send downloaded screenshot'})
+      modalStore.openAlert(Alert, { title: 'Download Complete!', message: 'Please send downloaded screenshot'})
     });
   };
 
@@ -151,16 +149,6 @@ export const useGameStore = defineStore('game', () => {
     }
 
     platform.value = device.platforms[0];
-  }
-
-  function open(comp) {
-    component.value = comp;
-    isSelectionOpen.value = true;
-  }
-
-  function close() {
-    component.value = null;
-    isSelectionOpen.value = false;
   }
 
   const filteredGames = computed(() => {
@@ -255,13 +243,9 @@ export const useGameStore = defineStore('game', () => {
     search,
     platform,
     sortBy,
-    isSelectionOpen,
-    component,
     toggleSelect,
     filteredGames,
     selectDevice,
-    open,
-    close,
     percentage,
     freeSpace,
     percentageWidth,

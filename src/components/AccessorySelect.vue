@@ -38,18 +38,6 @@ const { accessories, totalPrice } = storeToRefs(productStore);
             </div>
           </td>
         </tr>
-        <tr class="text-center border-b border-stone-700 h-16">
-          <td class="flex items-center py-2 pl-1 text-left align-top w-[50px] sm:max-w-[110px]">
-          </td>
-          <td class="w-[100px]">
-            <span class="text-sm text-gray-300 uppercase">Total:</span>
-          </td>
-          <td class="w-[100px] text-xs text-gray-300 py-2">
-            <div class="flex justify-end px-4">
-              <span>{{ productStore.formattedAmount(totalPrice) }}</span>
-            </div>
-          </td>
-        </tr>
       </tbody>
     </table>
   </li>

@@ -2,31 +2,45 @@ import { ref, shallowRef } from 'vue';
 import { defineStore } from 'pinia';
 
 export const useModalStore = defineStore('modal', () => {
-  const isOpen = ref(false);
-  const component = shallowRef(null);
-  const props = ref({ title: '', message: '' });
+  const toggleMenu = ref(false);
+  const menuComponent = shallowRef(null);
+  const toggleAlert = ref(false);
+  const alertComponent = shallowRef(null);
+  const alertProps = ref({ title: '', message: '' });
 
-  function open(comp, compProps = {}) {
-    component.value = comp;
-    props.value = compProps;
-    isOpen.value = true;
+  function openMenu(comp) {
+    menuComponent.value = comp;
+    toggleMenu.value = true;
+  }
+
+  function closeMenu() {
+    menuComponent.value = null;
+    toggleMenu.value = false;
+  }
+
+  function openAlert(comp, compProps = {}) {
+    alertComponent.value = comp;
+    alertProps.value = compProps;
+    toggleAlert.value = true;
 
   }
 
-  function close() {
-    component.value = null;
-    props.value = {};
-    isOpen.value = false;
-
+  function closeAlert() {
+    alertComponent.value = null;
+    alertProps.value = {};
+    toggleAlert.value = false;
   }
 
   return {
-    isOpen,
-    component,
-    props,
-    open,
-    close
+    toggleMenu,
+    menuComponent,
+    openMenu,
+    closeMenu,
+    toggleAlert,
+    alertComponent,
+    alertProps,
+    openAlert,
+    closeAlert
   }
-
 });
 
