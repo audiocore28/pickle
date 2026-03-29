@@ -26,6 +26,7 @@ const toggleSearch = ref(true);
       </h1> -->
       <input
         v-model="search" 
+        @keydown.stop
         v-if="toggleSearch"
         class="search-input w-full px-4 py-2 appearance-none rounded-r-lg text-sm text-stone-600 border-stone-300 hover:border-stone-400 transition-colors leading-tight bg-stone-100 outline-none focus:outline-none:focus focus:ring-stone-500 focus:border-stone-500 focus:shadow-outline" type="search" autocomplete="off" spellcheck="false" aria-live="polite" :placeholder=" `Search ${platform} games...`"
       >

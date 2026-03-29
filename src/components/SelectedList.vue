@@ -17,7 +17,7 @@
       <!-- / Content -->
     
       <!-- Footer -->
-      <div class="bg-stone-800 space-y-2 pb-2">
+      <div class="bg-stone-800 space-y-2 pb-2 h-18">
         <div aria-hidden="true" class="border-t dark:border-gray-700 px-2"></div>
         <div class="px-6 py-2">
           <slot name="footer"></slot>

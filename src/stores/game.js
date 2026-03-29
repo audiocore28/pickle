@@ -193,7 +193,7 @@ export const useGameStore = defineStore('game', () => {
             accumulator.count[platform] = [];
           }
 
-          accumulator.list[platform].push(currentGame);
+          accumulator.list[platform].unshift(currentGame);
           accumulator.count[platform]++;
           accumulator.size += currentGame.size;
           accumulator.groupCount++;
