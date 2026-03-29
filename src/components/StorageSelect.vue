@@ -2,13 +2,12 @@
 import { toRefs } from 'vue';
 import { useProductStore } from '../stores/product';
 import { useGameStore } from '../stores/game';
-import DriveIcon from '@/components/DriveIcon.vue';
+import driveIcon from '../assets/drive.svg?raw';
 
 const gameStore = useGameStore();
 const productStore = useProductStore();
 const { device } = toRefs(gameStore);
 const { storages } = toRefs(productStore);
-
 </script>
 
 <template>
@@ -18,7 +17,7 @@ const { storages } = toRefs(productStore);
         <tr v-for="storage in storages" :key="storage.id" v-show="storage.devices.includes(device.unit)" class="text-center border-b border-stone-700">
           <td class="flex items-center py-2 pl-1 text-left align-top w-[50px]">
             <div>
-              <component :is="storage.icon" />
+              <div v-html="storage.icon"></div>
             </div>
             <div class="">
               <h5 class="text-sm text-gray-200 leading-4 w-[150px] truncate">{{ storage.description }}</h5>
@@ -44,7 +43,7 @@ const { storages } = toRefs(productStore);
         <tr v-show="device.assignedStorage.id === 3" class="text-center border-b border-stone-700">
           <td class="flex items-center py-2 pl-1 text-left align-top w-[50px]">
             <div>
-              <DriveIcon />
+              <div v-html="driveIcon"></div>
             </div>
             <div class="">
               <h5 class="text-sm text-gray-200 leading-4 w-[150px] truncate">Games (Piso per 1 GB)</h5>

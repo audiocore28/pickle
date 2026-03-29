@@ -259,4 +259,6 @@ export const useGameStore = defineStore('game', () => {
     targetElementRef, 
   }
 
+}, {
+  persist: true // enables persistence for this store
 });

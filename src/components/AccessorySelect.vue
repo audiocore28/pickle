@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useProductStore } from '../stores/product';
 
 const productStore = useProductStore();
-const { accessories, totalPrice } = storeToRefs(productStore);
+const { accessories } = storeToRefs(productStore);
 
 </script>
 
@@ -14,7 +14,7 @@ const { accessories, totalPrice } = storeToRefs(productStore);
         <tr v-for="accessory in accessories" class="text-center border-b border-stone-700">
           <td class="flex items-center py-2 pl-1 text-left align-top w-[50px]">
             <div>
-              <component :is="accessory.icon" />
+              <div v-html="accessory.icon"></div>
             </div>
             <div class="ml-3">
               <h5 class="text-sm text-gray-200 leading-4 w-[150px] truncate">{{ accessory.description }}</h5>

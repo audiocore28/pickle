@@ -1,17 +1,17 @@
 import { ref, reactive, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { useGameStore } from './game';
-import DriveIcon from '../components/DriveIcon.vue';
-import DS4ControllerIcon from '../components/DS4ControllerIcon.vue';
-import XboxControllerIcon from '../components/XboxControllerIcon.vue';
+import driveIcon from '../assets/drive.svg?raw';
+import xboxControllerIcon from '../assets/xboxController.svg?raw';
+import ds4ControllerIcon from '../assets/ds4Controller.svg?raw';
 
 export const useProductStore = defineStore('product', () => {
   const gameStore = useGameStore();
 
   const icons = {
-    drive: DriveIcon,
-    ds4Controller: DS4ControllerIcon,
-    xboxController: XboxControllerIcon,
+    drive: driveIcon,
+    ds4Controller: ds4ControllerIcon,
+    xboxController: xboxControllerIcon,
   };
 
   const pcStorage = ref({
@@ -308,4 +308,6 @@ export const useProductStore = defineStore('product', () => {
     decrementQty
   }
 
+}, {
+  persist: true
 });
