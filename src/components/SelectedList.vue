@@ -1,3 +1,15 @@
+<script setup>
+import { storeToRefs } from 'pinia';
+import { useGameStore } from '../stores/game';
+import { useModalStore } from '../stores/modal';
+
+const gameStore = useGameStore();
+const modalStore = useModalStore();
+
+const { percentageWidth, percentageColor } = storeToRefs(gameStore);
+const { toggleMenu } = storeToRefs(modalStore);
+</script>
+
 <template>
   <div class="relative w-full cursor-pointer pointer-events-none transition my-auto mb-1">
     <div class="w-full cursor-default pointer-events-auto dark:bg-gray-800 relative mx-auto max-w-md">
@@ -7,6 +19,9 @@
         <slot name="header"></slot>
       </div>
       <div aria-hidden="true" class="border-b dark:border-gray-700 px-2"></div>
+      <div v-show="toggleMenu" class="flex h-1.5 bg-stone-400 shadow-inner">
+        <div :style="{ backgroundColor: percentageColor, width: percentageWidth, transition: `width 0.5s ease, background-color 0.5s ease` }"></div>
+      </div>
       <!-- / Header -->
       
       <!-- Content -->

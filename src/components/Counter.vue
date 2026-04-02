@@ -21,7 +21,7 @@ const {
 } = storeToRefs(gameStore);
 
 const { device } = toRefs(gameStore);
-const { currentTab } = storeToRefs(modalStore);
+const { currentTab, toggleMenu } = storeToRefs(modalStore);
 
 </script>
 
@@ -29,11 +29,11 @@ const { currentTab } = storeToRefs(modalStore);
   <div class="mx-auto inset-x-0 fixed bottom-0 sm:mb-2 z-[800] w-full sm:w-[450px] cursor-pointer">
 
     <Transition name="slide-y">
-      <MenuModal />
+      <MenuModal v-show="toggleMenu"/>
     </Transition>
 
     <div class="relative max-w-lg mx-auto bg-stone-800">
-      <div class="flex h-1.5 bg-stone-400 shadow-inner">
+      <div v-show="!toggleMenu" class="flex h-1.5 bg-stone-400 shadow-inner">
         <div :style="{ backgroundColor: percentageColor, width: percentageWidth, transition: `width 0.5s ease, background-color 0.5s ease` }"></div>
       </div>
 

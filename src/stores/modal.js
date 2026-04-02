@@ -13,14 +13,19 @@ export const useModalStore = defineStore('modal', () => {
   const currentTab = ref('');
 
   function openMenu(comp, tab) {
-    menuComponent.value = comp;
-    toggleMenu.value = true;
-    currentTab.value = tab;
+    if (currentTab.value === tab) {
+      closeMenu();
+    } else {
+      toggleMenu.value = true; // open
+      menuComponent.value = comp;
+      currentTab.value = tab;
+    } 
   }
 
   function closeMenu() {
-    menuComponent.value = null;
     toggleMenu.value = false;
+    currentTab.value = '';
+    // menuComponent.value = null;
   }
 
   function openAlert(comp, compProps = {}) {
@@ -31,9 +36,9 @@ export const useModalStore = defineStore('modal', () => {
   }
 
   function closeAlert() {
-    alertComponent.value = null;
     alertProps.value = {};
     toggleAlert.value = false;
+    // alertComponent.value = null;
   }
 
   const handleKeydown = (event) => {
@@ -52,15 +57,13 @@ export const useModalStore = defineStore('modal', () => {
         break;
       case 'Escape':
         event.preventDefault();
-        toggleMenu.value = false;
-        toggleAlert.value = false;
-        currentTab.value = '';
+        closeMenu();
+        closeAlert();
         break;
       case ' ':
         event.preventDefault();
-        toggleMenu.value = false;
-        toggleAlert.value = false;
-        currentTab.value = '';
+        closeMenu();
+        closeAlert();
         break;
     
       default:

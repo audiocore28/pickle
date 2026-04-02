@@ -9,7 +9,7 @@ const { toggleMenu, menuComponent } = storeToRefs(modalStore);
 </script>
 
 <template>
-  <div v-show="toggleMenu" class="relative z-400 w-full transition flex items-center shadow-lg">
+  <div class="relative z-400 w-full transition flex items-center shadow-lg">
     <!-- Close Button -->
     <div class="z-800 absolute top-0 right-0 pt-4 pr-4">
       <button @click="toggleMenu = false" type="button" data-behavior="cancel" class="cursor-pointer rounded-md text-gray-400 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
