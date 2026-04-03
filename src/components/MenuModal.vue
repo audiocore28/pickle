@@ -11,7 +11,7 @@ const { toggleMenu, menuComponent } = storeToRefs(modalStore);
 <template>
   <div class="relative z-400 w-full transition flex items-center shadow-lg">
     <!-- Close Button -->
-    <div class="z-800 absolute top-0 right-0 pt-4 pr-4">
+    <div class="z-800 absolute -top-1 right-0 pt-4 pr-4">
       <button @click="toggleMenu = false" type="button" data-behavior="cancel" class="cursor-pointer rounded-md text-gray-400 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
         <span class="sr-only">Close</span>
         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -22,7 +22,7 @@ const { toggleMenu, menuComponent } = storeToRefs(modalStore);
     <!-- Close Button -->
 
     <!-- shortcut key label -->
-    <div class="z-500 absolute top-0 right-0 pt-8 pr-4">
+    <div class="z-500 absolute -top-1 right-0 pt-8 pr-4">
       <span class="text-sm text-stone-600">spacebar</span>
     </div>
     <!-- shortcut key label -->

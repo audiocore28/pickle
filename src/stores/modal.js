@@ -1,4 +1,4 @@
-import { ref, shallowRef, onMounted, onUnmounted } from 'vue';
+import { ref, shallowRef, computed, onMounted, onUnmounted } from 'vue';
 import { defineStore } from 'pinia';
 import Device from '@/components/Device.vue';
 import SelectedGames from '@/components/SelectedGames.vue';
@@ -11,6 +11,9 @@ export const useModalStore = defineStore('modal', () => {
   const alertComponent = shallowRef(null);
   const alertProps = ref({ title: '', message: '' });
   const currentTab = ref('');
+  const menuHeight = ref(470);
+  const isDragging = ref(false);
+  const startY = ref(0);
 
   function openMenu(comp, tab) {
     if (currentTab.value === tab) {
@@ -19,6 +22,7 @@ export const useModalStore = defineStore('modal', () => {
       toggleMenu.value = true; // open
       menuComponent.value = comp;
       currentTab.value = tab;
+      menuHeight.value = 470;
     } 
   }
 
@@ -71,8 +75,56 @@ export const useModalStore = defineStore('modal', () => {
     }
   }
 
-  onMounted(async () => { window.addEventListener('keydown', handleKeydown) });
-  onUnmounted(() => {  window.removeEventListener('keydown', handleKeydown) });
+  // Sets initial drag position and sheetContent height
+  const dragStart = (e) => {
+    // Clear any existing text selection
+    if (window.getSelection) {
+      window.getSelection().removeAllRanges();
+    }
+
+    isDragging.value = true;
+    startY.value = e.touches?.[0].pageY;
+  }
+
+  // Calculates the new height for the menu modal
+  const dragging = (e) => {
+    if (isDragging.value === false) {
+      return; 
+    }
+
+    const delta = startY.value - e.touches?.[0].pageY;
+    const newHeight = menuHeight.value + delta / window.innerHeight * 100;
+
+    if (newHeight > 480) {
+      dragStop();
+    } 
+
+    menuHeight.value = newHeight;
+  }
+
+  const dragStop = () => {
+    isDragging.value = false;
+
+    if (menuHeight.value < 300) {
+      closeMenu();
+    } else {
+      menuHeight.value = 470;
+    }
+  }
+
+  const contentHeight = computed(() => {
+     return `${menuHeight.value}px`;
+  });
+
+  onMounted(async () => { 
+    window.addEventListener('keydown', handleKeydown);
+    document.addEventListener('touchend', dragStop);
+  });
+
+  onUnmounted(() => {  
+    window.removeEventListener('keydown', handleKeydown) 
+    document.addEventListener('touchend', dragStop);
+  });
 
   return {
     currentTab,
@@ -84,7 +136,12 @@ export const useModalStore = defineStore('modal', () => {
     alertComponent,
     alertProps,
     openAlert,
-    closeAlert
+    closeAlert,
+    menuHeight,
+    contentHeight,
+    dragStart,
+    dragging,
+    dragStop,
   }
 });
 
