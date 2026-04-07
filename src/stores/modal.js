@@ -1,4 +1,4 @@
-import { ref, shallowRef, computed, onMounted, onUnmounted } from 'vue';
+import { ref, shallowRef, computed, watch, onMounted, onUnmounted } from 'vue';
 import { defineStore } from 'pinia';
 import Device from '@/components/Device.vue';
 import SelectedGames from '@/components/SelectedGames.vue';
@@ -11,9 +11,9 @@ export const useModalStore = defineStore('modal', () => {
   const alertComponent = shallowRef(null);
   const alertProps = ref({ title: '', message: '' });
   const currentTab = ref('');
-  const menuHeight = ref(470);
+  const sheetHeight = ref(80);
+  const maxHeight = 80;
   const isDragging = ref(false);
-  const startY = ref(0);
 
   function openMenu(comp, tab) {
     if (currentTab.value === tab) {
@@ -22,7 +22,7 @@ export const useModalStore = defineStore('modal', () => {
       toggleMenu.value = true; // open
       menuComponent.value = comp;
       currentTab.value = tab;
-      menuHeight.value = 470;
+      sheetHeight.value = maxHeight;
     } 
   }
 
@@ -83,37 +83,38 @@ export const useModalStore = defineStore('modal', () => {
     }
 
     isDragging.value = true;
-    startY.value = e.touches?.[0].pageY;
   }
 
   // Calculates the new height for the menu modal
-  const dragging = (e) => {
+  const onDrag = (e) => {
     if (isDragging.value === false) {
       return; 
     }
 
-    const delta = startY.value - e.touches?.[0].pageY;
-    const newHeight = menuHeight.value + delta / window.innerHeight * 100;
+    const touchY = e.touches[0].clientY;
+    const newHeight = ((window.innerHeight - touchY) / window.innerHeight) * 100;
 
-    if (newHeight > 480) {
-      dragStop();
-    } 
+    sheetHeight.value = newHeight;
 
-    menuHeight.value = newHeight;
   }
 
   const dragStop = () => {
     isDragging.value = false;
 
-    if (menuHeight.value < 300) {
+    if (sheetHeight.value < 60) {
       closeMenu();
     } else {
-      menuHeight.value = 470;
+      sheetHeight.value = maxHeight;
     }
   }
 
-  const contentHeight = computed(() => {
-     return `${menuHeight.value}px`;
+  // Watch the modal's open state
+  watch(() => toggleMenu.value, (value) => {
+    if (value) {
+      document.body.classList.add('overflow-hidden', 'md:overflow-visible');
+    } else {
+      document.body.classList.remove('overflow-hidden', 'md:overflow-visible');
+    }
   });
 
   onMounted(async () => { 
@@ -137,11 +138,9 @@ export const useModalStore = defineStore('modal', () => {
     alertProps,
     openAlert,
     closeAlert,
-    menuHeight,
-    contentHeight,
+    sheetHeight,
     dragStart,
-    dragging,
+    onDrag,
     dragStop,
   }
 });
-

@@ -4,7 +4,6 @@ import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 import { useProductStore } from '../stores/product';
 import { useModalStore } from '../stores/modal';
-import MenuModal from '@/components/MenuModal.vue';
 import Products from '@/components/Products.vue';
 import SelectedGames from '@/components/SelectedGames.vue';
 import Device from '@/components/Device.vue';
@@ -26,11 +25,7 @@ const { currentTab, toggleMenu } = storeToRefs(modalStore);
 </script>
 
 <template>
-  <div class="mx-auto inset-x-0 fixed bottom-0 sm:mb-2 z-[800] w-full sm:w-[450px] cursor-pointer">
-
-    <Transition name="slide-y">
-      <MenuModal v-show="toggleMenu"/>
-    </Transition>
+  <div class="mx-auto inset-x-0 fixed bottom-0 z-800 w-full sm:w-[450px] cursor-pointer">
 
     <div class="relative max-w-lg mx-auto bg-stone-800">
       <div v-show="!toggleMenu" class="flex h-1.5 bg-stone-400 shadow-inner">
@@ -79,19 +74,3 @@ const { currentTab, toggleMenu } = storeToRefs(modalStore);
 
   </div>
 </template>
-
-<style>
-  .slide-y-enter-active, .slide-y-leave-active {
-    transition: all 0.5s ease;
-  }
-
-  .slide-y-enter-from, .slide-y-leave-to {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-
-  .slide-y-enter-to, .slide-y-leave-from {
-    transform: translateY(0);
-    opacity: 1;
-  }
-</style>

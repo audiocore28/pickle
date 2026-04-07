@@ -1,10 +1,16 @@
 <script setup>
+import { storeToRefs } from 'pinia';
+import { useModalStore } from '@/stores/modal';
 import GameList from '@/components/GameList.vue';
 import Counter from '@/components/Counter.vue';
 import Platform from '@/components/Platform.vue';
 import Search from '@/components/Search.vue';
 import Sort from '@/components/Sort.vue';
 import Overlay from './components/Overlay.vue';
+import MenuModal from '@/components/MenuModal.vue';
+
+const modalStore = useModalStore();
+const { toggleMenu } = storeToRefs(modalStore);
 </script>
 
 <template>
@@ -28,6 +34,10 @@ import Overlay from './components/Overlay.vue';
     </div>
     <!-- / Filters -->
 
+    <Transition name="slide-y">
+      <MenuModal v-show="toggleMenu"/>
+    </Transition>
+
     <GameList />
 
     <Counter />
@@ -42,31 +52,17 @@ import Overlay from './components/Overlay.vue';
 </template>
 
 <style>
-  .slide-l-enter-active {
-    transition: all 0.5s ease-in;
+  .slide-y-enter-active, .slide-y-leave-active {
+    transition: all 0.5s ease;
   }
 
-  .slide-l-enter-from {
-    transform: translateX(100%);
+  .slide-y-enter-from, .slide-y-leave-to {
+    transform: translateY(100%);
     opacity: 0;
   }
 
-  .slide-l-enter-to {
-    transform: translateX(0);
+  .slide-y-enter-to, .slide-y-leave-from {
+    transform: translateY(0);
     opacity: 1;
-  }
-
-  .slide-l-leave-active {
-    transition: all 0.5s ease-out;
-  }
-
-  .slide-l-leave-from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-
-  .slide-l-leave-to {
-    transform: translateX(100%);
-    opacity: 0;
   }
 </style>
