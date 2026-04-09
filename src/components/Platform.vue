@@ -35,7 +35,7 @@ function scrollRight() {
       </svg>
     </button>  
     
-    <div id="scrollContainer" class="flex overflow-x-scroll items-center lg:justify-center md:overflow-x-hidden space-x-4 w-[250px] xs:w-full bg-gray-100 rounded-lg shadow-inner">
+    <div id="scrollContainer" class="flex overflow-x-scroll items-center lg:justify-center md:overflow-x-hidden space-x-4 w-[250px] xs:w-full bg-stone-900 rounded-lg shadow-inner">
       <button v-for="pf in device.platforms" @click.prevent="platform = pf" 
       :class="{
         'bg-stone-300 text-stone-600' : platform !== pf,

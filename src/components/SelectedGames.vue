@@ -37,7 +37,7 @@ const { device } = toRefs(gameStore);
             </div>
             
             <div class="flex items-center">
-              <span class="text-xs text-stone-300 mr-3">{{ game.size.toFixed(1) }} GB</span>
+              <span class="text-xs text-stone-400 mr-3">{{ game.size.toFixed(1) }} GB</span>
               
               <button @click="gameStore.toggleSelect(game)" tabindex="-1" type="button" class="cursor-pointer">
                 <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="12" r="10" stroke="#dc2626" stroke-width="1.5"></circle> <path d="M15 12H9" stroke="#dc2626" stroke-width="1.5" stroke-linecap="round"></path> </g></svg>
