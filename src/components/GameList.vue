@@ -6,14 +6,18 @@ import GameDetailSkeleton from './GameDetailSkeleton.vue';
 import Highlights from '@/components/Highlights.vue';
 
 const store = useGameStore();
-const { games, selected, filteredGames } = storeToRefs(store);
+const { games, selected, filteredGames, genre } = storeToRefs(store);
 </script>
 
 <template>
-  <section class="bg-stone-800 mt-35 sm:mt-30 md:mt-24 lg:mt-10">
-    <div class="max-w-screen-2xl mx-auto p-5 sm:p-10 md:p-16">
-      <div class="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-      <Highlights />
+  <section class="bg-stone-900">
+    <div class="max-w-screen-2xl mx-auto p-5 sm:p-10 md:p-16 2xl:p-28">
+
+      <Highlights v-show="!genre === 'all'" />
+
+      <h3 class="font-display text-3xl font-bold text-stone-300 uppercase mb-1 flex items-center gap-2">{{ genre }}</h3>;
+
+      <div class="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-3">
   
         <div v-if="games.length" v-for="game in filteredGames" :key="game.id" class="relative cursor-pointer rounded overflow-hidden shadow-lg"
           @click.prevent="store.toggleSelect(game)" 

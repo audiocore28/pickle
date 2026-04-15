@@ -31,6 +31,7 @@ export const useGameStore = defineStore('game', () => {
     }
   });
   const search = ref('');
+  const genre = ref('shooter');
   const platform = ref('win');
   const sortBy = ref('A-Z');
   const now = ref(new Date());
@@ -154,8 +155,8 @@ export const useGameStore = defineStore('game', () => {
   const filteredGames = computed(() => {
     let filtered = [];
 
-    filtered = games.value
-        .filter(g => g.platform === platform.value)
+    filtered = groupedGames.value.list
+        .filter(g => g.genres.includes(genre.value))
         .filter(g => g.name.toLowerCase().includes(search.value));
 
     switch (sortBy.value) {
@@ -176,6 +177,30 @@ export const useGameStore = defineStore('game', () => {
         return filtered.sort((a, b) => b.id - a.id);
         break;
     }
+  });
+
+  const groupedGames = computed(() => {
+
+    if (device.unit === 'pc' || device.unit === 'ps4' || device.unit === 'nsw') {
+
+      return games.value.reduce((accumulator, currentGame) => {
+        const platform = currentGame.platform;
+        const categories = currentGame.genres.split(",").map(category => category.trim());
+
+        if (device.platforms.includes(platform)) {
+          accumulator.list.push(currentGame);
+          accumulator.genres = [...new Set([...accumulator.genres, ...categories])].sort();
+        }
+
+        return accumulator;
+
+      }, {
+        list: [],
+        genres: [],
+      });
+
+    }
+
   });
 
   const groupedSelection = computed(() => {
@@ -242,6 +267,7 @@ export const useGameStore = defineStore('game', () => {
     selected,
     search,
     platform,
+    genre,
     sortBy,
     toggleSelect,
     filteredGames,
@@ -250,6 +276,7 @@ export const useGameStore = defineStore('game', () => {
     freeSpace,
     percentageWidth,
     percentageColor,
+    groupedGames,
     groupedSelection,
     clearAll,
     togglePlatform,
