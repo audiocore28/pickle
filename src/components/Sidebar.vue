@@ -7,7 +7,7 @@ import Search from './Search.vue';
 const gameStore = useGameStore();
 
 const { device } = toRefs(gameStore);
-const { groupedGames, genre } = storeToRefs(gameStore);
+const { groupedGames, genreIndex } = storeToRefs(gameStore);
 
 </script>
 <template>
@@ -32,13 +32,13 @@ const { groupedGames, genre } = storeToRefs(gameStore);
       </div>
       
       <ul class="w-55 xl:w-64 px-4 overflow-y-auto fixed z-30 inset-y-0 top-47 bottom-15 left-0">
-        <li class="block py-2 px-4 rounded text-xs text-stone-200 hover:bg-stone-700">all</li>
+        <li class="block py-2 px-4 rounded text-xs text-stone-200 hover:bg-stone-700">All</li>
         <li  
-          v-for="g in groupedGames.genres" 
-          @click.prevent="genre = g" 
+          v-for="(g, index) in groupedGames.genres" 
+          @click.prevent="genreIndex = index" 
           :key="g"
-          :class="{ 'bg-stone-700 text-stone-200' : genre == g, }"
-          class="block py-2 px-4 rounded text-xs text-stone-200 hover:bg-stone-700 cursor-pointer"
+          :class="{ 'bg-stone-700 text-stone-200' : genreIndex === index }"
+          class="block py-2 px-4 rounded text-xs text-stone-200 capitalize hover:bg-stone-700 cursor-pointer"
           href="#" 
         >
           {{ g }}

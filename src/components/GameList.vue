@@ -4,6 +4,7 @@ import { useGameStore } from '../stores/game';
 import GameDetail from '@/components/GameDetail.vue';
 import GameDetailSkeleton from './GameDetailSkeleton.vue';
 import Highlights from '@/components/Highlights.vue';
+import GenreNav from '@/components/GenreNav.vue';
 
 const store = useGameStore();
 const { games, selected, filteredGames, genre } = storeToRefs(store);
@@ -33,6 +34,8 @@ const { games, selected, filteredGames, genre } = storeToRefs(store);
         </div>
 
       </div>
+
+      <GenreNav />
     </div>
   </section>
 </template>

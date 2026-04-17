@@ -31,7 +31,7 @@ export const useGameStore = defineStore('game', () => {
     }
   });
   const search = ref('');
-  const genre = ref('shooter');
+  const genreIndex = ref(0);
   const platform = ref('win');
   const sortBy = ref('A-Z');
   const now = ref(new Date());
@@ -152,6 +152,8 @@ export const useGameStore = defineStore('game', () => {
     platform.value = device.platforms[0];
   }
 
+  const genre = computed(() => groupedGames.value.genres[genreIndex.value]); 
+
   const filteredGames = computed(() => {
     let filtered = [];
 
@@ -189,7 +191,9 @@ export const useGameStore = defineStore('game', () => {
 
         if (device.platforms.includes(platform)) {
           accumulator.list.push(currentGame);
-          accumulator.genres = [...new Set([...accumulator.genres, ...categories])].sort();
+          accumulator.genres = [...new Set([...accumulator.genres, ...categories])]
+            .filter(genre => genre !== '')
+            .sort();
         }
 
         return accumulator;
@@ -267,11 +271,12 @@ export const useGameStore = defineStore('game', () => {
     selected,
     search,
     platform,
-    genre,
+    genreIndex,
     sortBy,
     toggleSelect,
     filteredGames,
     selectDevice,
+    genre,
     percentage,
     freeSpace,
     percentageWidth,
