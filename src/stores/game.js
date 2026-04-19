@@ -39,6 +39,9 @@ export const useGameStore = defineStore('game', () => {
   const captureContainer = ref(null);
   const targetElementRef = ref(null);
 
+  const minSize = ref(0);
+  const maxSize = ref(50);
+
   function toggleSelect(g) {
     if (selected.value.some(s => s.id === g.id)) {
       selected.value = selected.value.filter(s => s.id !== g.id);
@@ -166,10 +169,12 @@ export const useGameStore = defineStore('game', () => {
 
     if (genreIndex.value !== 'all') {
       filtered = groupedGames.value.list
+        .filter(g => g.size >= minSize.value && g.size <= maxSize.value)
         .filter(g => g.genres.includes(genre.value))
         .filter(g => g.name.toLowerCase().includes(search.value));
     } else {
       filtered = groupedGames.value.list
+        .filter(g => g.size >= minSize.value && g.size <= maxSize.value)
         .filter(g => g.name.toLowerCase().includes(search.value));
     }
 
@@ -285,6 +290,8 @@ export const useGameStore = defineStore('game', () => {
     platform,
     genreIndex,
     sortBy,
+    minSize,
+    maxSize,
     toggleSelect,
     filteredGames,
     selectDevice,
@@ -304,5 +311,7 @@ export const useGameStore = defineStore('game', () => {
   }
 
 }, {
-  persist: true // enables persistence for this store
+  persist: {
+    omit: ['maxSize', 'minSize'], // This state will not be saved to storage
+  }
 });

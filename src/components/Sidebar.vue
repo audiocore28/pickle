@@ -3,6 +3,7 @@ import { toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 import Search from './Search.vue';
+import SizeRange from './SizeRange.vue';
 
 const gameStore = useGameStore();
 
@@ -27,11 +28,12 @@ const { groupedGames, genreIndex } = storeToRefs(gameStore);
 
         <div class="p-5">
           <Search />
-          <h2 class="mt-8 pl-2 text-stone-300 text-xs font-semibold uppercase">Browse by Category</h2>
+          <SizeRange />
+          <h2 class="mt-4 pl-1 text-stone-300 text-xs font-semibold uppercase">Browse by Category</h2>
         </div>
       </div>
       
-      <ul class="w-55 xl:w-64 px-4 overflow-y-auto fixed z-30 inset-y-0 top-47 bottom-15 left-0">
+      <ul class="w-55 xl:w-64 px-4 overflow-y-auto fixed z-30 inset-y-0 top-78 bottom-15 left-0">
         <li 
           @click.prevent="genreIndex = 'all'" 
           :class="{ 'bg-stone-700 text-stone-200' : genreIndex === 'all' }"
