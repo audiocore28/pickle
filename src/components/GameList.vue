@@ -14,9 +14,9 @@ const { games, selected, filteredGames, genre } = storeToRefs(store);
   <section class="bg-stone-900">
     <div class="max-w-screen-2xl mx-auto p-5 sm:p-10 md:p-16 2xl:p-28">
 
-      <Highlights v-show="!genre === 'all'" />
+      <Highlights v-show="genre === 'all'" />
 
-      <h3 class="font-display text-3xl font-bold text-stone-300 uppercase mb-1 flex items-center gap-2">{{ genre }}</h3>;
+      <h3 v-show="genre !== 'all'" class="font-display text-3xl font-bold text-stone-300 uppercase mb-1 flex items-center gap-2">{{ genre }}</h3>;
 
       <div class="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-3">
   
@@ -35,7 +35,7 @@ const { games, selected, filteredGames, genre } = storeToRefs(store);
 
       </div>
 
-      <GenreNav />
+      <GenreNav v-show="genre !== 'all'" />
     </div>
   </section>
 </template>

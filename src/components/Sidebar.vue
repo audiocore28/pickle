@@ -32,10 +32,16 @@ const { groupedGames, genreIndex } = storeToRefs(gameStore);
       </div>
       
       <ul class="w-55 xl:w-64 px-4 overflow-y-auto fixed z-30 inset-y-0 top-47 bottom-15 left-0">
-        <li class="block py-2 px-4 rounded text-xs text-stone-200 hover:bg-stone-700">All</li>
+        <li 
+          @click.prevent="genreIndex = 'all'" 
+          :class="{ 'bg-stone-700 text-stone-200' : genreIndex === 'all' }"
+          class="block py-2 px-4 rounded text-xs text-stone-200 capitalize hover:bg-stone-700 cursor-pointer"
+        >
+          all
+        </li>
         <li  
-          v-for="(g, index) in groupedGames.genres" 
           @click.prevent="genreIndex = index" 
+          v-for="(g, index) in groupedGames.genres" 
           :key="g"
           :class="{ 'bg-stone-700 text-stone-200' : genreIndex === index }"
           class="block py-2 px-4 rounded text-xs text-stone-200 capitalize hover:bg-stone-700 cursor-pointer"

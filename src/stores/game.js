@@ -31,7 +31,7 @@ export const useGameStore = defineStore('game', () => {
     }
   });
   const search = ref('');
-  const genreIndex = ref(0);
+  const genreIndex = ref('all');
   const platform = ref('win');
   const sortBy = ref('A-Z');
   const now = ref(new Date());
@@ -122,6 +122,7 @@ export const useGameStore = defineStore('game', () => {
 
   function selectDevice(dv) {
     device.unit = dv;
+    genreIndex.value = 'all';
 
     if (dv === 'pc') {
       device.platforms = ['win', 'ps3', 'ps2'];
@@ -152,14 +153,25 @@ export const useGameStore = defineStore('game', () => {
     platform.value = device.platforms[0];
   }
 
-  const genre = computed(() => groupedGames.value.genres[genreIndex.value]); 
+  const genre = computed(() => {
+    if (genreIndex.value !== 'all') {
+      return groupedGames.value.genres[genreIndex.value];
+    } else {
+      return 'all';
+    }
+  });
 
   const filteredGames = computed(() => {
     let filtered = [];
 
-    filtered = groupedGames.value.list
+    if (genreIndex.value !== 'all') {
+      filtered = groupedGames.value.list
         .filter(g => g.genres.includes(genre.value))
         .filter(g => g.name.toLowerCase().includes(search.value));
+    } else {
+      filtered = groupedGames.value.list
+        .filter(g => g.name.toLowerCase().includes(search.value));
+    }
 
     switch (sortBy.value) {
       case 'New Add':
