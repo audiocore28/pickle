@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
 const store = useGameStore();
-const { captureContainer, groupedSelection } = storeToRefs(store);
+const { captureContainer, groupedSelection, groupedSize } = storeToRefs(store);
 
 const now = new Date();
 const timestamp = now.toLocaleString('en-US', {
@@ -55,7 +55,7 @@ const timestamp = now.toLocaleString('en-US', {
       <div aria-hidden="true" class="border-t p-2"></div>
       <div class="text-sm uppercase font-semibold flex items-center justify-between mb-2">
           <span>Total Size:</span> 
-          <span>{{ groupedSelection.size.toFixed(1) }} GB</span>
+          <span>{{ groupedSize.toFixed(1) }} GB</span>
       </div>
       <!-- Footer -->
 

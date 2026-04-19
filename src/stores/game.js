@@ -10,7 +10,7 @@ export const useGameStore = defineStore('game', () => {
   const productStore = useProductStore();
 
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBDQML7oIs5nSLLaLeE33PjkLT8AQGJJ69x1zKzxyaEA5oyabWZ2rThbMuqHAsUGQAxg/exec';
-  const games = ref([]);
+  const games = shallowRef([]);
   const selected = ref([]);
   const device = reactive({
     unit: 'pc',
@@ -43,11 +43,13 @@ export const useGameStore = defineStore('game', () => {
   const maxSize = ref(50);
 
   function toggleSelect(g) {
-    if (selected.value.some(s => s.id === g.id)) {
-      selected.value = selected.value.filter(s => s.id !== g.id);
+    const index = selected.value.findIndex(s => s.id === g.id);
+
+    if (index > -1) {
+      selected.value.splice(index, 1);
 
     } else {
-      if (groupedSelection.value.size + g.size > device.assignedStorage.limit) {
+      if (groupedSize.value + g.size > device.assignedStorage.limit) {
         modalStore.openAlert(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${device.assignedStorage.limit.toFixed(0)} GB limit.`})
         return;
       }
@@ -241,7 +243,6 @@ export const useGameStore = defineStore('game', () => {
 
           accumulator.list[platform].unshift(currentGame);
           accumulator.count[platform]++;
-          accumulator.size += currentGame.size;
           accumulator.groupCount++;
         }
 
@@ -250,15 +251,29 @@ export const useGameStore = defineStore('game', () => {
       }, {
         list: {},
         count: {},
-        size: 0,
         groupCount: 0
       });
     }
 
   });
 
-  const freeSpace = computed(() => Math.max(0, device.assignedStorage.limit - groupedSelection.value.size ));
-  const percentage = computed(() => (groupedSelection.value.size / device.assignedStorage.limit) * 100 );
+  const groupedSize = computed(() => {
+
+    if (device.unit === 'pc' || device.unit === 'ps4' || device.unit === 'nsw') {
+      return selected.value.reduce((accumulator, currentGame) => {
+
+        if (device.platforms.includes(currentGame.platform)) {
+          accumulator += currentGame.size;
+        }
+
+        return accumulator;
+      },0);
+    }
+
+  });
+
+  const freeSpace = computed(() => Math.max(0, device.assignedStorage.limit - groupedSize.value ));
+  const percentage = computed(() => (groupedSize.value / device.assignedStorage.limit) * 100 );
 
   // Styles
   const percentageWidth = computed(() => {
@@ -302,6 +317,7 @@ export const useGameStore = defineStore('game', () => {
     percentageColor,
     groupedGames,
     groupedSelection,
+    groupedSize,
     clearAll,
     togglePlatform,
     captureContainer,
@@ -312,6 +328,6 @@ export const useGameStore = defineStore('game', () => {
 
 }, {
   persist: {
-    omit: ['maxSize', 'minSize'], // This state will not be saved to storage
+    pick: ['games', 'selected', 'device'] // Specify only the fields you want to save to localStorage
   }
 });

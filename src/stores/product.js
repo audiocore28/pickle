@@ -188,7 +188,7 @@ export const useProductStore = defineStore('product', () => {
   const accessoriesTotalQty = computed(() => accessories.value.reduce((sum, currentItem) =>  sum += currentItem.quantity, 0));
   const totalPrice = computed(() => {
     if (gameStore.device.assignedStorage.id === 3) {
-      return accessoriesTotalPrice.value + gameStore.groupedSelection.size;
+      return accessoriesTotalPrice.value + gameStore.groupedSize;
     } else {
       return accessoriesTotalPrice.value + gameStore.device.assignedStorage.price;
     }
@@ -229,14 +229,14 @@ export const useProductStore = defineStore('product', () => {
     let higherCapacities = [];
 
     if (storage.id === gameStore.device.assignedStorage.id) {
-      higherCapacities = storage.capacities.filter(cap => cap.size > gameStore.device.assignedStorage.size && cap.size > gameStore.groupedSelection.size && cap.isAvailable === true);
+      higherCapacities = storage.capacities.filter(cap => cap.limit > gameStore.device.assignedStorage.limit && cap.limit > gameStore.groupedSize && cap.isAvailable === true);
     } else {
-      higherCapacities = storage.capacities.filter(cap => cap.size > 0 && cap.size > gameStore.groupedSelection.size && cap.isAvailable === true);
+      higherCapacities = storage.capacities.filter(cap => cap.limit > 0 && cap.limit > gameStore.groupedSize && cap.isAvailable === true);
     }
     
     if (higherCapacities.length > 0) { 
       const nextCapacity = higherCapacities.reduce((accumulator, current) => {
-        return (current.size < accumulator.size) ? current : accumulator;
+        return (current.limit < accumulator.limit) ? current : accumulator;
       }, higherCapacities[0]); 
 
       updateDeviceStorage({id: storage.id, description: storage.description, ...nextCapacity});
@@ -247,15 +247,15 @@ export const useProductStore = defineStore('product', () => {
     let lowerCapacities = [];
 
     if (storage.id === gameStore.device.assignedStorage.id) {
-      lowerCapacities = storage.capacities.filter(cap => cap.size < gameStore.device.assignedStorage.size && cap.size > gameStore.groupedSelection.size && cap.isAvailable === true);
+      lowerCapacities = storage.capacities.filter(cap => cap.limit < gameStore.device.assignedStorage.limit && cap.limit > gameStore.groupedSize && cap.isAvailable === true);
     } else {
-      lowerCapacities = storage.capacities.filter(cap => cap.size < 0 && cap.size > gameStore.groupedSelection.size && cap.isAvailable === true);
+      lowerCapacities = storage.capacities.filter(cap => cap.limit < 0 && cap.limit > gameStore.groupedSize && cap.isAvailable === true);
     }
 
 
     if (lowerCapacities.length > 0) { 
       const prevCapacity = lowerCapacities.reduce((accumulator, current) => {
-        return (current.size > accumulator.size) ? current : accumulator;
+        return (current.limit > accumulator.limit) ? current : accumulator;
       }, lowerCapacities[0]);
 
       updateDeviceStorage({id: storage.id, description: storage.description, ...prevCapacity});

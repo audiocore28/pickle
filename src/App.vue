@@ -45,7 +45,7 @@ const { toggleMenu } = storeToRefs(modalStore);
         <!-- / Filters -->
 
         <Transition name="slide-y">
-          <MenuModal v-show="toggleMenu"/>
+          <MenuModal v-if="toggleMenu"/>
         </Transition>
 
         <GameList />
