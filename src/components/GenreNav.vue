@@ -4,19 +4,19 @@ import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 
 const gameStore = useGameStore();
-const { groupedGames, genreIndex } = storeToRefs(gameStore);
+const { filteredGenres, genreIndex } = storeToRefs(gameStore);
 
 function showPrev() {
-  genreIndex.value = (genreIndex.value - 1 + groupedGames.value.genres.length) % groupedGames.value.genres.length;
+  genreIndex.value = (genreIndex.value - 1 + filteredGenres.value.length) % filteredGenres.value.length;
 }
 
 function showNext() {
   // Update index to the next position, cycling back to 0 at the end
-  genreIndex.value = (genreIndex.value + 1) % groupedGames.value.genres.length;
+  genreIndex.value = (genreIndex.value + 1) % filteredGenres.value.length;
 }
 
-const genrePrev = computed(() => groupedGames.value.genres[(genreIndex.value - 1 + groupedGames.value.genres.length) % groupedGames.value.genres.length]); 
-const genreNext = computed(() => groupedGames.value.genres[(genreIndex.value + 1) % groupedGames.value.genres.length]); 
+const genrePrev = computed(() => filteredGenres.value[(genreIndex.value - 1 + filteredGenres.value.length) % filteredGenres.value.length]); 
+const genreNext = computed(() => filteredGenres.value[(genreIndex.value + 1) % filteredGenres.value.length]); 
 </script>
 
 <template>

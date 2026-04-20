@@ -4,7 +4,7 @@ import { useGameStore } from '../stores/game';
 
 const gameStore = useGameStore();
 
-const { groupedGames, genreIndex } = storeToRefs(gameStore);
+const { filteredGenres, genreIndex } = storeToRefs(gameStore);
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const { groupedGames, genreIndex } = storeToRefs(gameStore);
       all
     </button>
     <button 
-      v-for="(g, index) in groupedGames.genres" 
+      v-for="(g, index) in filteredGenres" 
       @click.prevent="genreIndex = index" 
       :key="g"
       class="px-3 py-1.5 rounded-lg text-xs transition-all whitespace-nowrap flex-shrink-0 font-inter text-stone-400 capitalize cursor-pointer"

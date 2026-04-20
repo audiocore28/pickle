@@ -187,10 +187,29 @@ export const useGameStore = defineStore('game', () => {
 
   const genre = computed(() => {
     if (genreIndex.value !== 'all') {
-      return groupedGames.value.genres[genreIndex.value];
+      return filteredGenres.value[genreIndex.value];
     } else {
       return 'all';
     }
+  });
+
+  const filteredGenres = computed(() => {
+    let filtered = [];
+
+    filtered = groupedGames.value.list
+      .filter(g => g.size >= minSize.value && g.size <= maxSize.value)
+      .filter(g => g.name.toLowerCase().includes(search.value));
+
+    return filtered.reduce((accumulator, currentGame) => {
+      const categories = currentGame.genres.split(",").map(category => category.trim());
+
+      accumulator = [...new Set([...accumulator, ...categories])]
+        .filter(genre => genre !== '')
+        .sort();
+
+      return accumulator;
+    }, []);
+
   });
 
   const filteredGames = computed(() => {
@@ -343,6 +362,7 @@ export const useGameStore = defineStore('game', () => {
     minPercent,
     maxPercent,
     toggleSelect,
+    filteredGenres,
     filteredGames,
     selectDevice,
     updateRange,

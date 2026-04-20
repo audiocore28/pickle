@@ -8,7 +8,7 @@ import SizeRange from './SizeRange.vue';
 const gameStore = useGameStore();
 
 const { device } = toRefs(gameStore);
-const { groupedGames, genreIndex } = storeToRefs(gameStore);
+const { filteredGenres, genreIndex } = storeToRefs(gameStore);
 
 </script>
 <template>
@@ -43,7 +43,7 @@ const { groupedGames, genreIndex } = storeToRefs(gameStore);
         </li>
         <li  
           @click.prevent="genreIndex = index" 
-          v-for="(g, index) in groupedGames.genres" 
+          v-for="(g, index) in filteredGenres" 
           :key="g"
           :class="{ 'bg-stone-700 text-stone-200' : genreIndex === index }"
           class="block py-2 px-4 rounded text-xs text-stone-200 capitalize hover:bg-stone-700 cursor-pointer"
