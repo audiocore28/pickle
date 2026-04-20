@@ -1,34 +1,13 @@
 <script setup>
-  import { ref, computed } from 'vue';
+  import { toRefs } from 'vue';
   import { storeToRefs } from 'pinia';
   import { useGameStore } from '../stores/game';
 
   const gameStore = useGameStore();
-  const { device, minSize, maxSize } = storeToRefs(gameStore);
 
-  const minSizeRef = ref(null);
-  const minGap = ref(10);
-  const minPercent = ref(0);
-  const maxPercent = ref(100);
+  const { device } = toRefs(gameStore);
+  const { minSize, maxSize, rangeTrackStyles, minSizeRef } = storeToRefs(gameStore);
 
-  const rangeTrackStyles = computed(() => ({
-    left: minPercent.value + "%",
-    right: 100 - maxPercent.value + "%"
-  }));
-
-  function updateRange(event) {
-    // Ensure min & max have a gap of at least `minGap`
-    if (maxSize.value - minSize.value < minGap.value) {
-      if (event.target === minSizeRef.value) {
-        minSize.value = maxSize.value - minGap.value;
-      } else {
-        maxSize.value = minSize.value + minGap.value;
-      }
-    }
-
-    minPercent.value = (minSize.value / 50) * 100;
-    maxPercent.value = (maxSize.value / 50) * 100;
-  }
 </script>
 
 <template>
@@ -37,8 +16,8 @@
     
     <div class="mt-4 slider-container">
       <!-- Custom Range Inputs -->
-      <input @input="updateRange($event)" ref="minSizeRef" type="range" min="0" max="50" v-model.number="minSize">
-      <input @input="updateRange($event)" type="range" min="0" max="50" v-model.number="maxSize">
+      <input @input="gameStore.updateRange($event)" ref="minSizeRef" type="range" min="0" max="50" v-model.number="minSize">
+      <input @input="gameStore.updateRange($event)" type="range" min="0" max="50" v-model.number="maxSize">
       
       <!-- Custom Track -->
       <div class="w-full h-2 bg-gray-200 rounded-md">

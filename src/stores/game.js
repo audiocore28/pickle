@@ -34,13 +34,17 @@ export const useGameStore = defineStore('game', () => {
   const genreIndex = ref('all');
   const platform = ref('win');
   const sortBy = ref('A-Z');
+  const minSize = ref(0);
+  const maxSize = ref(50);
+  const minGap = ref(10);
+  const minPercent = ref(0);
+  const maxPercent = ref(100);
   const now = ref(new Date());
   const togglePlatform = ref(true);
   const captureContainer = ref(null);
   const targetElementRef = ref(null);
+  const minSizeRef = ref(null);
 
-  const minSize = ref(0);
-  const maxSize = ref(50);
 
   function toggleSelect(g) {
     const index = selected.value.findIndex(s => s.id === g.id);
@@ -127,7 +131,15 @@ export const useGameStore = defineStore('game', () => {
 
   function selectDevice(dv) {
     device.unit = dv;
+
+    // clear all filters
+    search.value = '';
     genreIndex.value = 'all';
+    sortBy.value = 'Recently Added';
+    minSize.value = 0;
+    maxSize.value = 50;
+
+    updateRange(minSizeRef.value);
 
     if (dv === 'pc') {
       device.platforms = ['win', 'ps3', 'ps2'];
@@ -157,6 +169,21 @@ export const useGameStore = defineStore('game', () => {
 
     platform.value = device.platforms[0];
   }
+
+  function updateRange(event) {
+    // Ensure min & max have a gap of at least `minGap`
+    if (maxSize.value - minSize.value < minGap.value) {
+      if (event.target === minSizeRef.value) {
+        minSize.value = maxSize.value - minGap.value;
+      } else {
+        maxSize.value = minSize.value + minGap.value;
+      }
+    }
+
+    minPercent.value = (minSize.value / 50) * 100;
+    maxPercent.value = (maxSize.value / 50) * 100;
+  }
+
 
   const genre = computed(() => {
     if (genreIndex.value !== 'all') {
@@ -284,8 +311,13 @@ export const useGameStore = defineStore('game', () => {
     const clampedPercentage = Math.min(100, Math.max(0, percentage.value));
     const hue = 120 - (clampedPercentage * 1.2); 
     return `hsl(${hue}, 100%, 40%)`;
-
   });
+
+  const rangeTrackStyles = computed(() => ({
+    left: minPercent.value + "%",
+    right: 100 - maxPercent.value + "%"
+  }));
+
 
   onMounted(async () => {
     try {
@@ -307,14 +339,19 @@ export const useGameStore = defineStore('game', () => {
     sortBy,
     minSize,
     maxSize,
+    minGap,
+    minPercent,
+    maxPercent,
     toggleSelect,
     filteredGames,
     selectDevice,
+    updateRange,
     genre,
     percentage,
     freeSpace,
     percentageWidth,
     percentageColor,
+    rangeTrackStyles,
     groupedGames,
     groupedSelection,
     groupedSize,
@@ -324,6 +361,7 @@ export const useGameStore = defineStore('game', () => {
     captureElement,
     now,
     targetElementRef, 
+    minSizeRef,
   }
 
 }, {
