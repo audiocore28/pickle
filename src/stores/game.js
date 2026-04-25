@@ -1,17 +1,12 @@
 import { ref, reactive, shallowRef, computed, onMounted } from 'vue';
 import { defineStore } from 'pinia';
-import html2canvas from 'html2canvas';
-import { useModalStore } from './modal';
 import { useProductStore } from './product';
-import Alert from '@/components/Alert.vue';
 
 export const useGameStore = defineStore('game', () => {
-  const modalStore = useModalStore();
   const productStore = useProductStore();
 
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBDQML7oIs5nSLLaLeE33PjkLT8AQGJJ69x1zKzxyaEA5oyabWZ2rThbMuqHAsUGQAxg/exec';
   const games = shallowRef([]);
-  const selected = ref([]);
   const device = reactive({
     unit: 'pc',
     platforms: ['win', 'ps3', 'ps2'],
@@ -39,95 +34,9 @@ export const useGameStore = defineStore('game', () => {
   const minGap = ref(10);
   const minPercent = ref(0);
   const maxPercent = ref(100);
-  const now = ref(new Date());
   const togglePlatform = ref(true);
-  const captureContainer = ref(null);
-  const targetElementRef = ref(null);
   const minSizeRef = ref(null);
 
-
-  function toggleSelect(g) {
-    const index = selected.value.findIndex(s => s.id === g.id);
-
-    if (index > -1) {
-      selected.value.splice(index, 1);
-
-    } else {
-      if (groupedSize.value + g.size > device.assignedStorage.limit) {
-        modalStore.openAlert(Alert, { title: 'Not enough space!', message: `Adding ${g.name} (${g.size.toFixed(1)} GB) exceeds the ${device.assignedStorage.limit.toFixed(0)} GB limit.`})
-        return;
-      }
-
-      flyToCart(document.getElementById(g.id));
-
-      selected.value.push(g);
-    }
-  }
-
-  const flyToCart = (startElement) => {
-    const startRect = startElement.getBoundingClientRect();
-    const targetRect = targetElementRef.value.getBoundingClientRect();
-
-    // Create clone
-    const clone = startElement.cloneNode(true);
-    Object.assign(clone.style, {
-      position: 'fixed',
-      top: `${startRect.top}px`,
-      left: `${startRect.left}px`,
-      width: `${startRect.width}px`,
-      height: `${startRect.height}px`,
-      transition: 'all 0.5s ease-in-out',
-      zIndex: 9999,
-      cursor: 'pointer'
-    });
-    document.body.appendChild(clone);
-
-    // Animate to cart
-    requestAnimationFrame(() => {
-      Object.assign(clone.style, {
-        top: `${targetRect.top}px`,
-        left: `${targetRect.left}px`,
-        width: '20px',
-        height: '20px',
-        opacity: '0.5',
-        cursor: 'pointer'
-      });
-    });
-
-    // Cleanup
-    setTimeout(() => clone.remove(), 500);
-  };
-
-  function clearAll() {
-    const isConfirmed = confirm("Are you sure you want to clear ALL selected games from the list?");
-    
-    if (isConfirmed) {
-      selected.value = [];
-    }
-  }
-
-  const captureElement = async () => {
-    // Capture using html2canvas
-    html2canvas(captureContainer.value, {
-      scale: 2, // Use a higher scale for better resolution
-      useCORS: true,
-      // Capture the element in its entirety
-      width: captureContainer.value.offsetWidth,
-      height: captureContainer.value.offsetHeight,
-    }).then(canvas => {
-      // Trigger Download (.jpeg format requested)
-      const image = canvas.toDataURL('image/jpeg', 0.9); // JPEG format, 0.9 quality
-
-      const link = document.createElement('a');
-      link.download = `Gamelist_${now.value.getTime()}.jpeg`; 
-      link.href = image;
-      // Trigger download immediately
-      link.click();
-      
-      // Show alert message
-      modalStore.openAlert(Alert, { title: 'Download Complete!', message: 'Please send downloaded screenshot'})
-    });
-  };
 
   function selectDevice(dv) {
     device.unit = dv;
@@ -196,7 +105,7 @@ export const useGameStore = defineStore('game', () => {
   const filteredGenres = computed(() => {
     let filtered = [];
 
-    filtered = groupedGames.value.list
+    filtered = groupedGames.value
       .filter(g => g.size >= minSize.value && g.size <= maxSize.value)
       .filter(g => g.name.toLowerCase().includes(search.value));
 
@@ -216,12 +125,12 @@ export const useGameStore = defineStore('game', () => {
     let filtered = [];
 
     if (genreIndex.value !== 'all') {
-      filtered = groupedGames.value.list
+      filtered = groupedGames.value
         .filter(g => g.size >= minSize.value && g.size <= maxSize.value)
         .filter(g => g.genres.includes(genre.value))
         .filter(g => g.name.toLowerCase().includes(search.value));
     } else {
-      filtered = groupedGames.value.list
+      filtered = groupedGames.value
         .filter(g => g.size >= minSize.value && g.size <= maxSize.value)
         .filter(g => g.name.toLowerCase().includes(search.value));
     }
@@ -248,90 +157,17 @@ export const useGameStore = defineStore('game', () => {
 
   const groupedGames = computed(() => {
 
-    if (device.unit === 'pc' || device.unit === 'ps4' || device.unit === 'nsw') {
+    return games.value.reduce((accumulator, currentGame) => {
+      if (device.platforms.includes(currentGame.platform)) {
+        accumulator.push(currentGame);
+      }
 
-      return games.value.reduce((accumulator, currentGame) => {
-        const platform = currentGame.platform;
-        const categories = currentGame.genres.split(",").map(category => category.trim());
-
-        if (device.platforms.includes(platform)) {
-          accumulator.list.push(currentGame);
-          accumulator.genres = [...new Set([...accumulator.genres, ...categories])]
-            .filter(genre => genre !== '')
-            .sort();
-        }
-
-        return accumulator;
-
-      }, {
-        list: [],
-        genres: [],
-      });
-
-    }
+      return accumulator;
+    },[]); 
 
   });
-
-  const groupedSelection = computed(() => {
-
-    if (device.unit === 'pc' || device.unit === 'ps4' || device.unit === 'nsw') {
-      return selected.value.reduce((accumulator, currentGame) => {
-        const platform = currentGame.platform;
-
-        if (device.platforms.includes(platform)) {
-          if (!accumulator.list[platform]) {
-            accumulator.list[platform] = [];
-          }
-
-          if (!accumulator.count[platform]) {
-            accumulator.count[platform] = [];
-          }
-
-          accumulator.list[platform].unshift(currentGame);
-          accumulator.count[platform]++;
-          accumulator.groupCount++;
-        }
-
-        return accumulator;
-
-      }, {
-        list: {},
-        count: {},
-        groupCount: 0
-      });
-    }
-
-  });
-
-  const groupedSize = computed(() => {
-
-    if (device.unit === 'pc' || device.unit === 'ps4' || device.unit === 'nsw') {
-      return selected.value.reduce((accumulator, currentGame) => {
-
-        if (device.platforms.includes(currentGame.platform)) {
-          accumulator += currentGame.size;
-        }
-
-        return accumulator;
-      },0);
-    }
-
-  });
-
-  const freeSpace = computed(() => Math.max(0, device.assignedStorage.limit - groupedSize.value ));
-  const percentage = computed(() => (groupedSize.value / device.assignedStorage.limit) * 100 );
 
   // Styles
-  const percentageWidth = computed(() => {
-      return `${percentage.value}%`;
-  });
-
-  const percentageColor = computed(() => {
-    const clampedPercentage = Math.min(100, Math.max(0, percentage.value));
-    const hue = 120 - (clampedPercentage * 1.2); 
-    return `hsl(${hue}, 100%, 40%)`;
-  });
-
   const rangeTrackStyles = computed(() => ({
     left: minPercent.value + "%",
     right: 100 - maxPercent.value + "%"
@@ -351,7 +187,6 @@ export const useGameStore = defineStore('game', () => {
   return {
     device,
     games,
-    selected,
     search,
     platform,
     genreIndex,
@@ -361,31 +196,19 @@ export const useGameStore = defineStore('game', () => {
     minGap,
     minPercent,
     maxPercent,
-    toggleSelect,
     filteredGenres,
     filteredGames,
     selectDevice,
     updateRange,
     genre,
-    percentage,
-    freeSpace,
-    percentageWidth,
-    percentageColor,
     rangeTrackStyles,
     groupedGames,
-    groupedSelection,
-    groupedSize,
-    clearAll,
     togglePlatform,
-    captureContainer,
-    captureElement,
-    now,
-    targetElementRef, 
     minSizeRef,
   }
 
 }, {
   persist: {
-    pick: ['games', 'selected', 'device'] // Specify only the fields you want to save to localStorage
+    pick: ['games', 'device'] // Specify only the fields you want to save to localStorage
   }
 });

@@ -3,14 +3,17 @@ import { toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useProductStore } from '../stores/product';
 import { useGameStore } from '../stores/game';
+import { useSelectStore } from '../stores/select';
 import driveIcon from '../assets/drive.svg?raw';
 
 const gameStore = useGameStore();
+const selectStore = useSelectStore();
 const productStore = useProductStore();
 
 const { device } = toRefs(gameStore);
+const { groupedSize } = storeToRefs(selectStore);
 const { storages } = toRefs(productStore);
-const { groupedSize } = storeToRefs(gameStore);
+
 </script>
 
 <template>

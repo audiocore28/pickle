@@ -2,17 +2,19 @@
 import { toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
+import { useSelectStore } from '../stores/select';
 import { useProductStore } from '../stores/product';
 import StorageSelect from './StorageSelect.vue';
 import AccessorySelect from './AccessorySelect.vue';
 import SelectedList from './SelectedList.vue';
 
 const gameStore = useGameStore();
+const selectStore = useSelectStore();
 const productStore = useProductStore();
 
 const { totalPrice } = storeToRefs(productStore);
-const { freeSpace, percentageColor } = storeToRefs(gameStore);
 const { device } = toRefs(gameStore);
+const { freeSpace, percentageColor } = storeToRefs(selectStore);
 </script>
 
 <template>

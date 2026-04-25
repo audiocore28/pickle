@@ -2,6 +2,7 @@
 import { ref, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
+import { useSelectStore } from '../stores/select';
 import { useProductStore } from '../stores/product';
 import { useModalStore } from '../stores/modal';
 import Products from '@/components/Products.vue';
@@ -9,19 +10,13 @@ import SelectedGames from '@/components/SelectedGames.vue';
 import Device from '@/components/Device.vue';
 
 const gameStore = useGameStore();
+const selectStore = useSelectStore();
 const productStore = useProductStore();
 const modalStore = useModalStore();
 
-const {
-  groupedSize,
-  percentageWidth,
-  percentageColor,
-  targetElementRef
-} = storeToRefs(gameStore);
-
 const { device } = toRefs(gameStore);
+const { groupedSize, percentageWidth, percentageColor, targetElementRef } = storeToRefs(selectStore);
 const { currentTab, toggleMenu } = storeToRefs(modalStore);
-
 </script>
 
 <template>

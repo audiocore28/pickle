@@ -2,12 +2,14 @@
 import { defineProps, toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
+import { useSelectStore } from '../stores/select';
 import { useProductStore } from '../stores/product';
 
 const gameStore = useGameStore();
+const selectStore = useSelectStore();
 const productStore = useProductStore();
-const { selected } = storeToRefs(gameStore);
 const { device } = toRefs(gameStore);
+const { selected } = storeToRefs(selectStore);
 
 const props = defineProps({
   game: {

@@ -1,9 +1,9 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import { useGameStore } from '../stores/game';
+import { useSelectStore } from '../stores/select';
 
-const gameStore = useGameStore();
-const { percentageWidth, percentageColor } = storeToRefs(gameStore);
+const selectStore = useSelectStore();
+const { percentageWidth, percentageColor } = storeToRefs(selectStore);
 </script>
 
 <template>

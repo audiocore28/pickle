@@ -2,12 +2,14 @@
 import { toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
+import { useSelectStore } from '../stores/select';
 import SelectedList from './SelectedList.vue';
 
 const gameStore = useGameStore();
-const { groupedSelection } = storeToRefs(gameStore);
+const selectStore = useSelectStore();
 
 const { device } = toRefs(gameStore);
+const { groupedSelection } = storeToRefs(selectStore);
 </script>
 
 <template>

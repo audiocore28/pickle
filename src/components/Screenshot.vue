@@ -1,9 +1,9 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import { useGameStore } from '../stores/game';
+import { useSelectStore } from '../stores/select';
 
-const store = useGameStore();
-const { captureContainer, groupedSelection, groupedSize } = storeToRefs(store);
+const selectStore = useSelectStore();
+const { captureContainer, groupedSelection, groupedSize } = storeToRefs(selectStore);
 
 const now = new Date();
 const timestamp = now.toLocaleString('en-US', {

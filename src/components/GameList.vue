@@ -1,13 +1,16 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
+import { useSelectStore } from '../stores/select';
 import GameDetail from '@/components/GameDetail.vue';
 import GameDetailSkeleton from './GameDetailSkeleton.vue';
 import Highlights from '@/components/Highlights.vue';
 import GenreNav from '@/components/GenreNav.vue';
 
-const store = useGameStore();
-const { games, selected, filteredGames, genre } = storeToRefs(store);
+const gameStore = useGameStore();
+const selectStore = useSelectStore();
+const { games, filteredGames, genre } = storeToRefs(gameStore);
+const { selected } = storeToRefs(selectStore);
 </script>
 
 <template>
@@ -21,7 +24,7 @@ const { games, selected, filteredGames, genre } = storeToRefs(store);
       <div class="grid grid-cols-2 xs:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7 gap-3">
   
         <div v-if="games.length" v-for="game in filteredGames" :key="game.id" class="relative cursor-pointer rounded overflow-hidden shadow-lg"
-          @click.prevent="store.toggleSelect(game)" 
+          @click.prevent="selectStore.toggleSelect(game)" 
           :class="{
             'bg-stone-500 text-stone-200' : selected.includes(game.id),
             'hover:text-stone-500 transition duration-500 ease-in-out' : !selected.includes(game.id)

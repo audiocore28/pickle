@@ -1,12 +1,14 @@
 import { ref, reactive, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { useGameStore } from './game';
+import { useSelectStore } from './select';
 import driveIcon from '../assets/drive.svg?raw';
 import xboxControllerIcon from '../assets/xboxController.svg?raw';
 import ds4ControllerIcon from '../assets/ds4Controller.svg?raw';
 
 export const useProductStore = defineStore('product', () => {
   const gameStore = useGameStore();
+  const selectStore = useSelectStore();
 
   const icons = {
     drive: driveIcon,
@@ -188,7 +190,7 @@ export const useProductStore = defineStore('product', () => {
   const accessoriesTotalQty = computed(() => accessories.value.reduce((sum, currentItem) =>  sum += currentItem.quantity, 0));
   const totalPrice = computed(() => {
     if (gameStore.device.assignedStorage.id === 3) {
-      return accessoriesTotalPrice.value + gameStore.groupedSize;
+      return accessoriesTotalPrice.value + selectStore.groupedSize;
     } else {
       return accessoriesTotalPrice.value + gameStore.device.assignedStorage.price;
     }
@@ -229,9 +231,9 @@ export const useProductStore = defineStore('product', () => {
     let higherCapacities = [];
 
     if (storage.id === gameStore.device.assignedStorage.id) {
-      higherCapacities = storage.capacities.filter(cap => cap.limit > gameStore.device.assignedStorage.limit && cap.limit > gameStore.groupedSize && cap.isAvailable === true);
+      higherCapacities = storage.capacities.filter(cap => cap.limit > gameStore.device.assignedStorage.limit && cap.limit > selectStore.groupedSize && cap.isAvailable === true);
     } else {
-      higherCapacities = storage.capacities.filter(cap => cap.limit > 0 && cap.limit > gameStore.groupedSize && cap.isAvailable === true);
+      higherCapacities = storage.capacities.filter(cap => cap.limit > 0 && cap.limit > selectStore.groupedSize && cap.isAvailable === true);
     }
     
     if (higherCapacities.length > 0) { 
@@ -247,9 +249,9 @@ export const useProductStore = defineStore('product', () => {
     let lowerCapacities = [];
 
     if (storage.id === gameStore.device.assignedStorage.id) {
-      lowerCapacities = storage.capacities.filter(cap => cap.limit < gameStore.device.assignedStorage.limit && cap.limit > gameStore.groupedSize && cap.isAvailable === true);
+      lowerCapacities = storage.capacities.filter(cap => cap.limit < gameStore.device.assignedStorage.limit && cap.limit > selectStore.groupedSize && cap.isAvailable === true);
     } else {
-      lowerCapacities = storage.capacities.filter(cap => cap.limit < 0 && cap.limit > gameStore.groupedSize && cap.isAvailable === true);
+      lowerCapacities = storage.capacities.filter(cap => cap.limit < 0 && cap.limit > selectStore.groupedSize && cap.isAvailable === true);
     }
 
 

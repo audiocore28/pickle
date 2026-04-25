@@ -2,10 +2,14 @@
 import { ref, onUnmounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
+import { useSelectStore } from '../stores/select';
 import GameDetail from '@/components/GameDetail.vue';
 
 const gameStore = useGameStore();
-const { games, selected, filteredGames } = storeToRefs(gameStore);
+const selectStore = useSelectStore();
+
+const { games, filteredGames } = storeToRefs(gameStore);
+const { selected } = storeToRefs(selectStore);
 
 const scrollContainerRef = ref(null);
 const isDragging = ref(false);
@@ -43,7 +47,7 @@ function handleClick(game) {
   // prevent clicking when dragging
   if (isDragging.value) return;
 
-  gameStore.toggleSelect(game)
+  selectStore.toggleSelect(game);
 }
 
 function scrollToLeft() {
