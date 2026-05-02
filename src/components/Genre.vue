@@ -17,13 +17,13 @@ const { filteredGenres, genreIndex } = storeToRefs(gameStore);
       all
     </button>
     <button 
-      v-for="(g, index) in filteredGenres" 
-      @click.prevent="genreIndex = index" 
-      :key="g"
+      v-for="(g) in filteredGenres" 
+      @click.prevent="genreIndex = g.i" 
+      :key="g.i"
       class="px-3 py-1.5 rounded-lg text-xs transition-all whitespace-nowrap flex-shrink-0 font-inter text-stone-400 capitalize cursor-pointer"
-      :class="{ 'bg-stone-700 text-stone-200' : genreIndex === index }"
+      :class="{ 'bg-stone-700 text-stone-200' : genreIndex === g.i }"
     >
-      {{ g }}
+      {{ g.v }}
     </button>
   </div>
 </template>

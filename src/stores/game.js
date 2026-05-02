@@ -1,6 +1,7 @@
 import { ref, reactive, shallowRef, computed, onMounted } from 'vue';
 import { defineStore } from 'pinia';
 import { useProductStore } from './product';
+import { useDebouncedRef } from '@/composables/useDebouncedRef';
 
 export const useGameStore = defineStore('game', () => {
   const productStore = useProductStore();
@@ -27,7 +28,7 @@ export const useGameStore = defineStore('game', () => {
       isAvailable: true
     }
   });
-  const search = ref('');
+  const search = useDebouncedRef('');
   const platform = ref('win');
   const genreIndex = ref('all');
   const sortBy = ref('Recently Added');
@@ -41,50 +42,43 @@ export const useGameStore = defineStore('game', () => {
 
   // --- Getters ---------------------------------------------
 
-  const groupedGames = computed(() => {
-
-    return games.value.reduce((accumulator, currentGame) => {
-      if (device.platforms.includes(currentGame.platform)) {
-        accumulator.push(currentGame);
-      }
-
-      return accumulator;
-    },[]); 
-
-  });
+  const groupedGames = computed(() => games.value.filter(g => device.platforms.includes(g.platform)));
 
   const filteredGames = computed(() => {
     let filtered = [];
 
-    if (genreIndex.value !== 'all') {
-      filtered = groupedGames.value
-        .filter(g => g.size >= minSize.value && g.size <= maxSize.value)
-        .filter(g => g.genres.includes(genre.value))
-        .filter(g => g.name.toLowerCase().includes(search.value));
-    } else {
-      filtered = groupedGames.value
-        .filter(g => g.size >= minSize.value && g.size <= maxSize.value)
-        .filter(g => g.name.toLowerCase().includes(search.value));
-    }
+    filtered = groupedGames.value
+      .filter(g => g.size >= minSize.value && g.size <= maxSize.value)
+      .filter(g => genreIndex.value === 'all' || g.genres.split(',').map(genre => genre.trim()).includes(genre.value))
+      .filter(g => g.name.toLowerCase().includes(search.value.toLowerCase()));
 
     switch (sortBy.value) {
       case 'Recently Added':
         return filtered.sort((a, b) => b.id - a.id);
-        break;
       case 'Title (A-Z)':
         return filtered.sort((a, b) => a.name.localeCompare(b.name));
-        break;
       case 'Size Asc':
         return filtered.sort((a, b) => a.size - b.size);
-        break;
       case 'Size Desc':
         return filtered.sort((a, b) => b.size - a.size);
-        break;
-    
+
       default:
         return filtered.sort((a, b) => b.id - a.id);
-        break;
     }
+
+  });
+
+  const genres = computed(() => {
+
+    const allGenres = groupedGames.value.reduce((accumulator, currentGame) => {
+      const categories = currentGame.genres.split(",").map(category => category.trim());
+      return [...accumulator, ...categories];
+    }, []);
+
+    return [...new Set(allGenres)]
+      .filter(genre => genre !== '')
+      .sort();
+
   });
 
   const filteredGenres = computed(() => {
@@ -94,25 +88,14 @@ export const useGameStore = defineStore('game', () => {
       .filter(g => g.size >= minSize.value && g.size <= maxSize.value)
       .filter(g => g.name.toLowerCase().includes(search.value));
 
-    return filtered.reduce((accumulator, currentGame) => {
-      const categories = currentGame.genres.split(",").map(category => category.trim());
-
-      accumulator = [...new Set([...accumulator, ...categories])]
-        .filter(genre => genre !== '')
-        .sort();
-
-      return accumulator;
-    }, []);
+    return genres.value.map((v, i) => ({v, i})).filter(g => {
+      const genreName = genres.value[g.i];
+      return filtered.some(g => g.genres.split(',').map(genre => genre.trim()).includes(genreName));
+    });
 
   });
 
-  const genre = computed(() => {
-    if (genreIndex.value !== 'all') {
-      return filteredGenres.value[genreIndex.value];
-    } else {
-      return 'all';
-    }
-  });
+  const genre = computed(() => genreIndex.value !== 'all' ? genres.value[genreIndex.value] : 'all'); 
 
   // Styles
   const rangeTrackStyles = computed(() => ({
@@ -122,10 +105,7 @@ export const useGameStore = defineStore('game', () => {
 
   // --- Actions ---------------------------------------------
 
-  function selectDevice(dv) {
-    device.unit = dv;
-
-    // clear all filters
+  function clearFilters() {
     search.value = '';
     genreIndex.value = 'all';
     sortBy.value = 'Recently Added';
@@ -133,6 +113,10 @@ export const useGameStore = defineStore('game', () => {
     maxSize.value = 50;
 
     updateRange(minSizeRef.value);
+  }
+
+  function selectDevice(dv) {
+    device.unit = dv;
 
     if (dv === 'pc') {
       device.platforms = ['win', 'ps3', 'ps2'];
@@ -163,6 +147,7 @@ export const useGameStore = defineStore('game', () => {
       device.assignedStorage = productStore.nswStorage;
     }
 
+    clearFilters();
     platform.value = device.platforms[0];
   }
 
@@ -196,9 +181,9 @@ export const useGameStore = defineStore('game', () => {
     // state
     games, device, search, platform, genreIndex, sortBy, minSize, maxSize, minGap, minPercent, maxPercent, togglePlatform, minSizeRef,
     // getters
-    groupedGames, filteredGames, filteredGenres, genre, rangeTrackStyles,
+    groupedGames, filteredGames, genres, filteredGenres, genre, rangeTrackStyles,
     // actions
-    selectDevice, updateRange
+    clearFilters, selectDevice, updateRange
   }
 
 }, {

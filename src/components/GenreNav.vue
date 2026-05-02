@@ -6,17 +6,46 @@ import { useGameStore } from '../stores/game';
 const gameStore = useGameStore();
 const { filteredGenres, genreIndex } = storeToRefs(gameStore);
 
+const prevGenre = computed(() => {
+  let lowerIndex = [];
+  let prevIndex = null;
+
+  lowerIndex = filteredGenres.value.filter(g => g.i < genreIndex.value);
+
+  if (lowerIndex.length > 0) { 
+    prevIndex = lowerIndex.reduce((accumulator, current) => {
+      return (current.i > accumulator.i) ? current : accumulator;
+    }, lowerIndex[0]); 
+  } 
+
+  // Cycle back to the last index if at the beginning
+  return prevIndex ? prevIndex : filteredGenres.value.at(-1);
+});
+
+const nextGenre = computed(() => {
+  let higherIndex = [];
+  let nextIndex = null;
+
+  higherIndex = filteredGenres.value.filter(g => g.i > genreIndex.value);
+
+  if (higherIndex.length > 0) { 
+    nextIndex = higherIndex.reduce((accumulator, current) => {
+      return (current.i < accumulator.i) ? current : accumulator;
+    }, higherIndex[0]); 
+  } 
+
+  // Update index to the next position, cycling back to 0 at the end
+  return nextIndex ? nextIndex : filteredGenres.value[0];
+});
+
 function showPrev() {
-  genreIndex.value = (genreIndex.value - 1 + filteredGenres.value.length) % filteredGenres.value.length;
+  genreIndex.value = prevGenre.value.i;
 }
 
 function showNext() {
-  // Update index to the next position, cycling back to 0 at the end
-  genreIndex.value = (genreIndex.value + 1) % filteredGenres.value.length;
+  genreIndex.value = nextGenre.value.i; 
 }
 
-const genrePrev = computed(() => filteredGenres.value[(genreIndex.value - 1 + filteredGenres.value.length) % filteredGenres.value.length]); 
-const genreNext = computed(() => filteredGenres.value[(genreIndex.value + 1) % filteredGenres.value.length]); 
 </script>
 
 <template>
@@ -27,11 +56,11 @@ const genreNext = computed(() => filteredGenres.value[(genreIndex.value + 1) % f
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" class="w-8 h-8" aria-hidden="true" height="1em" width="2em" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path>
         </svg> 
-        {{ genrePrev }}
+        {{ genreIndex === 'all' ? '' : prevGenre.v }}
       </a>
 
       <a @click.prevent="showNext()" class="relative inline-flex items-center px-4 py-2 text-md font-medium text-stone-200 cursor-pointer" rel="next">
-        {{ genreNext }}
+        {{ genreIndex === 'all' ? '' : nextGenre.v }}
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 20 20" class="w-8 h-8" aria-hidden="true" height="1em" width="2em" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
         </svg>
