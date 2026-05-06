@@ -8,7 +8,7 @@ const { filteredGenres, genreIndex } = storeToRefs(gameStore);
 </script>
 
 <template>
-  <div class="flex gap-1.5 overflow-x-auto scrollbar-hide lg:flex-wrap lg:overflow-visible pb-1 -mx-1 px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+  <div class="flex gap-1.5 overflow-x-auto scrollbar-hide lg:flex-wrap lg:overflow-visible pt-3 -mx-1 px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
     <button 
       @click="genreIndex = 'all'" 
       class="px-3 py-1.5 rounded-lg text-xs transition-all whitespace-nowrap flex-shrink-0 font-inter text-stone-400 capitalize cursor-pointer"
@@ -20,6 +20,7 @@ const { filteredGenres, genreIndex } = storeToRefs(gameStore);
       v-for="(g) in filteredGenres" 
       @click.prevent="genreIndex = g.i" 
       :key="g.i"
+      :ref="(el) => { if (genreIndex === g.i) el?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }) }"
       class="px-3 py-1.5 rounded-lg text-xs transition-all whitespace-nowrap flex-shrink-0 font-inter text-stone-400 capitalize cursor-pointer"
       :class="{ 'bg-stone-700 text-stone-200' : genreIndex === g.i }"
     >

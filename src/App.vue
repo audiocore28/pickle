@@ -10,9 +10,10 @@ import Overlay from './components/Overlay.vue';
 import Genre from './components/Genre.vue';
 import MenuModal from '@/components/MenuModal.vue';
 import Sidebar from '@/components/Sidebar.vue';
+import ScrollToTop from '@/components/ScrollToTop.vue';
 
 const modalStore = useModalStore();
-const { toggleMenu } = storeToRefs(modalStore);
+const { toggleMenu, scrollContainerRef } = storeToRefs(modalStore);
 </script>
 
 <template>
@@ -21,7 +22,7 @@ const { toggleMenu } = storeToRefs(modalStore);
     <Sidebar v-show="true" class="hidden lg:block"/>
 
     <!-- Content Area -->
-    <div class="w-full overflow-y-auto">
+    <div ref="scrollContainerRef" class="w-full overflow-y-auto">
       <main>
 
         <!-- Filters -->
@@ -51,6 +52,8 @@ const { toggleMenu } = storeToRefs(modalStore);
         <GameList />
 
         <Counter />
+
+        <ScrollToTop />
 
         <Teleport to="#modal">
 

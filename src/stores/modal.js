@@ -15,6 +15,17 @@ export const useModalStore = defineStore('modal', () => {
   const maxHeight = 80;
   const isDragging = ref(false);
 
+  const toggleScrollToTop = ref(false);
+  const scrollContainerRef = ref(null);
+
+  const handleScroll = () => {
+    toggleScrollToTop.value = scrollContainerRef.value.scrollTop > 300;
+  }
+
+  function scrollToTop() {
+    scrollContainerRef.value.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   function openMenu(comp, tab) {
     if (currentTab.value === tab) {
       closeMenu();
@@ -119,12 +130,14 @@ export const useModalStore = defineStore('modal', () => {
 
   onMounted(async () => { 
     window.addEventListener('keydown', handleKeydown);
+    scrollContainerRef.value.addEventListener('scroll', handleScroll);
     document.addEventListener('touchend', dragStop);
   });
 
   onUnmounted(() => {  
-    window.removeEventListener('keydown', handleKeydown) 
-    document.addEventListener('touchend', dragStop);
+    window.removeEventListener('keydown', handleKeydown);
+    scrollContainerRef.value.removeEventListener('scroll', handleScroll);
+    document.removeEventListener('touchend', dragStop);
   });
 
   return {
@@ -138,6 +151,10 @@ export const useModalStore = defineStore('modal', () => {
     alertProps,
     openAlert,
     closeAlert,
+    toggleScrollToTop,
+    scrollContainerRef,
+    handleScroll,
+    scrollToTop,
     sheetHeight,
     dragStart,
     onDrag,

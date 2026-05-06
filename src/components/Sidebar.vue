@@ -45,6 +45,7 @@ const { filteredGenres, genreIndex } = storeToRefs(gameStore);
           @click.prevent="genreIndex = g.i" 
           v-for="(g) in filteredGenres" 
           :key="g.i"
+          :ref="(el) => { if (genreIndex === g.i) el?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }) }"
           :class="{ 'bg-stone-700 text-stone-200' : genreIndex === g.i }"
           class="block py-2 px-4 rounded text-xs text-stone-200 capitalize hover:bg-stone-700 cursor-pointer"
           href="#" 
