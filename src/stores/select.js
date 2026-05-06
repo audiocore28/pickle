@@ -27,21 +27,15 @@ export const useSelectStore = defineStore('select', () => {
           accumulator.list[platform] = [];
         }
 
-        if (!accumulator.count[platform]) {
-          accumulator.count[platform] = [];
-        }
-
         accumulator.list[platform].unshift(currentGame);
-        accumulator.count[platform]++;
-        accumulator.groupCount++;
+        accumulator.count++;
       }
 
       return accumulator;
 
     }, {
       list: {},
-      count: {},
-      groupCount: 0
+      count: 0
     });
 
   });

@@ -28,7 +28,7 @@ const { groupedSelection } = storeToRefs(selectStore);
       <div v-for="(group, groupName) in groupedSelection.list" class="max-w-2xl mx-auto px-4 rounded-xl">
         <div class="w-full flex items-center justify-between py-4 text-xs text-stone-300 font-semibold uppercase">
           <h2>{{ groupName }}</h2>
-          <span v-for="(count, platform) in groupedSelection.count" v-show="groupName === platform" class="text-stone-400">{{ count }} Games Selected</span>
+          <span class="text-stone-400">{{ group.length }} Games Selected</span>
         </div>
     
         <TransitionGroup tag="ul" name="slide-x">
