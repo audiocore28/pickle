@@ -5,7 +5,6 @@ import GameList from '@/components/GameList.vue';
 import Counter from '@/components/Counter.vue';
 import Platform from '@/components/Platform.vue';
 import Search from '@/components/Search.vue';
-import Sort from '@/components/Sort.vue';
 import Overlay from './components/Overlay.vue';
 import Genre from './components/Genre.vue';
 import MenuModal from '@/components/MenuModal.vue';

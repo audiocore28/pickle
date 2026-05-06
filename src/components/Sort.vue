@@ -6,25 +6,22 @@ import { useGameStore } from '../stores/game';
 const store = useGameStore();
 const { sortBy } = storeToRefs(store);
 
-const sorts = ref(['New Add', 'A-Z', 'Size Asc', 'Size Desc']);
+const sorts = ref(['Recently Added', 'Title (A-Z)', 'Size Asc', 'Size Desc']);
 const toggleSort = ref(false);
 </script>
 
 <template>
-  <div class="relative cursor-pointer uppercase text-stone-800 py-2">
-    <div @click="toggleSort = !toggleSort" class="flex items-center justify-between space-x-2 px-2 ">
-      <a class="menu-hover py-2 text-xs font-semibold lg:mx-2">
+  <div class="relative cursor-pointer text-stone-400 py-2">
+    <div @click="toggleSort = !toggleSort" class="flex items-center justify-between space-x-2">
+      <a class="menu-hover py-2 text-xs lg:mx-2">
         {{ sortBy }}
       </a>
       <span>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-        stroke="currentColor" class="h-4 w-4">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-        </svg>
+        <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M2 7a1 1 0 0 1 1-1h18a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1zm0 5a1 1 0 0 1 1-1h14a1 1 0 1 1 0 2H3a1 1 0 0 1-1-1zm1 4a1 1 0 1 0 0 2h10a1 1 0 1 0 0-2H3z" fill="#a8a29e"></path></g></svg>
       </span>
     </div>
 
-    <div v-if="toggleSort" class="absolute z-50 flex w-full flex-col bg-gray-100 py-2 shadow-xl">
+    <div v-if="toggleSort" class="absolute right-0 z-50 flex min-w-[120px] flex-col bg-gray-100 py-2 shadow-xl">
       <a 
         v-for="sort in sorts" 
         @click="sortBy = sort; toggleSort = !toggleSort" 
