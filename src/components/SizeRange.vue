@@ -11,8 +11,11 @@
 </script>
 
 <template>
-  <div class="w-full py-6 rounded-lg shadow-lg">
-    <h2 class="mt-5 mb-1 text-stone-300 text-xs font-semibold uppercase">Filter by Size</h2>
+  <div class="w-full py-6 rounded-lg">
+    <div class="flex justify-between items-center mt-5 mb-4">
+      <h2 class="text-stone-300 text-[15px] font-semibold font-oswald uppercase">Size Range</h2>
+      <span @click.prevent="gameStore.clearSizeRange" v-show="minSize !== 0 || maxSize !== 50" class="text-stone-300 hover:text-stone-200 text-xs font-medium cursor-pointer">Clear</span>
+    </div>
     
     <div class="mt-4 slider-container">
       <!-- Custom Range Inputs -->

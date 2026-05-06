@@ -29,18 +29,14 @@ const { filteredGenres, genreIndex } = storeToRefs(gameStore);
         <div class="p-5">
           <Search />
           <SizeRange />
-          <h2 class="mt-4 pl-1 text-stone-300 text-xs font-semibold uppercase">Browse by Category</h2>
+          <div class="flex justify-between items-center mt-4">
+            <h2 class="pl-1 text-stone-300 text-[15px] font-semibold uppercase font-oswald">Genre</h2>
+            <span @click.prevent="genreIndex = 'all'" v-show="genreIndex !== 'all'" class="text-stone-300 hover:text-stone-200 text-xs font-medium cursor-pointer">Clear</span>
+          </div>
         </div>
       </div>
       
-      <ul class="w-55 xl:w-64 px-4 overflow-y-auto fixed z-30 inset-y-0 top-78 bottom-15 left-0">
-        <li 
-          @click.prevent="genreIndex = 'all'" 
-          :class="{ 'bg-stone-700 text-stone-200' : genreIndex === 'all' }"
-          class="block py-2 px-4 rounded text-xs text-stone-200 capitalize hover:bg-stone-700 cursor-pointer"
-        >
-          all
-        </li>
+      <ul class="w-55 xl:w-64 px-4 overflow-y-auto fixed z-30 inset-y-0 top-81 bottom-15 left-0">
         <li  
           @click.prevent="genreIndex = g.i" 
           v-for="(g) in filteredGenres" 
@@ -58,8 +54,8 @@ const { filteredGenres, genreIndex } = storeToRefs(gameStore);
 
         <button @click="gameStore.clearFilters" type="button" :class="device.style.gradient" class="w-full cursor-pointer inline-flex items-center justify-center py-1 gap-1 font-medium text-stone-200 hover:bg-stone-600 rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-[12px] sm:text-sm focus:ring-primary-600 focus:text-primary-600 focus:bg-primary-50 focus:border-primary-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200 dark:focus:text-primary-400 dark:focus:border-primary-400 dark:focus:bg-gray-800">
           <span class="flex items-center gap-1">
-            <svg fill="#ffffff" width="16px" height="16px" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" d="M213.333333,3.55271368e-14 C269.912851,3.55271368e-14 324.175019,22.4761259 364.18278,62.4838867 C404.190541,102.491647 426.666667,156.753816 426.666667,213.333333 C426.666667,331.15408 331.15408,426.666667 213.333333,426.666667 C95.5125867,426.666667 3.55271368e-14,331.15408 3.55271368e-14,213.333333 C3.55271368e-14,95.5125867 95.5125867,3.55271368e-14 213.333333,3.55271368e-14 Z M213.333333,42.6666667 C119.076736,42.6666667 42.6666667,119.076736 42.6666667,213.333333 C42.6666667,307.589931 119.076736,384 213.333333,384 C307.589931,384 384,307.589931 384,213.333333 C384,119.076736 307.589931,42.6666667 213.333333,42.6666667 Z M288.758057,107.738721 L318.927946,137.90861 L243.502,213.333 L318.927946,288.758057 L288.758057,318.927946 L213.333,243.502 L137.90861,318.927946 L107.738721,288.758057 L183.163,213.333 L107.738721,137.90861 L137.90861,107.738721 L213.333,183.163 L288.758057,107.738721 Z" transform="translate(42.667 42.667)"></path></g></svg>
-            <span class="ml-1">Clear Filters</span>
+            <svg fill="#ffffff" width="12px" height="12px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M960 0v213.333c411.627 0 746.667 334.934 746.667 746.667S1371.627 1706.667 960 1706.667 213.333 1371.733 213.333 960c0-197.013 78.4-382.507 213.334-520.747v254.08H640V106.667H53.333V320h191.04C88.64 494.08 0 720.96 0 960c0 529.28 430.613 960 960 960s960-430.72 960-960S1489.387 0 960 0" fill-rule="evenodd"></path> </g></svg>
+            <span class="ml-1">Reset Filters</span>
           </span>
         </button>
 

@@ -109,6 +109,11 @@ export const useGameStore = defineStore('game', () => {
     search.value = '';
     genreIndex.value = 'all';
     sortBy.value = 'Recently Added';
+  
+    clearSizeRange();
+  }
+  
+  function clearSizeRange() {
     minSize.value = 0;
     maxSize.value = 50;
 
@@ -183,7 +188,7 @@ export const useGameStore = defineStore('game', () => {
     // getters
     groupedGames, filteredGames, genres, filteredGenres, genre, rangeTrackStyles,
     // actions
-    clearFilters, selectDevice, updateRange
+    clearFilters, clearSizeRange, selectDevice, updateRange
   }
 
 }, {
