@@ -62,10 +62,20 @@ const props = defineProps({
           'bg-fuchsia-900/90 text-stone-200' : !selected.some(s => s.id === game.id) && device.unit === 'ps4',
           'bg-yellow-500/90 text-stone-600' : !selected.some(s => s.id === game.id) && device.unit === 'nsw',
           'bg-stone-800/80 text-stone-500 transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),
+          'h-12 sm:h-14' : device.unit === 'pc' || device.unit === 'nsw',
+          'h-8 sm:h-9' : device.unit === 'ps4',
         }"
-        class="p-2 mt-1 h-12 sm:mt-1.5 sm:h-13"
+        class="p-2 mt-1 sm:mt-1.5"
       >
-        <h2 class="text-xs sm:text-sm px-1 line-clamp-2">{{ game.name }}</h2>
+        <h2 
+          :class="{
+            'line-clamp-2' : device.unit === 'pc' || device.unit === 'nsw',
+            'line-clamp-1' : device.unit === 'ps4',
+          }"
+          class="text-xs sm:text-sm px-1"
+        >
+          {{ game.name }}
+        </h2>
         <p class="text-xs">{{ game.note1 }}</p>
       </div>
     </div>
