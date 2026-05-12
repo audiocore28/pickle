@@ -2,9 +2,11 @@ import { ref, reactive, shallowRef, computed, onMounted } from 'vue';
 import { defineStore } from 'pinia';
 import { useProductStore } from './product';
 import { useDebouncedRef } from '@/composables/useDebouncedRef';
+import { useScrollToTop } from '@/composables/useScrollToTop';
 
 export const useGameStore = defineStore('game', () => {
   const productStore = useProductStore();
+  const { scrollToTop } = useScrollToTop();
 
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBDQML7oIs5nSLLaLeE33PjkLT8AQGJJ69x1zKzxyaEA5oyabWZ2rThbMuqHAsUGQAxg/exec';
 
@@ -111,6 +113,7 @@ export const useGameStore = defineStore('game', () => {
     sortBy.value = 'Recently Added';
   
     clearSizeRange();
+    scrollToTop();
   }
   
   function clearSizeRange() {

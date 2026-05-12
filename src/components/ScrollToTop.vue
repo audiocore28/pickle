@@ -1,21 +1,19 @@
 <script setup>
   import { toRefs } from 'vue';
-  import { storeToRefs } from 'pinia';
   import { useGameStore } from '@/stores/game';
-  import { useModalStore } from '@/stores/modal';
+  import { useScrollToTop } from '@/composables/useScrollToTop';
 
   const gameStore = useGameStore();
-  const modalStore = useModalStore();
 
   const { device } = toRefs(gameStore);
-  const { toggleScrollToTop } = storeToRefs(modalStore);
+  const { isVisible, scrollToTop } = useScrollToTop();
 
 </script>
 
 <template>
   <button 
-    v-show="toggleScrollToTop"
-    @click="modalStore.scrollToTop"
+    v-show="isVisible"
+    @click="scrollToTop()"
     :class="device.style.background"
     class="fixed bottom-44 sm:bottom-36 right-4 sm:right-8 z-50 w-10 h-10 rounded-full text-stone-200 shadow-lg flex items-center justify-center cursor-pointer"
     aria-label="Scroll to top"

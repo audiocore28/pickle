@@ -1,4 +1,4 @@
-import { ref, shallowRef, computed, watch, onMounted, onUnmounted } from 'vue';
+import { ref, shallowRef, watch, onMounted, onUnmounted } from 'vue';
 import { defineStore } from 'pinia';
 import Device from '@/components/Device.vue';
 import SelectedGames from '@/components/SelectedGames.vue';
@@ -14,17 +14,6 @@ export const useModalStore = defineStore('modal', () => {
   const sheetHeight = ref(80);
   const maxHeight = 80;
   const isDragging = ref(false);
-
-  const toggleScrollToTop = ref(false);
-  const scrollContainerRef = ref(null);
-
-  const handleScroll = () => {
-    toggleScrollToTop.value = scrollContainerRef.value.scrollTop > 300;
-  }
-
-  function scrollToTop() {
-    scrollContainerRef.value.scrollTo({ top: 0, behavior: 'smooth' });
-  }
 
   function openMenu(comp, tab) {
     if (currentTab.value === tab) {
@@ -130,13 +119,11 @@ export const useModalStore = defineStore('modal', () => {
 
   onMounted(async () => { 
     window.addEventListener('keydown', handleKeydown);
-    scrollContainerRef.value.addEventListener('scroll', handleScroll);
     document.addEventListener('touchend', dragStop);
   });
 
   onUnmounted(() => {  
     window.removeEventListener('keydown', handleKeydown);
-    scrollContainerRef.value.removeEventListener('scroll', handleScroll);
     document.removeEventListener('touchend', dragStop);
   });
 
@@ -151,10 +138,6 @@ export const useModalStore = defineStore('modal', () => {
     alertProps,
     openAlert,
     closeAlert,
-    toggleScrollToTop,
-    scrollContainerRef,
-    handleScroll,
-    scrollToTop,
     sheetHeight,
     dragStart,
     onDrag,

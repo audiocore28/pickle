@@ -15,7 +15,7 @@ import ScrollToTop from '@/components/ScrollToTop.vue';
 
 const gameStore = useGameStore();
 const modalStore = useModalStore();
-const { toggleMenu, scrollContainerRef } = storeToRefs(modalStore);
+const { toggleMenu } =  storeToRefs(modalStore);
 const { device } = toRefs(gameStore);
 </script>
 
@@ -25,7 +25,7 @@ const { device } = toRefs(gameStore);
     <Sidebar v-show="true" class="hidden lg:block"/>
 
     <!-- Content Area -->
-    <div ref="scrollContainerRef" class="w-full overflow-y-auto">
+    <div id="contentArea" class="w-full overflow-y-auto">
       <main>
 
         <!-- Filters -->
