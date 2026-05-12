@@ -34,7 +34,7 @@ const { toggleMenu, menuComponent, sheetHeight } = storeToRefs(modalStore);
   
       <!-- shortcut key label -->
       <div class="z-500 absolute -top-1 right-0 pt-8 pr-4">
-        <span class="text-sm text-stone-600">spacebar</span>
+        <span class="text-sm text-stone-600 hidden sm:block">spacebar</span>
       </div>
       <!-- shortcut key label -->
   

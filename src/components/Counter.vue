@@ -30,7 +30,7 @@ const { currentTab, toggleMenu } = storeToRefs(modalStore);
       <div class="flex items-center justify-between font-semibold">
         <div @click="modalStore.openMenu(Device, 'device')" class="relative flex-1 flex justify-center items-center py-4 hover:bg-stone-700" :class="{ 'bg-stone-700' : currentTab === 'device' }">
           <!-- shortcut key label-->
-          <div class="z-500 absolute top-0 right-0 pt-1 pr-3">
+          <div class="z-500 absolute top-0 right-0 pt-1 pr-3 hidden sm:block">
             <span class="text-sm text-stone-600">a</span>
           </div>
           <!-- shortcut key label-->
@@ -42,7 +42,7 @@ const { currentTab, toggleMenu } = storeToRefs(modalStore);
         </div>
         <div @click="modalStore.openMenu(SelectedGames, 'list')" class="relative flex-1 flex justify-center items-center py-4 hover:bg-stone-700" :class="{ 'bg-stone-700' : currentTab === 'list' }">
           <!-- shortcut key label-->
-          <div class="z-500 absolute top-0 right-0 pt-1 pr-3">
+          <div class="z-500 absolute top-0 right-0 pt-1 pr-3 hidden sm:block">
             <span class="text-sm text-stone-600">s</span>
           </div>
           <!-- shortcut key label-->
@@ -54,7 +54,7 @@ const { currentTab, toggleMenu } = storeToRefs(modalStore);
         </div>
         <div @click="modalStore.openMenu(Products, 'products')" class="relative flex-1 flex justify-center items-center py-4 hover:bg-stone-700" :class="{ 'bg-stone-700' : currentTab === 'products' }">
           <!-- shortcut key label-->
-          <div class="z-500 absolute top-0 right-0 pt-1 pr-3">
+          <div class="z-500 absolute top-0 right-0 pt-1 pr-3 hidden sm:block">
             <span class="text-xs text-stone-600">d</span>
           </div>
           <!-- shortcut key label-->
