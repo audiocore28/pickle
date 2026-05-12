@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useSelectStore } from '../stores/select';
 
 const selectStore = useSelectStore();
-const { captureContainer, groupedSelection, groupedSize } = storeToRefs(selectStore);
+const { groupedSelection, groupedSize } = storeToRefs(selectStore);
 
 const now = new Date();
 const timestamp = now.toLocaleString('en-US', {
@@ -14,7 +14,7 @@ const timestamp = now.toLocaleString('en-US', {
 </script>
 
 <template>
-  <div ref="captureContainer" class="absolute -top-[9999px] -left-[9999px] -z-1 w-[430px] cursor-pointer pointer-events-none my-auto p-2">
+  <div id="listContainer" class="absolute -top-[9999px] -left-[9999px] -z-1 w-[400px] cursor-pointer pointer-events-none my-auto p-2">
     <!-- <div class="watermark w-full">
       <img src="" alt="watermark">
        watermark

@@ -3,6 +3,7 @@ import { toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 import { useSelectStore } from '../stores/select';
+import { useCaptureElement } from '../composables/useCaptureElement';
 import SelectedList from './SelectedList.vue';
 
 const gameStore = useGameStore();
@@ -10,6 +11,7 @@ const selectStore = useSelectStore();
 
 const { device } = toRefs(gameStore);
 const { groupedSelection } = storeToRefs(selectStore);
+const { captureElement } = useCaptureElement();
 </script>
 
 <template>
@@ -52,7 +54,7 @@ const { groupedSelection } = storeToRefs(selectStore);
 
     <template #footer>
       <div class="grid gap-2 grid-cols-[repeat(auto-fit,minmax(0,1fr))]">
-        <button @click="store.captureElement" type="button" class="cursor-pointer inline-flex items-center justify-center py-1 gap-1 font-medium text-stone-200 bg-stone-700 hover:bg-stone-600 rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-[12px] sm:text-sm focus:ring-primary-600 focus:text-primary-600 focus:bg-primary-50 focus:border-primary-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200 dark:focus:text-primary-400 dark:focus:border-primary-400 dark:focus:bg-gray-800">
+        <button @click="captureElement()" type="button" :class="device.style.gradient" class="cursor-pointer inline-flex items-center justify-center py-1 gap-1 font-medium text-stone-200 hover:bg-stone-600 rounded-lg border transition-colors outline-none focus:ring-offset-2 focus:ring-2 focus:ring-inset dark:focus:ring-offset-0 min-h-[2.25rem] px-4 text-[12px] sm:text-sm focus:ring-primary-600 focus:text-primary-600 focus:bg-primary-50 focus:border-primary-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:border-gray-600 dark:hover:border-gray-500 dark:text-gray-200 dark:focus:text-primary-400 dark:focus:border-primary-400 dark:focus:bg-gray-800">
           <span class="flex items-center gap-1">
             <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 15C3 17.8284 3 19.2426 3.87868 20.1213C4.75736 21 6.17157 21 9 21H15C17.8284 21 19.2426 21 20.1213 20.1213C21 19.2426 21 17.8284 21 15" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M12 3V16M12 16L16 11.625M12 16L8 11.625" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
             <span class="ml-1">Screenshot</span>
