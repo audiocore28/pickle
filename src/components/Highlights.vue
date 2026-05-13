@@ -1,14 +1,16 @@
 <script setup>
-import { ref, onUnmounted } from 'vue';
+import { ref, toRefs, onUnmounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 import { useSelectStore } from '../stores/select';
 import GameDetail from '@/components/GameDetail.vue';
+import GameDetailSkeleton from './GameDetailSkeleton.vue';
 
 const gameStore = useGameStore();
 const selectStore = useSelectStore();
 
-const { games, filteredGames } = storeToRefs(gameStore);
+const { device } = toRefs(gameStore);
+const { games, filteredGames, highlightGames } = storeToRefs(gameStore);
 const { selected } = storeToRefs(selectStore);
 
 const scrollContainerRef = ref(null);
@@ -69,8 +71,8 @@ onUnmounted(stopDragging);
 </script>
 
 <template>
-  <div class="my-10">
-    <h3 class="font-display text-lg font-bold text-stone-300 uppercase mb-1 flex items-center gap-2">Highlights</h3>;
+  <div class="mb-12">
+    <h3 class="font-display text-3xl font-bold text-stone-300 uppercase mt-2 mb-1 flex items-center gap-2">Highlights</h3>;
     
     <div class="relative">
       <button @click="scrollToLeft()" class="absolute left-0 top-0 bottom-2 w-10 z-20 flex items-center justify-center bg-transparent transition-opacity cursor-pointer">
@@ -113,8 +115,9 @@ onUnmounted(stopDragging);
         class="flex gap-3 overflow-x-auto pb-2 -mx-4 px-4 cursor-grab [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden scrollbar-hide select-none"
       >
 
+
         <!-- loop -->
-        <div v-if="games.length" v-for="game in filteredGames" :key="game.id" class="flex-shrink-0 snap-start rounded-md overflow-hidden transition-all duration-200 bg-card/80 backdrop-blur-sm border w-[130px] sm:w-[140px] border-primary/20 hover:border-primary/40">
+        <div v-if="games.length" v-for="game in highlightGames" :key="game.id" class="flex-shrink-0 snap-start rounded-md overflow-hidden transition-all duration-200 bg-card/80 backdrop-blur-sm border w-[130px] sm:w-[140px] border-primary/20 hover:border-primary/40">
           <div class="relative aspect-[3/4] bg-muted cursor-pointer">
           
             <div class="relative cursor-pointer rounded overflow-hidden shadow-lg"
@@ -125,6 +128,22 @@ onUnmounted(stopDragging);
               }"
             >
               <GameDetail :game="game" />
+            </div>
+
+          </div>
+        </div>
+
+        <div v-else v-for="n in 12" :key="n" class="flex-shrink-0 snap-start rounded-md overflow-hidden transition-all duration-200 backdrop-blur-sm w-[130px] sm:w-[140px]">
+          <div class="relative aspect-[3/4] bg-muted cursor-pointer">
+          
+            <div 
+              :class="{
+                'h-40 md:h-45 bg-stone-500' : device.unit === 'ps4',
+                'h-50 md:h-55 bg-stone-500' : device.unit === 'nsw',
+              }"
+              class="relative rounded overflow-hidden shadow-lg"
+            >
+              <GameDetailSkeleton />
             </div>
 
           </div>

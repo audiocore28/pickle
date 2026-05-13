@@ -59,8 +59,15 @@ const { isVisible } = useSmartNav();
         >
           <GameDetail :game="game" />
         </div>
-        <div v-else v-for="n in 32" :key="n" class="rounded overflow-hidden shadow-lg">
-          <GameDetailSkeleton />
+        <div v-else v-for="n in 32" :key="n" class="rounded overflow-hidden shadow-lg relative">
+          <div 
+            :class="{
+              'h-55 bg-stone-500' : device.unit === 'ps4',
+              'h-65 bg-stone-500' : device.unit === 'nsw',
+            }"
+          >
+            <GameDetailSkeleton />
+          </div>
         </div>
 
       </div>

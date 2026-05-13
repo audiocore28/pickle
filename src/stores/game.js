@@ -46,6 +46,8 @@ export const useGameStore = defineStore('game', () => {
 
   const groupedGames = computed(() => games.value.filter(g => device.platforms.includes(g.platform)));
 
+  const highlightGames = computed(() => groupedGames.value.filter(g => g.isHighlight));
+
   const filteredGames = computed(() => {
     let filtered = [];
 
@@ -189,7 +191,7 @@ export const useGameStore = defineStore('game', () => {
     // state
     games, device, search, platform, genreIndex, sortBy, minSize, maxSize, minGap, minPercent, maxPercent, togglePlatform, minSizeRef,
     // getters
-    groupedGames, filteredGames, genres, filteredGenres, genre, rangeTrackStyles,
+    groupedGames, highlightGames, filteredGames, genres, filteredGenres, genre, rangeTrackStyles,
     // actions
     clearFilters, clearSizeRange, selectDevice, updateRange
   }
