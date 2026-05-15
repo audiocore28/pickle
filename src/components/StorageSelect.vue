@@ -4,7 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useProductStore } from '../stores/product';
 import { useGameStore } from '../stores/game';
 import { useSelectStore } from '../stores/select';
-import driveIcon from '../assets/drive.svg?raw';
+import driveIcon from '../assets/icons/drive.svg?raw';
 
 const gameStore = useGameStore();
 const selectStore = useSelectStore();

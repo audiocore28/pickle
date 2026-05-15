@@ -1,6 +1,8 @@
 <script setup>
 import { defineProps } from 'vue';
 import { useModalStore } from '../stores/modal';
+import IconClose from './icons/IconClose.vue';
+import IconWarning from './icons/IconWarning.vue';
 
 const modalStore = useModalStore();
 
@@ -17,9 +19,7 @@ defineProps({
     <div class="sm:block absolute top-0 right-0 pt-4 pr-4">
       <button @click="modalStore.closeAlert" type="button" data-behavior="cancel" class="cursor-pointer bg-stone-100 rounded-md text-gray-400 hover:text-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
         <span class="sr-only">Close</span>
-        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
+        <IconClose class="h-6 w-6" />
       </button>
     </div>
     <!-- Close Button -->
@@ -28,9 +28,7 @@ defineProps({
     <div class="sm:flex sm:items-start">
       <!-- Icon -->
       <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-        <svg class="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-        </svg>
+        <IconWarning class="h-6 w-6 text-red-600" />
       </div>
 
       <!-- Message -->

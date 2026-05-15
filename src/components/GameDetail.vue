@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 import { useSelectStore } from '../stores/select';
 import { useProductStore } from '../stores/product';
+import IconGameController from './icons/IconGameController.vue';
 
 const gameStore = useGameStore();
 const selectStore = useSelectStore();
@@ -37,7 +38,14 @@ const props = defineProps({
       </div>
     </div>
     
-    <div class="absolute top-2 right-2 w-full">
+    <!-- Selected label -->
+    <div v-show="selected.some(s => s.id === game.id)" class="flex items-center justify-center absolute inset-x-0 inset-y-0 -mt-14">
+      <div class="flex flex-col items-center justify-center">
+        <p class="text-[11px] uppercase p-0 m-0 text-stone-500 font-semibold">selected</p>
+        <IconGameController class="text-stone-600" />
+      </div>
+    </div>
+    <!-- / Selected label -->
       <span v-show="selected.some(s => s.id === game.id)"
         :class="{
           'text-xs font-semibold uppercase mx-1 py-1 px-2 pl-3 rounded-r-lg bg-stone-800/80 text-stone-500 transition duration-500 ease-in-out' : selected.some(s => s.id === game.id),

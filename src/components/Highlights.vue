@@ -5,6 +5,8 @@ import { useGameStore } from '../stores/game';
 import { useSelectStore } from '../stores/select';
 import GameDetail from '@/components/GameDetail.vue';
 import GameDetailSkeleton from './GameDetailSkeleton.vue';
+import IconCaretLeft from './icons/IconCaretLeft.vue';
+import IconCaretRight from './icons/IconCaretRight.vue';
 
 const gameStore = useGameStore();
 const selectStore = useSelectStore();
@@ -76,36 +78,10 @@ onUnmounted(stopDragging);
     
     <div class="relative">
       <button @click="scrollToLeft()" class="absolute left-0 top-0 bottom-2 w-10 z-20 flex items-center justify-center bg-transparent transition-opacity cursor-pointer">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          :stroke="'#e7e5e4'"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-chevron-left w-5 h-5 text-foreground"
-        >
-          <path d="m15 18-6-6 6-6"></path>
-        </svg>
+        <IconCaretLeft class="w-5 h-5 text-stone-200" />
       </button>
       <button @click="scrollToRight()" class="absolute right-0 top-0 bottom-2 w-10 z-20 flex items-center justify-center bg-transparent transition-opacity cursor-pointer">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          :stroke="'#e7e5e4'"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-chevron-right w-5 h-5 text-foreground"
-        >
-          <path d="m9 18 6-6-6-6"></path>
-        </svg>
+        <IconCaretRight class="w-5 h-5 text-stone-200" />
       </button>
 
       <!-- container -->

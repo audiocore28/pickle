@@ -2,9 +2,9 @@ import { ref, reactive, computed } from 'vue';
 import { defineStore } from 'pinia';
 import { useGameStore } from './game';
 import { useSelectStore } from './select';
-import driveIcon from '../assets/drive.svg?raw';
-import xboxControllerIcon from '../assets/xboxController.svg?raw';
-import ds4ControllerIcon from '../assets/ds4Controller.svg?raw';
+import driveIcon from '../assets/icons/drive.svg?raw';
+import xboxControllerIcon from '../assets/icons/xboxController.svg?raw';
+import ds4ControllerIcon from '../assets/icons/ds4Controller.svg?raw';
 
 export const useProductStore = defineStore('product', () => {
   const gameStore = useGameStore();

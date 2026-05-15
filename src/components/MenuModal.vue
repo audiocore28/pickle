@@ -2,6 +2,7 @@
 import { storeToRefs } from 'pinia';
 import { useModalStore } from '../stores/modal';
 import Screenshot from './Screenshot.vue';
+import IconClose from './icons/IconClose.vue';
 
 const modalStore = useModalStore();
 
@@ -25,9 +26,7 @@ const { toggleMenu, menuComponent, sheetHeight } = storeToRefs(modalStore);
       <div class="z-800 absolute -top-1 right-0 pt-4 pr-4">
         <button @click="modalStore.closeMenu()" type="button" data-behavior="cancel" class="cursor-pointer rounded-md text-gray-400 hover:text-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
           <span class="sr-only">Close</span>
-          <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <IconClose />
         </button>
       </div>
       <!-- Close Button -->
