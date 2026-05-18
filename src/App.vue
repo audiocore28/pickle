@@ -29,7 +29,7 @@ const { isVisible } = useSmartNav();
     <Sidebar v-show="true" class="hidden lg:block"/>
 
     <!-- Content Area -->
-    <div id="contentArea" class="w-full overflow-y-auto">
+    <div id="contentArea" class="w-full lg:overflow-y-auto">
       <main>
 
         <!-- Filters -->
