@@ -23,7 +23,7 @@ const { storages } = toRefs(productStore);
         <tr v-for="storage in storages" :key="storage.id" v-show="storage.devices.includes(device.unit)" class="text-center border-b border-stone-700">
           <td class="flex items-center py-2 pl-1 text-left align-top w-[50px]">
             <div>
-              <div v-html="storage.icon"></div>
+              <div v-html="driveIcon"></div>
             </div>
             <div class="">
               <h5 class="text-sm text-gray-200 leading-4 w-[150px] truncate">{{ storage.description }}</h5>

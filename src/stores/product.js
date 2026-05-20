@@ -1,8 +1,7 @@
-import { ref, reactive, computed } from 'vue';
+import { ref, shallowRef, computed, onMounted } from 'vue';
 import { defineStore } from 'pinia';
 import { useGameStore } from './game';
 import { useSelectStore } from './select';
-import driveIcon from '../assets/icons/drive.svg?raw';
 import xboxControllerIcon from '../assets/icons/xboxController.svg?raw';
 import ds4ControllerIcon from '../assets/icons/ds4Controller.svg?raw';
 
@@ -11,13 +10,13 @@ export const useProductStore = defineStore('product', () => {
   const selectStore = useSelectStore();
 
   const icons = {
-    drive: driveIcon,
     ds4Controller: ds4ControllerIcon,
     xboxController: xboxControllerIcon,
   };
 
   // --- States ---------------------------------------------
 
+  const storages = shallowRef([]);
 
   const pcStorage = ref({
     id: 1,
@@ -45,129 +44,6 @@ export const useProductStore = defineStore('product', () => {
     price: 1300,
     isAvailable: true
   });
-
-  const storages = reactive([
-    {
-      id: 1,
-      icon: icons.drive,
-      description: '2.5\" External Drive',
-      devices: ['pc','ps4','nsw'],
-      capacities: [
-        {
-          size: 320,
-          limit: 280,
-          price: 1000,
-          isAvailable: true
-        },
-        {
-          size: 500,
-          limit: 440,
-          price: 1300,
-          isAvailable: true
-        },
-        {
-          size: 640,
-          limit: 580,
-          price: 1500,
-          isAvailable: false
-        },
-        {
-          size: 750,
-          limit: 680,
-          price: 1800,
-          isAvailable: false
-        },
-        {
-          size: 1000,
-          limit: 910,
-          price: 2300,
-          isAvailable: true
-        },
-        {
-          size: 2000,
-          limit: 1800,
-          price: 3200,
-          isAvailable: false
-        },
-        {
-          size: 4000,
-          limit: 3700,
-          price: 6500,
-          isAvailable: false
-        },
-      ]
-    },
-    {
-      id: 2,
-      icon: icons.drive,
-      description: '3.5\" Internal Drive',
-      devices: ['pc'],
-      capacities: [
-        {
-          size: 500,
-          limit: 440,
-          price: 900,
-          isAvailable: true
-        },
-        {
-          size: 1000,
-          limit: 910,
-          price: 1500,
-          isAvailable: true
-        },
-      ]
-    },
-    {
-      id: 3,
-      icon: icons.drive,
-      description: 'Provide Your Own',
-      devices: ['pc','ps4','nsw'],
-      capacities: [
-        {
-          size: 320,
-          limit: 280,
-          price: 0,
-          isAvailable: true
-        },
-        {
-          size: 500,
-          limit: 440,
-          price: 0,
-          isAvailable: true
-        },
-        {
-          size: 640,
-          limit: 580,
-          price: 0,
-          isAvailable: true
-        },
-        {
-          size: 750,
-          limit: 680,
-          price: 0,
-          isAvailable: true
-        },
-        {
-          size: 1000,
-          limit: 910,
-          price: 0,
-          isAvailable: true
-        },
-        {
-          size: 2000,
-          limit: 1800,
-          price: 0,
-          isAvailable: true
-        },
-        {
-          size: 4000,
-          limit: 3700,
-          price: 0,
-          isAvailable: true
-        },
-      ]
-    }
-  ]); 
 
    const pcAccessories = ref([
     {
@@ -354,6 +230,19 @@ export const useProductStore = defineStore('product', () => {
     updateDeviceAccessories(accessory);
   }
 
+  const fetchStorageData = async () => {
+    try {
+      const response = await fetch('/data/storages.json'); 
+      const data = await response.json();
+      storages.value = data.storages;
+    } catch (error) {
+      console.error('Error fetching storages', error);
+    }
+  }
+
+  onMounted(async () => {
+    fetchStorageData();
+  });
 
   return {
     // states
@@ -366,5 +255,5 @@ export const useProductStore = defineStore('product', () => {
   }
 
 }, {
-  persist: ['pcAccessories', 'ps4Accessories', 'nswAccessories']
+  persist: ['pcStorage', 'ps4Storage', 'nswStorage', 'pcAccessories', 'ps4Accessories', 'nswAccessories']
 });

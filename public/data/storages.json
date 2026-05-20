@@ -1,0 +1,41 @@
+{
+	"storages": [
+		{
+			"id": 1,
+			"description": "2.5\" External Drive",
+			"devices": [ "pc", "ps4", "nsw" ],
+			"capacities": [
+				{ "size": 320, "limit": 280, "price": 1000, "isAvailable": true },
+				{ "size": 500, "limit": 440, "price": 1300, "isAvailable": true },
+				{ "size": 640, "limit": 580, "price": 1500, "isAvailable": false },
+				{ "size": 750, "limit": 680, "price": 1800, "isAvailable": false },
+				{ "size": 1000, "limit": 910, "price": 2300, "isAvailable": true },
+				{ "size": 2000, "limit": 1800, "price": 3200, "isAvailable": false },
+				{ "size": 4000, "limit": 3700, "price": 6500, "isAvailable": false }
+			]
+		},
+		{
+			"id": 2,
+			"description": "3.5\" Internal Drive",
+			"devices": [ "pc" ],
+			"capacities": [
+				{ "size": 500, "limit": 440, "price": 900, "isAvailable": true },
+				{ "size": 1000, "limit": 910, "price": 1500, "isAvailable": true }
+			]
+		},
+		{
+			"id": 3,
+			"description": "Provide Your Own",
+			"devices": [ "pc", "ps4", "nsw" ],
+			"capacities": [
+				{ "size": 320, "limit": 280, "price": 0, "isAvailable": true },
+				{ "size": 500, "limit": 440, "price": 0, "isAvailable": true },
+				{ "size": 640, "limit": 580, "price": 0, "isAvailable": true },
+				{ "size": 750, "limit": 680, "price": 0, "isAvailable": true },
+				{ "size": 1000, "limit": 910, "price": 0, "isAvailable": true },
+				{ "size": 2000, "limit": 1800, "price": 0, "isAvailable": true },
+				{ "size": 4000, "limit": 3700, "price": 0, "isAvailable": true }
+			]
+		}
+	]
+}
