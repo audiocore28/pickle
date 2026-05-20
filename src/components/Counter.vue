@@ -5,6 +5,7 @@ import { useGameStore } from '../stores/game';
 import { useSelectStore } from '../stores/select';
 import { useProductStore } from '../stores/product';
 import { useModalStore } from '../stores/modal';
+import { formatSize } from '../utils/format';
 import Products from '@/components/Products.vue';
 import SelectedGames from '@/components/SelectedGames.vue';
 import Device from '@/components/Device.vue';
@@ -52,7 +53,7 @@ const { currentTab, toggleMenu } = storeToRefs(modalStore);
 
           <IconList :style="{ color: device.style.color }" />
           <span id="cart-icon" class="text-stone-200 text-xs inline-block py-1 px-2 rounded-full uppercase">
-            {{ productStore.formatSize(groupedSize.toFixed(1)) }} Used
+            {{ formatSize(groupedSize.toFixed(1)) }} Used
           </span>
         </div>
         <div @click="modalStore.openMenu(Products, 'products')" class="relative flex-1 flex justify-center items-center py-4 hover:bg-stone-700" :class="{ 'bg-stone-700' : currentTab === 'products' }">
@@ -64,7 +65,7 @@ const { currentTab, toggleMenu } = storeToRefs(modalStore);
 
           <IconHardDrive :style="{ color: device.style.color }" />
           <span class="text-stone-200 text-xs inline-block py-1 px-2 rounded-full uppercase">
-            {{ productStore.formatSize(device.assignedStorage.limit) }} Limit
+            {{ formatSize(device.assignedStorage.limit) }} Limit
           </span>
         </div>
       </div>

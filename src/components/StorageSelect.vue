@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useProductStore } from '../stores/product';
 import { useGameStore } from '../stores/game';
 import { useSelectStore } from '../stores/select';
+import { formatSize, formattedAmount } from '../utils/format';
 import driveIcon from '../assets/icons/drive.svg?raw';
 
 const gameStore = useGameStore();
@@ -57,12 +58,12 @@ const { storages } = toRefs(productStore);
           </td>
           <td class="w-[100px]">
             <div class="p-1 justify-around items-center">
-              <span class="w-10 text-center text-gray-200 text-xs">{{ productStore.formatSize(groupedSize.toFixed(2)) }}</span>
+              <span class="w-10 text-center text-gray-200 text-xs">{{ formatSize(groupedSize.toFixed(2)) }}</span>
             </div>
           </td>
           <td class="w-[100px] text-xs text-gray-300 py-2">
             <div class="flex justify-end px-4">
-              <span>{{ productStore.formattedAmount(groupedSize) }}</span>
+              <span>{{ formattedAmount(groupedSize) }}</span>
             </div>
           </td>
         </tr>

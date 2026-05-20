@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 import { useSelectStore } from '../stores/select';
 import { useProductStore } from '../stores/product';
+import { formatSize, formattedAmount } from '../utils/format';
 import StorageSelect from './StorageSelect.vue';
 import AccessorySelect from './AccessorySelect.vue';
 import SelectedList from './SelectedList.vue';
@@ -25,7 +26,7 @@ const { freeSpace, percentageColor } = storeToRefs(selectStore);
         <IconHardDrive :style="{ color: device.style.color }" style="width: 20px; height: 20px; margin-top: 2px;" />
         <div class="ml-3">
           <h2 class="text-md text-stone-300 uppercase font-semibold">{{ device.unit }} game drive</h2>
-          <p class="font-inter text-xs text-stone-400 pt-1">Remaining Space:   <span :style="{ color: percentageColor }">{{ productStore.formatSize(freeSpace.toFixed(1)) }}</span> / {{ productStore.formatSize(device.assignedStorage.limit) }} limit</p>
+          <p class="font-inter text-xs text-stone-400 pt-1">Remaining Space:   <span :style="{ color: percentageColor }">{{ formatSize(freeSpace.toFixed(1)) }}</span> / {{ formatSize(device.assignedStorage.limit) }} limit</p>
         </div>
       </div>
     </template>
@@ -46,7 +47,7 @@ const { freeSpace, percentageColor } = storeToRefs(selectStore);
     <template #footer>
       <div class="flex justify-between items-center h-8">
         <span class="text-stone-200 uppercase">Total :</span>
-        <span class="text-stone-200">{{ productStore.formattedAmount(totalPrice) }}</span>
+        <span class="text-stone-200">{{ formattedAmount(totalPrice) }}</span>
       </div>
     </template>
   </SelectedList>

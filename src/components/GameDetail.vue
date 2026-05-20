@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 import { useSelectStore } from '../stores/select';
 import { useProductStore } from '../stores/product';
+import { formatSize } from '../utils/format';
 import IconGameController from './icons/IconGameController.vue';
 
 const gameStore = useGameStore();
@@ -60,7 +61,7 @@ const props = defineProps({
           {{ game.platform }}
         </span>
         <span class="absolute right-0 text-[9px] sm:text-[10px] uppercase mx-1 py-1 px-2 rounded-lg bg-stone-800/80 text-stone-500 transition duration-500 ease-in-out">
-          {{ productStore.formatSize(game.size.toFixed(1)) }}
+          {{ formatSize(game.size.toFixed(1)) }}
         </span>
       </div>
 

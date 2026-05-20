@@ -2,6 +2,7 @@ import { ref, shallowRef, computed, onMounted } from 'vue';
 import { defineStore } from 'pinia';
 import { useGameStore } from './game';
 import { useSelectStore } from './select';
+import { formatSize, formattedAmount } from '../utils/format';
 import xboxControllerIcon from '../assets/icons/xboxController.svg?raw';
 import ds4ControllerIcon from '../assets/icons/ds4Controller.svg?raw';
 
@@ -184,23 +185,6 @@ export const useProductStore = defineStore('product', () => {
 
       updateDeviceStorage({id: storage.id, description: storage.description, ...prevCapacity});
     }
-  }
-
-  function formatSize(sizeInGB) {
-    if (sizeInGB >= 1000) {
-      let tb = sizeInGB / 1000;
-
-      return tb.toFixed(1).replace(/\.0$/, '') + ' TB';
-    } else {
-      return sizeInGB + ' GB';
-    }
-  }
-
-  function formattedAmount(amount) {
-    return amount.toLocaleString('en-PH', {
-        style: 'currency',
-        currency: 'PHP',
-    });
   }
 
   function updateDeviceAccessories(selectedAccessory) {

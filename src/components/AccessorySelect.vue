@@ -3,6 +3,7 @@ import { toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useGameStore } from '../stores/game';
 import { useProductStore } from '../stores/product';
+import { formattedAmount } from '../utils/format';
 
 const gameStore = useGameStore();
 const productStore = useProductStore();
@@ -37,7 +38,7 @@ const { device } = toRefs(gameStore);
           </td>
           <td class=" w-[100px] text-xs text-gray-300 py-2">
             <div class="flex justify-end px-4">
-              <span>{{ productStore.formattedAmount(accessory.price * accessory.quantity) }}</span>
+              <span>{{ formattedAmount(accessory.price * accessory.quantity) }}</span>
             </div>
           </td>
         </tr>
