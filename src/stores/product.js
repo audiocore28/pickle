@@ -16,6 +16,9 @@ export const useProductStore = defineStore('product', () => {
     xboxController: xboxControllerIcon,
   };
 
+  // --- States ---------------------------------------------
+
+
   const pcStorage = ref({
     id: 1,
     description: '2.5\" External Drive',
@@ -166,7 +169,7 @@ export const useProductStore = defineStore('product', () => {
     }
   ]); 
 
-  const accessories = ref([
+   const pcAccessories = ref([
     {
       id: 1,
       icon: icons.ds4Controller,
@@ -185,9 +188,50 @@ export const useProductStore = defineStore('product', () => {
     },
   ]); 
 
+   const ps4Accessories = ref([
+    {
+      id: 1,
+      icon: icons.ds4Controller,
+      description: 'DS4 Wireless',
+      price: 799,
+      quantity: 0,
+      limit: 2
+    },
+    {
+      id: 2,
+      icon: icons.xboxController,
+      description: 'XBox Wired',
+      price: 550,
+      quantity: 0,
+      limit: 2
+    },
+  ]); 
 
-  const accessoriesTotalPrice = computed(() => accessories.value.reduce((sum, currentItem) =>  sum += (currentItem.price * currentItem.quantity), 0));
-  const accessoriesTotalQty = computed(() => accessories.value.reduce((sum, currentItem) =>  sum += currentItem.quantity, 0));
+   const nswAccessories = ref([
+    {
+      id: 1,
+      icon: icons.ds4Controller,
+      description: 'DS4 Wireless',
+      price: 799,
+      quantity: 0,
+      limit: 2
+    },
+    {
+      id: 2,
+      icon: icons.xboxController,
+      description: 'XBox Wired',
+      price: 550,
+      quantity: 0,
+      limit: 2
+    },
+  ]); 
+
+  // --- Getters ---------------------------------------------
+
+  const accessoriesTotalPrice = computed(() => gameStore.device.assignedAccessories.reduce((sum, currentItem) =>  sum += (currentItem.price * currentItem.quantity), 0));
+
+  const accessoriesTotalQty = computed(() => gameStore.device.assignedAccessories.reduce((sum, currentItem) =>  sum += currentItem.quantity, 0));
+
   const totalPrice = computed(() => {
     if (gameStore.device.assignedStorage.id === 3) {
       return accessoriesTotalPrice.value + selectStore.groupedSize;
@@ -195,6 +239,8 @@ export const useProductStore = defineStore('product', () => {
       return accessoriesTotalPrice.value + gameStore.device.assignedStorage.price;
     }
   });
+
+  // --- Actions ---------------------------------------------
 
   function getStorageSize(storageId) {
     if (gameStore.device.assignedStorage.id === storageId) {
@@ -281,35 +327,44 @@ export const useProductStore = defineStore('product', () => {
     });
   }
 
-  function incrementQty(item) {
-    item.quantity = Math.min(item.limit, item.quantity + 1);
+  function updateDeviceAccessories(selectedAccessory) {
+    let accessoryToUpdate = [];
+
+    // save state
+    if (gameStore.device.unit === 'pc') {
+      accessoryToUpdate = pcAccessories.value.find(acc => acc.id === selectedAccessory.id);
+    } else if (gameStore.device.unit === 'ps4') {
+      accessoryToUpdate = ps4Accessories.value.find(acc => acc.id === selectedAccessory.id);
+    } else if (gameStore.device.unit === 'nsw') {
+      accessoryToUpdate = nswAccessories.value.find(acc => acc.id === selectedAccessory.id);
+    }
+
+    accessoryToUpdate.quantity = selectedAccessory.quantity;
   }
 
-  function decrementQty(item) {
-    item.quantity = Math.max(0, item.quantity - 1);
+  function incrementQty(accessory) {
+    accessory.quantity = Math.min(accessory.limit, accessory.quantity + 1);
+
+    updateDeviceAccessories(accessory);
   }
+
+  function decrementQty(accessory) {
+    accessory.quantity = Math.max(0, accessory.quantity - 1);
+
+    updateDeviceAccessories(accessory);
+  }
+
 
   return {
-    icons,
-    pcStorage,
-    ps4Storage,
-    nswStorage,
-    storages,
-    accessories,
-    accessoriesTotalPrice,
-    accessoriesTotalQty,
-    totalPrice,
-    getStorageSize,
-    getStoragePrice,
-    updateDeviceStorage,
-    getNextHigherCapacity,
-    getNextLowerCapacity,
-    formatSize,
-    formattedAmount,
-    incrementQty,
-    decrementQty
+    // states
+    storages, pcStorage, ps4Storage, nswStorage, pcAccessories, ps4Accessories, nswAccessories,
+    // getters
+    accessoriesTotalPrice, accessoriesTotalQty, totalPrice,
+    // actions
+    getStorageSize, getStoragePrice, updateDeviceStorage, getNextHigherCapacity, getNextLowerCapacity,
+    updateDeviceAccessories, incrementQty, decrementQty,
   }
 
 }, {
-  persist: true
+  persist: ['pcAccessories', 'ps4Accessories', 'nswAccessories']
 });

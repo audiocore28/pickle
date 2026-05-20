@@ -1,9 +1,12 @@
 <script setup>
+import { toRefs } from 'vue';
 import { storeToRefs } from 'pinia';
+import { useGameStore } from '../stores/game';
 import { useProductStore } from '../stores/product';
 
+const gameStore = useGameStore();
 const productStore = useProductStore();
-const { accessories } = storeToRefs(productStore);
+const { device } = toRefs(gameStore);
 
 </script>
 
@@ -11,7 +14,7 @@ const { accessories } = storeToRefs(productStore);
   <li class="flex items-start">
     <table class="w-full rounded-xl">
       <tbody>
-        <tr v-for="accessory in accessories" class="text-center border-b border-stone-700">
+        <tr v-for="accessory in device.assignedAccessories" class="text-center border-b border-stone-700">
           <td class="flex items-center py-2 pl-1 text-left align-top w-[50px]">
             <div>
               <div v-html="accessory.icon"></div>

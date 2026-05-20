@@ -3,12 +3,19 @@ import { defineStore } from 'pinia';
 import { useProductStore } from './product';
 import { useDebouncedRef } from '@/composables/useDebouncedRef';
 import { useScrollToTop } from '@/composables/useScrollToTop';
+import xboxControllerIcon from '../assets/icons/xboxController.svg?raw';
+import ds4ControllerIcon from '../assets/icons/ds4Controller.svg?raw';
 
 export const useGameStore = defineStore('game', () => {
   const productStore = useProductStore();
   const { scrollToTop } = useScrollToTop();
 
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwBDQML7oIs5nSLLaLeE33PjkLT8AQGJJ69x1zKzxyaEA5oyabWZ2rThbMuqHAsUGQAxg/exec';
+
+  const icons = {
+    ds4Controller: ds4ControllerIcon,
+    xboxController: xboxControllerIcon,
+  };
 
   // --- State ---------------------------------------------
   const games = shallowRef([]);
@@ -28,7 +35,11 @@ export const useGameStore = defineStore('game', () => {
       limit: 440,
       price: 1300,
       isAvailable: true
-    }
+    },
+    assignedAccessories: [
+      { id: 1, icon: icons.ds4Controller, description: 'DS4 Wireless', price: 799, quantity: 0, limit: 2 },
+      { id: 2, icon: icons.xboxController, description: 'XBox Wired', price: 550, quantity: 0, limit: 2 },
+    ],
   });
   const search = useDebouncedRef('');
   const platform = ref('win');
@@ -137,6 +148,7 @@ export const useGameStore = defineStore('game', () => {
         gradient: 'bg-gradient-to-r from-teal-800/90 to-stone-900'
       };
       device.assignedStorage = productStore.pcStorage; // get storage state
+      device.assignedAccessories = productStore.pcAccessories; // get accessories state
     } else if (dv === 'ps4') {
       device.platforms = ['ps4'];
       device.style = {
@@ -146,6 +158,7 @@ export const useGameStore = defineStore('game', () => {
         gradient: 'bg-gradient-to-r from-fuchsia-900/90 to-stone-900'
       };
       device.assignedStorage = productStore.ps4Storage;
+      device.assignedAccessories = productStore.ps4Accessories;
     } else if (dv === 'nsw') {
       device.platforms = ['nsw'];
       device.style = {
@@ -155,6 +168,7 @@ export const useGameStore = defineStore('game', () => {
         gradient: 'bg-gradient-to-r from-yellow-400/90 to-stone-900'
       };
       device.assignedStorage = productStore.nswStorage;
+      device.assignedAccessories = productStore.nswAccessories;
     }
 
     clearFilters();
